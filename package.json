@@ -4,10 +4,20 @@
   "private": true,
   "description": "Open-source scheduling and payment protocol for time-priced bookings.",
   "license": "MIT",
+  "type": "module",
   "scripts": {
+    "dev": "npm --workspace apps/web run dev",
+    "build": "npm --workspace apps/web run build",
+    "preview": "npm --workspace apps/web run preview",
     "lint": "echo 'lint not configured yet'",
-    "test": "echo 'test not configured yet'"
+    "test": "npm --workspace apps/web test && npm --workspace apps/api test",
+    "dev:web": "npm --workspace apps/web run dev",
+    "dev:api": "npm --workspace apps/api run dev"
   },
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "keywords": [
     "scheduling",
     "payments",
