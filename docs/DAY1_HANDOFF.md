@@ -37,3 +37,7 @@
 ## Day 1 verdict
 
 We have a public, working prototype. It is not production-safe yet, but it is enough to show people the concept and test whether they understand the value.
+
+## Brand thought
+
+Keep `tem-protocol` as the protocol/repo name. Consider **Tip Jar** as the friendly product/app name.
