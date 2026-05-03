@@ -11,3 +11,6 @@ build
 coverage
 
 *.tsbuildinfo
+
+# Local API runtime data
+# Keep the demo seed file committed for now; revisit once DB lands.

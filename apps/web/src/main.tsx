@@ -2,9 +2,9 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { calendarDays, featuredSlotIds, requestTypes, slots } from './lib/mockData';
 import { getRequiredAmount, getSlotFloor, type BookingRequest, type BookingStep, type Slot } from './lib/domain';
-import { createBookingRequest, loadRequests, saveRequests } from './lib/services/requestStore';
-import { acceptBookingRequest, getHighestPendingOfferForSlot, getSlotMarketState, rejectBookingRequest } from './lib/services/bookingLifecycle';
+import { getHighestPendingOfferForSlot, getSlotMarketState } from './lib/services/bookingLifecycle';
 import { createMockPaymentIntent, markMockPaymentPaid, type MockPaymentIntent } from './lib/services/paymentMock';
+import { createRequest, listRequests, updateRequestStatus as updateApiRequestStatus } from './lib/services/apiClient';
 import './styles.css';
 
 const featuredSlots = featuredSlotIds
@@ -17,15 +17,19 @@ function App() {
   const [selectedTypeId, setSelectedTypeId] = useState(requestTypes[0].id);
   const [step, setStep] = useState<BookingStep>('details');
   const [showCalendar, setShowCalendar] = useState(false);
-  const [requests, setRequests] = useState<BookingRequest[]>(() => loadRequests());
+  const [requests, setRequests] = useState<BookingRequest[]>([]);
   const [paymentIntent, setPaymentIntent] = useState<MockPaymentIntent | null>(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [note, setNote] = useState('');
 
   useEffect(() => {
-    saveRequests(requests);
-  }, [requests]);
+    void refreshRequests();
+  }, []);
+
+  async function refreshRequests() {
+    setRequests(await listRequests());
+  }
 
   const selectedSlot = useMemo(
     () => slots.find((slot) => slot.id === selectedSlotId) ?? slots[0],
@@ -52,9 +56,9 @@ function App() {
     setStep('payment');
   }
 
-  function createPaidRequest() {
+  async function createPaidRequest() {
     const paidIntent = paymentIntent ? markMockPaymentPaid(paymentIntent) : null;
-    const request = createBookingRequest({
+    const request = await createRequest({
       slotId: selectedSlot.id,
       typeId: selectedType.id,
       guestName: name.trim(),
@@ -68,12 +72,8 @@ function App() {
     setStep('confirmed');
   }
 
-  function updateRequestStatus(id: string, status: BookingRequest['status']) {
-    setRequests((current) => {
-      if (status === 'accepted') return acceptBookingRequest(current, id);
-      if (status === 'rejected') return rejectBookingRequest(current, id);
-      return current;
-    });
+  async function updateRequestStatus(id: string, status: BookingRequest['status']) {
+    setRequests(await updateApiRequestStatus(id, status));
   }
 
   return (
