@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: tem-protocol-api
+    runtime: docker
+    plan: free
+    dockerfilePath: apps/api/Dockerfile
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 8787
