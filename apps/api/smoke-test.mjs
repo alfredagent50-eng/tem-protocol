@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 const port = 8877;
 const server = spawn(process.execPath, ['server.mjs'], {
   cwd: new URL('.', import.meta.url),
-  env: { ...process.env, PORT: String(port) },
+  env: { ...process.env, PORT: String(port), TEM_DATA_FILE: 'data/smoke-test-requests.json' },
   stdio: ['ignore', 'pipe', 'pipe'],
 });
 

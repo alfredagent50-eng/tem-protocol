@@ -6,7 +6,7 @@ import { validateCreateRequest, validateStatus } from './validation.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '../..');
-const dataFile = resolve(root, 'data/requests.json');
+const dataFile = process.env.TEM_DATA_FILE ? resolve(root, process.env.TEM_DATA_FILE) : resolve(root, 'data/requests.json');
 const port = Number(process.env.PORT ?? 8787);
 
 const seedRequests = [

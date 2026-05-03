@@ -19,11 +19,20 @@ button, input, textarea { font: inherit; }
     #f7f8fb;
 }
 
+.top-bar {
+  width: min(1040px, 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin: 0 auto 14px;
+}
+
 .app-switcher {
   width: fit-content;
   display: flex;
   gap: 6px;
-  margin: 0 auto 14px;
+  margin: 0;
   padding: 5px;
   border: 1px solid rgba(227, 231, 238, 0.9);
   border-radius: 999px;
@@ -43,6 +52,20 @@ button, input, textarea { font: inherit; }
   background: #111827;
   color: #fff;
 }
+
+.api-pill {
+  padding: 10px 12px;
+  border: 1px solid rgba(227, 231, 238, 0.9);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.78);
+  color: #526075;
+  font-size: 13px;
+  font-weight: 900;
+  backdrop-filter: blur(12px);
+}
+.api-pill.online { color: #047857; }
+.api-pill.loading { color: #0069ff; }
+.api-pill.error { color: #c2410c; }
 .page-shell.tone-fun {
   background:
     radial-gradient(circle at 15% 10%, rgba(255, 122, 0, 0.14), transparent 28rem),

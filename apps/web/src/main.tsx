@@ -18,6 +18,7 @@ function App() {
   const [step, setStep] = useState<BookingStep>('details');
   const [showCalendar, setShowCalendar] = useState(false);
   const [requests, setRequests] = useState<BookingRequest[]>([]);
+  const [apiState, setApiState] = useState<'loading' | 'online' | 'error'>('loading');
   const [paymentIntent, setPaymentIntent] = useState<MockPaymentIntent | null>(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -25,10 +26,20 @@ function App() {
 
   useEffect(() => {
     void refreshRequests();
+    const interval = window.setInterval(() => {
+      void refreshRequests({ quiet: true });
+    }, 3000);
+    return () => window.clearInterval(interval);
   }, []);
 
-  async function refreshRequests() {
-    setRequests(await listRequests());
+  async function refreshRequests(options?: { quiet?: boolean }) {
+    try {
+      if (!options?.quiet) setApiState('loading');
+      setRequests(await listRequests());
+      setApiState('online');
+    } catch {
+      setApiState('error');
+    }
   }
 
   const selectedSlot = useMemo(
@@ -58,6 +69,7 @@ function App() {
 
   async function createPaidRequest() {
     const paidIntent = paymentIntent ? markMockPaymentPaid(paymentIntent) : null;
+    setApiState('loading');
     const request = await createRequest({
       slotId: selectedSlot.id,
       typeId: selectedType.id,
@@ -68,19 +80,25 @@ function App() {
       currency: paidIntent?.currency ?? selectedSlot.currency,
     });
     setRequests((current) => [request, ...current]);
+    setApiState('online');
     setPaymentIntent(null);
     setStep('confirmed');
   }
 
   async function updateRequestStatus(id: string, status: BookingRequest['status']) {
+    setApiState('loading');
     setRequests(await updateApiRequestStatus(id, status));
+    setApiState('online');
   }
 
   return (
     <main className={`page-shell tone-${selectedType.tone}`}>
+      <div className="top-bar">
+        <div className={`api-pill ${apiState}`}>API {apiState}</div>
       <div className="app-switcher" aria-label="App view">
         <button className={view === 'guest' ? 'active' : ''} onClick={() => setView('guest')}>Guest page</button>
         <button className={view === 'host' ? 'active' : ''} onClick={() => setView('host')}>Host dashboard</button>
+      </div>
       </div>
 
       {view === 'guest' ? (
