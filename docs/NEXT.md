@@ -11,3 +11,7 @@
 ## Product cleanup later
 
 Design still needs a real pass. Current UX is useful for proving the loop, not the final consumer experience.
+
+## Payment direction update
+
+Bar's preferred payment direction is Apple Pay/card for guests, with automatic host-side conversion into Bitcoin. See `docs/PAYMENTS_VISION.md`.
