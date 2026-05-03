@@ -1,0 +1,20 @@
+{
+  "name": "tem-protocol",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Open-source scheduling and payment protocol for time-priced bookings.",
+  "license": "MIT",
+  "scripts": {
+    "lint": "echo 'lint not configured yet'",
+    "test": "echo 'test not configured yet'"
+  },
+  "keywords": [
+    "scheduling",
+    "payments",
+    "micropayments",
+    "calendar",
+    "protocol",
+    "lightning",
+    "stablecoins"
+  ]
+}
