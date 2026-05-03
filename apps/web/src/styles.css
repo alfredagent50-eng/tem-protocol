@@ -116,15 +116,21 @@ button, input, textarea { font: inherit; }
   padding-bottom: 24px;
   border-bottom: 1px solid #e9edf3;
 }
+.dashboard-stats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(110px, auto));
+  gap: 10px;
+}
 .dashboard-stat {
-  min-width: 130px;
+  min-width: 110px;
   padding: 18px;
   border-radius: 22px;
   background: #f7fbff;
   text-align: center;
 }
-.dashboard-stat strong { display: block; color: #0069ff; font-size: 42px; line-height: 1; }
-.dashboard-stat span { color: #526075; font-weight: 900; }
+.dashboard-stat strong { display: block; color: #0069ff; font-size: 38px; line-height: 1; }
+.dashboard-stat span { color: #526075; font-weight: 900; font-size: 13px; }
+.dashboard-stat.wide strong { font-size: 30px; }
 .request-board {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -624,6 +630,7 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
   .request-types { grid-template-columns: repeat(3, minmax(0, 1fr)); }
   .request-board { grid-template-columns: 1fr; }
   .dashboard-hero { display: grid; }
+  .dashboard-stats { grid-template-columns: 1fr; }
 }
 
 @media (max-width: 620px) {

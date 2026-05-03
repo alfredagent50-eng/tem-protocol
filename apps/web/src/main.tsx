@@ -362,6 +362,8 @@ function formatCalendarSlot(slot: Slot, requests: BookingRequest[]) {
 function HostDashboard({ requests, onUpdate }: { requests: BookingRequest[]; onUpdate: (id: string, status: BookingRequest['status']) => void }) {
   const pending = requests.filter((request) => request.status === 'host_review');
   const reviewed = requests.filter((request) => request.status === 'accepted' || request.status === 'rejected');
+  const totalPendingValue = pending.reduce((sum, request) => sum + request.amount, 0);
+  const acceptedCount = requests.filter((request) => request.status === 'accepted').length;
 
   return (
     <section className="dashboard-card">
@@ -371,9 +373,19 @@ function HostDashboard({ requests, onUpdate }: { requests: BookingRequest[]; onU
           <h1>Incoming asks</h1>
           <p className="host-copy">Review paid requests, accept what’s worth it, pass on the rest.</p>
         </div>
-        <div className="dashboard-stat">
-          <strong>{pending.length}</strong>
-          <span>waiting</span>
+        <div className="dashboard-stats">
+          <div className="dashboard-stat">
+            <strong>{pending.length}</strong>
+            <span>waiting</span>
+          </div>
+          <div className="dashboard-stat">
+            <strong>{acceptedCount}</strong>
+            <span>accepted</span>
+          </div>
+          <div className="dashboard-stat wide">
+            <strong>{totalPendingValue}</strong>
+            <span>pending value</span>
+          </div>
         </div>
       </div>
 

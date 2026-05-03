@@ -12,6 +12,10 @@ const server = spawn(process.execPath, ['server.mjs'], {
 try {
   await waitForHealth(port);
 
+  const marketBefore = await fetch(`http://localhost:${port}/market/slots`);
+  assert.equal(marketBefore.status, 200);
+  assert.ok((await marketBefore.json()).some((slot) => slot.id === 'sun-1630'));
+
   const bad = await fetch(`http://localhost:${port}/requests`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
@@ -44,6 +48,10 @@ try {
   assert.equal(acceptedResponse.status, 200);
   const requests = await acceptedResponse.json();
   assert.equal(requests.find((request) => request.id === created.id).status, 'accepted');
+
+  const marketAfter = await fetch(`http://localhost:${port}/market/slots`);
+  const slots = await marketAfter.json();
+  assert.equal(slots.find((slot) => slot.id === 'sun-1630').marketStatus, 'busy');
 } finally {
   server.kill('SIGTERM');
 }

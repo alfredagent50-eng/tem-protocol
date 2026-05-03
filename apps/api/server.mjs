@@ -3,6 +3,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateCreateRequest, validateStatus } from './validation.mjs';
+import { getMarketSlots } from './fixtures.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '../..');
@@ -89,6 +90,10 @@ const server = createServer(async (req, res) => {
 
     if (req.method === 'GET' && url.pathname === '/requests') {
       return send(res, 200, await readRequests());
+    }
+
+    if (req.method === 'GET' && url.pathname === '/market/slots') {
+      return send(res, 200, getMarketSlots(await readRequests()));
     }
 
     if (req.method === 'POST' && url.pathname === '/requests') {
