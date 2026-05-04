@@ -228,6 +228,11 @@ function BookingPage({
   const marketFloor = selectedMarket.nextBidFloor ?? getSlotFloor(selectedSlot);
   const requiredAmount = Math.ceil(marketFloor * selectedType.multiplier);
   const canContinue = name.trim().length > 1 && email.includes('@');
+  function fillDemoRequest() {
+    onSetName('Alex Demo');
+    onSetEmail('alex@example.com');
+    onSetNote('I want 20 focused minutes to pressure-test a new idea and leave with one clear next step.');
+  }
 
   return (
     <section className="booking-card booking-card-clean">
@@ -327,6 +332,13 @@ function BookingPage({
 
         {step === 'details' && (
           <div className="form-stack">
+            <div className="demo-helper">
+              <div>
+                <strong>Demo mode</strong>
+                <span>No real charge. Creates a safe mock request.</span>
+              </div>
+              <button type="button" onClick={fillDemoRequest}>Fill demo</button>
+            </div>
             <label>
               Your name
               <input value={name} onChange={(event) => onSetName(event.target.value)} placeholder="Tal Cohen" />
@@ -357,9 +369,9 @@ function BookingPage({
               <span /> <span /> <span /> <span /> <span /> <span /> <span /> <span /> <span />
             </div>
             <p className="payment-copy">
-              Mock checkout for <strong>{paymentIntent?.amount ?? requiredAmount} {paymentIntent?.currency ?? selectedSlot.currency}</strong>.
+              Demo checkout for <strong>{paymentIntent?.amount ?? requiredAmount} {paymentIntent?.currency ?? selectedSlot.currency}</strong>. No live card is charged.
             </p>
-            <button className="pay-button" onClick={onCreatePaidRequest}>Simulate paid</button>
+            <button className="pay-button" onClick={onCreatePaidRequest}>Complete demo payment</button>
             <button className="ghost-button" onClick={() => onSetStep('details')}>Back</button>
           </div>
         )}
@@ -377,7 +389,7 @@ function BookingPage({
               <strong>{lastRequest?.amount ?? requiredAmount} {lastRequest?.currency ?? selectedSlot.currency}</strong>
             </div>
             <p className="fine-print">
-              The host gets the request and decides what is worth accepting.
+              The host sees this in review, can accept it into the calendar, or pass. Public pages only show market state — not your private details.
             </p>
             <button className="ghost-button" onClick={() => onSetStep('details')}>Make another booking</button>
           </div>

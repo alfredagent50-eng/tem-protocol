@@ -1252,3 +1252,44 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
     margin-right: auto;
   }
 }
+
+.demo-helper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px;
+  border: 1px solid #dbeafe;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #eff6ff, #fffdf8);
+}
+.demo-helper strong,
+.demo-helper span {
+  display: block;
+}
+.demo-helper strong {
+  color: #0756c7;
+  font-size: 13px;
+}
+.demo-helper span {
+  color: #526075;
+  font-size: 12px;
+  font-weight: 750;
+}
+.demo-helper button {
+  border: 0;
+  border-radius: 999px;
+  padding: 9px 12px;
+  background: #0069ff;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 950;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+@media (max-width: 620px) {
+  .demo-helper {
+    align-items: stretch;
+  }
+}
