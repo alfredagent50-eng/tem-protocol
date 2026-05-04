@@ -3,7 +3,7 @@ import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { validateCreateRequest, validateStatus } from './validation.mjs';
-import { getMarketSlots } from './fixtures.mjs';
+import { getMarketSlots, priceRequest } from './fixtures.mjs';
 import { createPaymentIntent, simulatePaymentPaid } from './payment-provider.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -63,11 +63,39 @@ function rejectBookingRequest(requests, rejectedId) {
   return requests.map((request) => request.id === rejectedId ? { ...request, status: 'rejected' } : request);
 }
 
+function redactRequest(request) {
+  return {
+    id: request.id,
+    slotId: request.slotId,
+    typeId: request.typeId,
+    amount: request.amount,
+    currency: request.currency,
+    status: request.status,
+    createdAt: request.createdAt,
+  };
+}
+
 function validatePaymentIntentInput(input) {
-  const currencies = new Set(['USD', 'EUR', 'GBP', 'ILS']);
-  if (!Number.isFinite(input?.amount) || input.amount <= 0) return { ok: false, error: 'amount must be positive' };
-  if (!currencies.has(input?.currency)) return { ok: false, error: 'currency is unsupported' };
-  return { ok: true, value: { amount: input.amount, currency: input.currency } };
+  if (typeof input?.slotId !== 'string' || input.slotId.trim().length === 0) return { ok: false, error: 'slotId is required' };
+  if (typeof input?.typeId !== 'string' || input.typeId.trim().length === 0) return { ok: false, error: 'typeId is required' };
+  return { ok: true, value: { slotId: input.slotId.trim(), typeId: input.typeId.trim() } };
+}
+
+function markPaymentSucceeded(requests, { paymentIntentId, eventId }) {
+  let changed = false;
+  const updated = requests.map((request) => {
+    if (request.paymentIntentId !== paymentIntentId) return request;
+    const processed = request.processedPaymentEventIds ?? [];
+    if (processed.includes(eventId)) return request;
+    changed = true;
+    return {
+      ...request,
+      status: request.status === 'pending_payment' || request.status === 'paid' ? 'host_review' : request.status,
+      processedPaymentEventIds: [...processed, eventId],
+      paidAt: request.paidAt ?? new Date().toISOString(),
+    };
+  });
+  return { updated, changed };
 }
 
 async function readBody(req) {
@@ -88,7 +116,7 @@ function send(res, status, body) {
 }
 
 function isAuthorizedHostRequest(req) {
-  if (!hostToken) return true;
+  if (!hostToken) return false;
   const authorization = req.headers.authorization ?? '';
   return authorization === `Bearer ${hostToken}`;
 }
@@ -104,7 +132,12 @@ const server = createServer(async (req, res) => {
     }
 
     if (req.method === 'GET' && url.pathname === '/requests') {
+      if (!isAuthorizedHostRequest(req)) return send(res, 401, { error: 'host_auth_required' });
       return send(res, 200, await readRequests());
+    }
+
+    if (req.method === 'GET' && url.pathname === '/public/requests') {
+      return send(res, 200, (await readRequests()).map(redactRequest));
     }
 
     if (req.method === 'GET' && url.pathname === '/market/slots') {
@@ -115,7 +148,9 @@ const server = createServer(async (req, res) => {
       const input = await readBody(req);
       const validation = validatePaymentIntentInput(input);
       if (!validation.ok) return send(res, 400, { error: 'validation_failed', details: [validation.error] });
-      return send(res, 201, await createPaymentIntent(validation.value));
+      const price = priceRequest(validation.value, await readRequests());
+      if (!price) return send(res, 400, { error: 'validation_failed', details: ['slotId or typeId is unsupported'] });
+      return send(res, 201, await createPaymentIntent({ ...validation.value, ...price }));
     }
 
     const paymentPaidMatch = url.pathname.match(/^\/payment-intents\/([^/]+)\/simulate-paid$/);
@@ -123,14 +158,35 @@ const server = createServer(async (req, res) => {
       return send(res, 200, await simulatePaymentPaid(paymentPaidMatch[1]));
     }
 
+    if (req.method === 'POST' && url.pathname === '/webhooks/payment-success') {
+      const input = await readBody(req);
+      if (typeof input?.paymentIntentId !== 'string' || typeof input?.eventId !== 'string') {
+        return send(res, 400, { error: 'validation_failed', details: ['paymentIntentId and eventId are required'] });
+      }
+      const requests = await readRequests();
+      if (!requests.some((request) => request.paymentIntentId === input.paymentIntentId)) {
+        return send(res, 404, { error: 'payment_intent_not_found' });
+      }
+      const { updated, changed } = markPaymentSucceeded(requests, {
+        paymentIntentId: input.paymentIntentId,
+        eventId: input.eventId,
+      });
+      if (changed) await writeRequests(updated);
+      return send(res, 200, { ok: true, idempotent: !changed, requests: updated.map(redactRequest) });
+    }
+
     if (req.method === 'POST' && url.pathname === '/requests') {
       const input = await readBody(req);
       const validation = validateCreateRequest(input);
       if (!validation.ok) return send(res, 400, { error: 'validation_failed', details: validation.errors });
+      const price = priceRequest(validation.value, await readRequests());
+      if (!price) return send(res, 400, { error: 'validation_failed', details: ['slotId or typeId is unsupported'] });
       const request = {
         ...validation.value,
+        ...price,
         id: `req-${Date.now()}`,
-        status: 'host_review',
+        status: 'pending_payment',
+        paymentProvider: process.env.PAYMENT_PROVIDER ?? 'mock',
         createdAt: new Date().toISOString(),
       };
       const requests = [request, ...(await readRequests())];

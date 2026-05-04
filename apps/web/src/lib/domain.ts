@@ -38,6 +38,10 @@ export type BookingRequest = {
   amount: number;
   currency: Currency;
   status: BookingRequestStatus;
+  paymentIntentId?: string;
+  paymentProvider?: string;
+  processedPaymentEventIds?: string[];
+  paidAt?: string;
   createdAt: string;
 };
 

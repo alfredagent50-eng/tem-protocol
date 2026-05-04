@@ -9,8 +9,7 @@ export function validateCreateRequest(input) {
   if (!isNonEmptyString(input?.typeId)) errors.push('typeId is required');
   if (!isNonEmptyString(input?.guestName)) errors.push('guestName is required');
   if (!isEmail(input?.guestEmail)) errors.push('guestEmail must be a valid email');
-  if (!Number.isFinite(input?.amount) || input.amount <= 0) errors.push('amount must be positive');
-  if (!currencies.has(input?.currency)) errors.push('currency is unsupported');
+  if (!isNonEmptyString(input?.paymentIntentId)) errors.push('paymentIntentId is required');
   if (input?.note != null && typeof input.note !== 'string') errors.push('note must be a string');
 
   if (errors.length > 0) return { ok: false, errors };
@@ -23,8 +22,7 @@ export function validateCreateRequest(input) {
       guestName: input.guestName.trim(),
       guestEmail: input.guestEmail.trim(),
       note: input.note?.trim?.() ?? '',
-      amount: input.amount,
-      currency: input.currency,
+      paymentIntentId: input.paymentIntentId.trim(),
     },
   };
 }

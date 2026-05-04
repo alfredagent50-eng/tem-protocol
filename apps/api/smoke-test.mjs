@@ -4,9 +4,10 @@ import assert from 'node:assert/strict';
 
 const port = 8877;
 const hostToken = 'smoke-host-token';
+const smokeDataFile = `data/smoke-test-requests-${Date.now()}.json`;
 const server = spawn(process.execPath, ['server.mjs'], {
   cwd: new URL('.', import.meta.url),
-  env: { ...process.env, PORT: String(port), TEM_DATA_FILE: 'data/smoke-test-requests.json', TEM_HOST_TOKEN: hostToken },
+  env: { ...process.env, PORT: String(port), TEM_DATA_FILE: smokeDataFile, TEM_HOST_TOKEN: hostToken, PAYMENT_PROVIDER: 'mock' },
   stdio: ['ignore', 'pipe', 'pipe'],
 });
 
@@ -16,6 +17,14 @@ try {
   const marketBefore = await fetch(`http://localhost:${port}/market/slots`);
   assert.equal(marketBefore.status, 200);
   assert.ok((await marketBefore.json()).some((slot) => slot.id === 'sun-1630'));
+
+  const publicRequestsResponse = await fetch(`http://localhost:${port}/public/requests`);
+  assert.equal(publicRequestsResponse.status, 200);
+  const publicRequests = await publicRequestsResponse.json();
+  assert.equal(publicRequests.some((request) => 'guestEmail' in request || 'guestName' in request || 'note' in request), false);
+
+  const privateRequestsWithoutAuth = await fetch(`http://localhost:${port}/requests`);
+  assert.equal(privateRequestsWithoutAuth.status, 401);
 
   const bad = await fetch(`http://localhost:${port}/requests`, {
     method: 'POST',
@@ -27,12 +36,14 @@ try {
   const paymentIntentResponse = await fetch(`http://localhost:${port}/payment-intents`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ amount: 9, currency: 'USD' }),
+    body: JSON.stringify({ slotId: 'sun-1630', typeId: 'talk', amount: 1, currency: 'ILS' }),
   });
   assert.equal(paymentIntentResponse.status, 201);
   const paymentIntent = await paymentIntentResponse.json();
   assert.equal(paymentIntent.provider, 'mock');
   assert.equal(paymentIntent.checkoutMode, 'simulated');
+  assert.equal(paymentIntent.amount, 7);
+  assert.equal(paymentIntent.currency, 'USD');
 
   const paidIntentResponse = await fetch(`http://localhost:${port}/payment-intents/${paymentIntent.id}/simulate-paid`, {
     method: 'POST',
@@ -49,13 +60,31 @@ try {
       guestName: 'Smoke Tester',
       guestEmail: 'smoke@example.com',
       note: 'API smoke test',
-      amount: 9,
-      currency: 'USD',
+      paymentIntentId: paymentIntent.id,
     }),
   });
   assert.equal(createdResponse.status, 201);
   const created = await createdResponse.json();
-  assert.equal(created.status, 'host_review');
+  assert.equal(created.status, 'pending_payment');
+  assert.equal(created.amount, 7);
+  assert.equal(created.currency, 'USD');
+
+  const webhookResponse = await fetch(`http://localhost:${port}/webhooks/payment-success`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ paymentIntentId: paymentIntent.id, eventId: 'evt-smoke-1' }),
+  });
+  assert.equal(webhookResponse.status, 200);
+  const webhookBody = await webhookResponse.json();
+  assert.equal(webhookBody.requests.find((request) => request.id === created.id).status, 'host_review');
+  assert.equal(webhookBody.requests.some((request) => 'guestEmail' in request || 'guestName' in request || 'note' in request), false);
+
+  const duplicateWebhookResponse = await fetch(`http://localhost:${port}/webhooks/payment-success`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ paymentIntentId: paymentIntent.id, eventId: 'evt-smoke-1' }),
+  });
+  assert.equal((await duplicateWebhookResponse.json()).idempotent, true);
 
   const unauthorizedResponse = await fetch(`http://localhost:${port}/requests/${created.id}/status`, {
     method: 'PATCH',

@@ -14,15 +14,41 @@ export const slots = [
   { id: 'thu2-1500', day: 'Thu', date: 'May 14', time: '15:00', duration: '30 min', minimum: 9, currency: 'USD', status: 'available' },
 ];
 
+export const requestTypes = [
+  { id: 'talk', multiplier: 1 },
+  { id: 'favor', multiplier: 1.2 },
+  { id: 'hang', multiplier: 1.1 },
+  { id: 'appearance', multiplier: 1.8 },
+  { id: 'urgent', multiplier: 2.5 },
+];
+
 export function getSlotFloor(slot) {
   return slot.status === 'requested' ? (slot.currentOffer ?? slot.minimum) + 100 : slot.minimum;
+}
+
+export function priceRequest({ slotId, typeId }, requests = []) {
+  const slot = slots.find((item) => item.id === slotId);
+  const requestType = requestTypes.find((item) => item.id === typeId);
+  if (!slot || !requestType) return null;
+
+  const accepted = requests.find((request) => request.slotId === slot.id && request.status === 'accepted') ?? null;
+  const pending = requests
+    .filter((request) => request.slotId === slot.id && ['paid', 'host_review'].includes(request.status))
+    .sort((a, b) => b.amount - a.amount)[0] ?? null;
+  const baseFloor = getSlotFloor(slot);
+  const floor = accepted ? accepted.amount + 100 : pending ? Math.max(baseFloor, pending.amount + 100) : baseFloor;
+
+  return {
+    amount: Math.ceil(floor * requestType.multiplier),
+    currency: slot.currency,
+  };
 }
 
 export function getMarketSlots(requests) {
   return slots.map((slot) => {
     const accepted = requests.find((request) => request.slotId === slot.id && request.status === 'accepted') ?? null;
     const pending = requests
-      .filter((request) => request.slotId === slot.id && request.status === 'host_review')
+      .filter((request) => request.slotId === slot.id && ['paid', 'host_review'].includes(request.status))
       .sort((a, b) => b.amount - a.amount)[0] ?? null;
     const baseFloor = getSlotFloor(slot);
     const nextBidFloor = accepted ? accepted.amount + 100 : pending ? Math.max(baseFloor, pending.amount + 100) : baseFloor;

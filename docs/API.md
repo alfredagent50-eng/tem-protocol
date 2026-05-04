@@ -21,21 +21,41 @@ Returns `{ "ok": true }`.
 
 ### `GET /requests`
 
-Returns all booking requests from the JSON store.
+Host-only. Requires `Authorization: Bearer <TEM_HOST_TOKEN>`.
+
+Returns full booking requests, including guest PII, for the private host dashboard.
+
+### `GET /public/requests`
+
+Public redacted market feed for the guest page.
+
+Does **not** expose `guestName`, `guestEmail`, or `note`.
+
+### `GET /market/slots`
+
+Public slot market state. Does not expose guest PII.
+
+Returns slots with derived market state:
+
+- `marketStatus`: `open`, `requested`, or `busy`
+- `nextBidFloor`: minimum amount needed to request/compete for that slot
+- `acceptedRequestId`
+- `highestPendingRequestId`
 
 ### `POST /payment-intents`
 
-Creates a Stripe-like payment intent for MVP checkout wiring.
+Creates a provider-neutral payment intent/session.
 
-- If `STRIPE_SECRET_KEY` is unset, this uses the mock provider.
-- If `STRIPE_SECRET_KEY` is set, this creates a real Stripe PaymentIntent with automatic payment methods enabled.
+Pricing is server-owned. The client sends only slot/type intent:
 
 ```json
 {
-  "amount": 9,
-  "currency": "USD"
+  "slotId": "sun-1630",
+  "typeId": "talk"
 }
 ```
+
+The API calculates `amount` and `currency` server-side.
 
 Returns:
 
@@ -44,23 +64,16 @@ Returns:
   "id": "pay-...",
   "provider": "mock | stripe | grow | payplus | tranzila | allpay",
   "status": "created | requires_payment_method | ...",
-  "amount": 9,
+  "amount": 7,
   "currency": "USD",
   "clientSecret": "pi_..._secret_... when using Stripe",
-  "applePayReady": true,
-  "cardReady": true
+  "checkoutMode": "simulated | payment_element | redirect_placeholder"
 }
 ```
 
-### `POST /payment-intents/:id/simulate-paid`
-
-Marks the mock payment as paid. Later this becomes Stripe webhook handling.
-
 ### `POST /requests`
 
-Creates a mock-paid request in `host_review` for the current MVP.
-
-Target real-payment lifecycle: create as `pending_payment`, attach a Stripe Checkout Session / PaymentIntent, then move to `host_review` only after a verified payment webhook.
+Creates a booking request as `pending_payment`.
 
 Required body:
 
@@ -71,33 +84,44 @@ Required body:
   "guestName": "Alex",
   "guestEmail": "alex@example.com",
   "note": "Short context",
-  "amount": 9,
-  "currency": "USD"
+  "paymentIntentId": "pay-..."
 }
 ```
 
+The API ignores client-supplied `amount`/`currency` and recalculates pricing server-side.
+
+### `POST /webhooks/payment-success`
+
+Payment success webhook skeleton.
+
+```json
+{
+  "paymentIntentId": "pay-...",
+  "eventId": "evt_..."
+}
+```
+
+Moves the matching request from `pending_payment`/`paid` to `host_review`.
+
+Webhook handling is idempotent by `eventId`; duplicate events return `idempotent: true` and do not corrupt state.
+
+Current mock UI calls this endpoint after simulated payment. Before live Stripe, this must be replaced with verified provider webhook signature handling.
+
+### `POST /payment-intents/:id/simulate-paid`
+
+Mock-only helper for local/demo checkout. Does not itself move requests into host review.
+
 ### `PATCH /requests/:id/status`
 
-Updates host review state.
+Host-only. Requires `Authorization: Bearer <TEM_HOST_TOKEN>`.
 
 ```json
 { "status": "accepted" }
 ```
 
-Supported statuses for now: `accepted`, `rejected`, `host_review`.
+Supported statuses: `pending_payment`, `paid`, `host_review`, `accepted`, `completed`, `rejected`, `expired`.
 
-Host status updates are protected by `TEM_HOST_TOKEN` when set; clients send it as `Authorization: Bearer <token>`.
-
-Accepting one request rejects other pending requests for the same slot.
-
-### `GET /market/slots`
-
-Returns slots with derived market state:
-
-- `marketStatus`: `open`, `requested`, or `busy`
-- `nextBidFloor`: minimum amount needed to request/compete for that slot
-- `acceptedRequestId`
-- `highestPendingRequestId`
+Accepting one request rejects other paid/review requests for the same slot.
 
 ## Storage
 

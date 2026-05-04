@@ -1,0 +1,21 @@
+Merlin, Codex reviewed tem-protocol/CoffeeSip. Please implement only the P0 pre-live safety fixes first, in a small PR/patch.
+
+P0 tasks:
+1. Protect guest PII:
+   - Public guest endpoints must not expose guestName, guestEmail, or note.
+   - GET /requests should require host auth, or create a separate redacted public endpoint for market/slot state.
+
+2. Fix payment lifecycle:
+   - POST /requests must not create host_review directly for real payments.
+   - Create requests as pending_payment.
+   - Attach the payment provider intent/session id to the request.
+   - Move to host_review only after a verified payment success webhook.
+   - Add idempotency so duplicate webhook events do not duplicate or corrupt requests.
+
+3. Keep pricing server-owned:
+   - The client may send slotId/typeId.
+   - The API must calculate amount/currency server-side.
+   - The client must not be trusted for amount/currency.
+
+Do not rewrite the app. Keep the current architecture. Add or update focused tests. After the patch, summarize exactly what changed and what still blocks live Stripe.
+

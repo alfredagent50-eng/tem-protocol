@@ -4,7 +4,7 @@ import { calendarDays, featuredSlotIds, requestTypes, slots } from './lib/mockDa
 import { getRequiredAmount, getSlotFloor, type BookingRequest, type BookingStep, type Slot } from './lib/domain';
 import { getHighestPendingOfferForSlot, getSlotMarketState } from './lib/services/bookingLifecycle';
 import type { PaymentIntent } from './lib/services/paymentMock';
-import { createPaymentIntent as createApiPaymentIntent, createRequest, listRequests, markPaymentIntentPaid, updateRequestStatus as updateApiRequestStatus } from './lib/services/apiClient';
+import { confirmPaymentSuccess, createPaymentIntent as createApiPaymentIntent, createRequest, listPublicRequests, listRequests, markPaymentIntentPaid, updateRequestStatus as updateApiRequestStatus } from './lib/services/apiClient';
 import './styles.css';
 
 const featuredSlots = featuredSlotIds
@@ -36,12 +36,12 @@ function App() {
       void refreshRequests({ quiet: true });
     }, 3000);
     return () => window.clearInterval(interval);
-  }, []);
+  }, [view, hostToken]);
 
   async function refreshRequests(options?: { quiet?: boolean }) {
     try {
       if (!options?.quiet) setApiState('loading');
-      setRequests(await listRequests());
+      setRequests(view === 'host' && hostToken ? await listRequests(hostToken) : await listPublicRequests());
       setApiState('online');
     } catch {
       setApiState('error');
@@ -70,7 +70,7 @@ function App() {
 
   async function createPaymentIntent() {
     setApiState('loading');
-    setPaymentIntent(await createApiPaymentIntent({ amount: requiredAmount, currency: selectedSlot.currency }));
+    setPaymentIntent(await createApiPaymentIntent({ slotId: selectedSlot.id, typeId: selectedType.id }));
     setApiState('online');
     setStep('payment');
   }
@@ -84,10 +84,13 @@ function App() {
       guestName: name.trim(),
       guestEmail: email.trim(),
       note: note.trim(),
-      amount: paidIntent?.amount ?? requiredAmount,
-      currency: paidIntent?.currency ?? selectedSlot.currency,
+      paymentIntentId: paidIntent?.id ?? paymentIntent?.id ?? `mock-${Date.now()}`,
     });
-    setRequests((current) => [request, ...current]);
+    const confirmed = await confirmPaymentSuccess({
+      paymentIntentId: request.paymentIntentId ?? paymentIntent?.id ?? request.id,
+      eventId: `mock-payment-success-${request.id}`,
+    });
+    setRequests(confirmed.requests);
     setApiState('online');
     setPaymentIntent(null);
     setStep('confirmed');
