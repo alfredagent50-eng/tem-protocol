@@ -25,7 +25,10 @@ Returns all booking requests from the JSON store.
 
 ### `POST /payment-intents`
 
-Creates a mock Stripe-like payment intent for MVP checkout wiring.
+Creates a Stripe-like payment intent for MVP checkout wiring.
+
+- If `STRIPE_SECRET_KEY` is unset, this uses the mock provider.
+- If `STRIPE_SECRET_KEY` is set, this creates a real Stripe PaymentIntent with automatic payment methods enabled.
 
 ```json
 {
@@ -39,10 +42,11 @@ Returns:
 ```json
 {
   "id": "pay-...",
-  "provider": "mock-stripe",
-  "status": "created",
+  "provider": "mock-stripe | stripe",
+  "status": "created | requires_payment_method | ...",
   "amount": 9,
   "currency": "USD",
+  "clientSecret": "pi_..._secret_... when using Stripe",
   "applePayReady": true,
   "cardReady": true
 }

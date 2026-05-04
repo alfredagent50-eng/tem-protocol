@@ -228,18 +228,12 @@ function BookingPage({
           <div className="intro-mark">C</div>
           <div>
             <h1>Your Time is Worth a Sip.</h1>
-            <p>For people you know from the internet — not close friends, not strangers. Pick the ask, choose a time, and make it real.</p>
-            <div className="hero-pills" aria-label="CoffeeSip benefits">
-              <span>Apple Pay soon</span>
-              <span>Card-ready</span>
-              <span>No crypto for guests</span>
-            </div>
           </div>
         </div>
         <div className="panel-heading">
           <div>
             <p className="overline">Step 1</p>
-            <h2>Choose your ask</h2>
+            <h2>Choose your task</h2>
           </div>
           <span className="timezone">Local time</span>
         </div>
@@ -355,7 +349,7 @@ function BookingPage({
               <span /> <span /> <span /> <span /> <span /> <span /> <span /> <span /> <span />
             </div>
             <p className="payment-copy">
-              Mock checkout for <strong>{paymentIntent?.amount ?? requiredAmount} {paymentIntent?.currency ?? selectedSlot.currency}</strong>. Later: Apple Pay or card for guests, with optional Bitcoin conversion for the host.
+              Mock checkout for <strong>{paymentIntent?.amount ?? requiredAmount} {paymentIntent?.currency ?? selectedSlot.currency}</strong>.
             </p>
             <button className="pay-button" onClick={onCreatePaidRequest}>Simulate paid</button>
             <button className="ghost-button" onClick={() => onSetStep('details')}>Back</button>

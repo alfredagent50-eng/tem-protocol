@@ -2,6 +2,7 @@ import { createServer } from 'node:http';
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import Stripe from 'stripe';
 import { validateCreateRequest, validateStatus } from './validation.mjs';
 import { getMarketSlots } from './fixtures.mjs';
 
@@ -10,6 +11,9 @@ const root = resolve(__dirname, '../..');
 const dataFile = process.env.TEM_DATA_FILE ? resolve(root, process.env.TEM_DATA_FILE) : resolve(root, 'data/requests.json');
 const port = Number(process.env.PORT ?? 8787);
 const hostToken = process.env.TEM_HOST_TOKEN;
+const stripe = process.env.STRIPE_SECRET_KEY
+  ? new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2025-12-17.clover' })
+  : null;
 
 const seedRequests = [
   {
@@ -69,6 +73,14 @@ function validatePaymentIntentInput(input) {
   return { ok: true, value: { amount: input.amount, currency: input.currency } };
 }
 
+function toStripeAmount(amount) {
+  return Math.round(amount * 100);
+}
+
+function toStripeCurrency(currency) {
+  return currency.toLowerCase();
+}
+
 async function readBody(req) {
   const chunks = [];
   for await (const chunk of req) chunks.push(chunk);
@@ -114,6 +126,26 @@ const server = createServer(async (req, res) => {
       const input = await readBody(req);
       const validation = validatePaymentIntentInput(input);
       if (!validation.ok) return send(res, 400, { error: 'validation_failed', details: [validation.error] });
+
+      if (stripe) {
+        const intent = await stripe.paymentIntents.create({
+          amount: toStripeAmount(validation.value.amount),
+          currency: toStripeCurrency(validation.value.currency),
+          automatic_payment_methods: { enabled: true },
+          metadata: { product: 'coffeesip' },
+        });
+        return send(res, 201, {
+          id: intent.id,
+          provider: 'stripe',
+          status: intent.status,
+          amount: validation.value.amount,
+          currency: validation.value.currency,
+          clientSecret: intent.client_secret,
+          applePayReady: true,
+          cardReady: true,
+        });
+      }
+
       return send(res, 201, {
         id: `pay-${Date.now()}`,
         provider: 'mock-stripe',

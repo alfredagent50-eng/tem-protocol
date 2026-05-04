@@ -1102,3 +1102,31 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
     justify-content: center;
   }
 }
+
+@media (max-width: 620px) {
+  .booking-intro {
+    min-height: 260px;
+    display: grid;
+    place-items: center;
+  }
+  .booking-intro h1 {
+    max-width: 350px;
+    margin-top: 0;
+  }
+  .request-types {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 0;
+    padding: 0;
+    overflow: visible;
+  }
+  .request-type {
+    min-width: 0;
+  }
+  .request-type:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+  .hero-pills {
+    display: none;
+  }
+}
