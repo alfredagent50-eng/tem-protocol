@@ -62,6 +62,13 @@ function rejectBookingRequest(requests, rejectedId) {
   return requests.map((request) => request.id === rejectedId ? { ...request, status: 'rejected' } : request);
 }
 
+function validatePaymentIntentInput(input) {
+  const currencies = new Set(['USD', 'EUR', 'GBP', 'ILS']);
+  if (!Number.isFinite(input?.amount) || input.amount <= 0) return { ok: false, error: 'amount must be positive' };
+  if (!currencies.has(input?.currency)) return { ok: false, error: 'currency is unsupported' };
+  return { ok: true, value: { amount: input.amount, currency: input.currency } };
+}
+
 async function readBody(req) {
   const chunks = [];
   for await (const chunk of req) chunks.push(chunk);
@@ -101,6 +108,30 @@ const server = createServer(async (req, res) => {
 
     if (req.method === 'GET' && url.pathname === '/market/slots') {
       return send(res, 200, getMarketSlots(await readRequests()));
+    }
+
+    if (req.method === 'POST' && url.pathname === '/payment-intents') {
+      const input = await readBody(req);
+      const validation = validatePaymentIntentInput(input);
+      if (!validation.ok) return send(res, 400, { error: 'validation_failed', details: [validation.error] });
+      return send(res, 201, {
+        id: `pay-${Date.now()}`,
+        provider: 'mock-stripe',
+        status: 'created',
+        amount: validation.value.amount,
+        currency: validation.value.currency,
+        applePayReady: true,
+        cardReady: true,
+      });
+    }
+
+    const paymentPaidMatch = url.pathname.match(/^\/payment-intents\/([^/]+)\/simulate-paid$/);
+    if (req.method === 'POST' && paymentPaidMatch) {
+      return send(res, 200, {
+        id: paymentPaidMatch[1],
+        provider: 'mock-stripe',
+        status: 'paid',
+      });
     }
 
     if (req.method === 'POST' && url.pathname === '/requests') {

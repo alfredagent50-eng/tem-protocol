@@ -3,16 +3,21 @@ import { createRoot } from 'react-dom/client';
 import { calendarDays, featuredSlotIds, requestTypes, slots } from './lib/mockData';
 import { getRequiredAmount, getSlotFloor, type BookingRequest, type BookingStep, type Slot } from './lib/domain';
 import { getHighestPendingOfferForSlot, getSlotMarketState } from './lib/services/bookingLifecycle';
-import { createMockPaymentIntent, markMockPaymentPaid, type MockPaymentIntent } from './lib/services/paymentMock';
-import { createRequest, listRequests, updateRequestStatus as updateApiRequestStatus } from './lib/services/apiClient';
+import type { MockPaymentIntent } from './lib/services/paymentMock';
+import { createPaymentIntent as createApiPaymentIntent, createRequest, listRequests, markPaymentIntentPaid, updateRequestStatus as updateApiRequestStatus } from './lib/services/apiClient';
 import './styles.css';
 
 const featuredSlots = featuredSlotIds
   .map((id) => slots.find((slot) => slot.id === id))
   .filter((slot): slot is Slot => Boolean(slot));
 
+function getInitialView() {
+  const params = new URLSearchParams(window.location.search);
+  return params.get('host') === '1' || window.location.hash === '#host' ? 'host' : 'guest';
+}
+
 function App() {
-  const [view, setView] = useState<'guest' | 'host'>('guest');
+  const [view, setView] = useState<'guest' | 'host'>(getInitialView);
   const [hostToken, setHostToken] = useState(() => window.localStorage.getItem('tem-host-token') ?? '');
   const [selectedSlotId, setSelectedSlotId] = useState(featuredSlots[1].id);
   const [selectedTypeId, setSelectedTypeId] = useState(requestTypes[0].id);
@@ -63,13 +68,15 @@ function App() {
     setStep('details');
   }
 
-  function createPaymentIntent() {
-    setPaymentIntent(createMockPaymentIntent({ amount: requiredAmount, currency: selectedSlot.currency }));
+  async function createPaymentIntent() {
+    setApiState('loading');
+    setPaymentIntent(await createApiPaymentIntent({ amount: requiredAmount, currency: selectedSlot.currency }));
+    setApiState('online');
     setStep('payment');
   }
 
   async function createPaidRequest() {
-    const paidIntent = paymentIntent ? markMockPaymentPaid(paymentIntent) : null;
+    const paidIntent = paymentIntent ? await markPaymentIntentPaid(paymentIntent.id) : null;
     setApiState('loading');
     const request = await createRequest({
       slotId: selectedSlot.id,
@@ -105,11 +112,13 @@ function App() {
           <span>C</span>
           <strong>CoffeeSip</strong>
         </div>
-        <div className={`api-pill ${apiState}`}>API {apiState}</div>
-      <div className="app-switcher" aria-label="App view">
-        <button className={view === 'guest' ? 'active' : ''} onClick={() => setView('guest')}>Guest page</button>
-        <button className={view === 'host' ? 'active' : ''} onClick={() => setView('host')}>Host dashboard</button>
-      </div>
+        {view === 'host' && <div className={`api-pill ${apiState}`}>API {apiState}</div>}
+        {view === 'host' && (
+          <div className="app-switcher" aria-label="App view">
+            <button onClick={() => setView('guest')}>Guest page</button>
+            <button className="active" onClick={() => setView('host')}>Host dashboard</button>
+          </div>
+        )}
       </div>
 
       {view === 'guest' ? (

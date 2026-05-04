@@ -23,6 +23,35 @@ Returns `{ "ok": true }`.
 
 Returns all booking requests from the JSON store.
 
+### `POST /payment-intents`
+
+Creates a mock Stripe-like payment intent for MVP checkout wiring.
+
+```json
+{
+  "amount": 9,
+  "currency": "USD"
+}
+```
+
+Returns:
+
+```json
+{
+  "id": "pay-...",
+  "provider": "mock-stripe",
+  "status": "created",
+  "amount": 9,
+  "currency": "USD",
+  "applePayReady": true,
+  "cardReady": true
+}
+```
+
+### `POST /payment-intents/:id/simulate-paid`
+
+Marks the mock payment as paid. Later this becomes Stripe webhook handling.
+
 ### `POST /requests`
 
 Creates a mock-paid request in `host_review` for the current MVP.

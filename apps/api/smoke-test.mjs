@@ -24,6 +24,21 @@ try {
   });
   assert.equal(bad.status, 400);
 
+  const paymentIntentResponse = await fetch(`http://localhost:${port}/payment-intents`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ amount: 9, currency: 'USD' }),
+  });
+  assert.equal(paymentIntentResponse.status, 201);
+  const paymentIntent = await paymentIntentResponse.json();
+  assert.equal(paymentIntent.provider, 'mock-stripe');
+
+  const paidIntentResponse = await fetch(`http://localhost:${port}/payment-intents/${paymentIntent.id}/simulate-paid`, {
+    method: 'POST',
+  });
+  assert.equal(paidIntentResponse.status, 200);
+  assert.equal((await paidIntentResponse.json()).status, 'paid');
+
   const createdResponse = await fetch(`http://localhost:${port}/requests`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
