@@ -101,6 +101,10 @@ function App() {
   return (
     <main className={`page-shell tone-${selectedType.tone}`}>
       <div className="top-bar">
+        <div className="top-brand" aria-label="CoffeeSip home">
+          <span>C</span>
+          <strong>CoffeeSip</strong>
+        </div>
         <div className={`api-pill ${apiState}`}>API {apiState}</div>
       <div className="app-switcher" aria-label="App view">
         <button className={view === 'guest' ? 'active' : ''} onClick={() => setView('guest')}>Guest page</button>
@@ -217,6 +221,11 @@ function BookingPage({
             <div className="logo compact-logo">CoffeeSip</div>
             <h1>Buy a sip of someone’s time.</h1>
             <p>For people you know from the internet — not close friends, not strangers. Pick the ask, choose a time, and make it real.</p>
+            <div className="hero-pills" aria-label="CoffeeSip benefits">
+              <span>Apple Pay soon</span>
+              <span>Card-ready</span>
+              <span>No crypto for guests</span>
+            </div>
           </div>
         </div>
         <div className="panel-heading">
