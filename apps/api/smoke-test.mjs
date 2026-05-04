@@ -5,9 +5,10 @@ import assert from 'node:assert/strict';
 const port = 8877;
 const hostToken = 'smoke-host-token';
 const smokeDataFile = `data/smoke-test-requests-${Date.now()}.json`;
+const smokePaymentIntentsFile = `data/smoke-test-payment-intents-${Date.now()}.json`;
 const server = spawn(process.execPath, ['server.mjs'], {
   cwd: new URL('.', import.meta.url),
-  env: { ...process.env, PORT: String(port), TEM_DATA_FILE: smokeDataFile, TEM_HOST_TOKEN: hostToken, PAYMENT_PROVIDER: 'mock' },
+  env: { ...process.env, PORT: String(port), TEM_DATA_FILE: smokeDataFile, TEM_PAYMENT_INTENTS_FILE: smokePaymentIntentsFile, TEM_HOST_TOKEN: hostToken, PAYMENT_PROVIDER: 'mock' },
   stdio: ['ignore', 'pipe', 'pipe'],
 });
 
@@ -44,6 +45,19 @@ try {
   assert.equal(paymentIntent.checkoutMode, 'simulated');
   assert.equal(paymentIntent.amount, 7);
   assert.equal(paymentIntent.currency, 'USD');
+
+  const mismatchedRequestResponse = await fetch(`http://localhost:${port}/requests`, {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({
+      slotId: 'mon-1100',
+      typeId: 'talk',
+      guestName: 'Mismatch',
+      guestEmail: 'mismatch@example.com',
+      paymentIntentId: paymentIntent.id,
+    }),
+  });
+  assert.equal(mismatchedRequestResponse.status, 409);
 
   const paidIntentResponse = await fetch(`http://localhost:${port}/payment-intents/${paymentIntent.id}/simulate-paid`, {
     method: 'POST',
@@ -102,9 +116,24 @@ try {
   const requests = await acceptedResponse.json();
   assert.equal(requests.find((request) => request.id === created.id).status, 'accepted');
 
+  const invalidTransitionResponse = await fetch(`http://localhost:${port}/requests/${created.id}/status`, {
+    method: 'PATCH',
+    headers: { 'authorization': `Bearer ${hostToken}`, 'content-type': 'application/json' },
+    body: JSON.stringify({ status: 'host_review' }),
+  });
+  assert.equal(invalidTransitionResponse.status, 409);
+
+  const completedResponse = await fetch(`http://localhost:${port}/requests/${created.id}/status`, {
+    method: 'PATCH',
+    headers: { 'authorization': `Bearer ${hostToken}`, 'content-type': 'application/json' },
+    body: JSON.stringify({ status: 'completed' }),
+  });
+  assert.equal(completedResponse.status, 200);
+  assert.equal((await completedResponse.json()).find((request) => request.id === created.id).status, 'completed');
+
   const marketAfter = await fetch(`http://localhost:${port}/market/slots`);
   const slots = await marketAfter.json();
-  assert.equal(slots.find((slot) => slot.id === 'sun-1630').marketStatus, 'busy');
+  assert.equal(slots.find((slot) => slot.id === 'sun-1630').marketStatus, 'open');
 } finally {
   server.kill('SIGTERM');
 }

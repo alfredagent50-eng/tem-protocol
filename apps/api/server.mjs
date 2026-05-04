@@ -9,6 +9,9 @@ import { createPaymentIntent, simulatePaymentPaid } from './payment-provider.mjs
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '../..');
 const dataFile = process.env.TEM_DATA_FILE ? resolve(root, process.env.TEM_DATA_FILE) : resolve(root, 'data/requests.json');
+const paymentIntentsFile = process.env.TEM_PAYMENT_INTENTS_FILE
+  ? resolve(root, process.env.TEM_PAYMENT_INTENTS_FILE)
+  : resolve(root, 'data/payment-intents.json');
 const port = Number(process.env.PORT ?? 8787);
 const hostToken = process.env.TEM_HOST_TOKEN;
 
@@ -36,6 +39,15 @@ async function ensureStore() {
   }
 }
 
+async function ensurePaymentIntentStore() {
+  await mkdir(dirname(paymentIntentsFile), { recursive: true });
+  try {
+    await readFile(paymentIntentsFile, 'utf8');
+  } catch {
+    await writePaymentIntents([]);
+  }
+}
+
 async function readRequests() {
   await ensureStore();
   return JSON.parse(await readFile(dataFile, 'utf8'));
@@ -44,6 +56,31 @@ async function readRequests() {
 async function writeRequests(requests) {
   await mkdir(dirname(dataFile), { recursive: true });
   await writeFile(dataFile, JSON.stringify(requests, null, 2));
+}
+
+async function readPaymentIntents() {
+  await ensurePaymentIntentStore();
+  return JSON.parse(await readFile(paymentIntentsFile, 'utf8'));
+}
+
+async function writePaymentIntents(intents) {
+  await mkdir(dirname(paymentIntentsFile), { recursive: true });
+  await writeFile(paymentIntentsFile, JSON.stringify(intents, null, 2));
+}
+
+async function storePaymentIntent(intent, quote) {
+  const stored = {
+    id: intent.id,
+    provider: intent.provider,
+    slotId: quote.slotId,
+    typeId: quote.typeId,
+    amount: intent.amount,
+    currency: intent.currency,
+    status: intent.status,
+    createdAt: new Date().toISOString(),
+  };
+  await writePaymentIntents([stored, ...(await readPaymentIntents()).filter((item) => item.id !== intent.id)]);
+  return intent;
 }
 
 function acceptBookingRequest(requests, acceptedId) {
@@ -98,6 +135,44 @@ function markPaymentSucceeded(requests, { paymentIntentId, eventId }) {
   return { updated, changed };
 }
 
+function isRequestBoundToIntent(requestInput, intent) {
+  return intent
+    && intent.slotId === requestInput.slotId
+    && intent.typeId === requestInput.typeId
+    && intent.amount === requestInput.amount
+    && intent.currency === requestInput.currency;
+}
+
+function updateRequestStatusForTransition(requests, requestId, nextStatus) {
+  const request = requests.find((item) => item.id === requestId);
+  if (!request) return { ok: false, status: 404, body: { error: 'request_not_found' } };
+
+  const allowed = {
+    pending_payment: ['expired'],
+    paid: ['host_review', 'expired'],
+    host_review: ['accepted', 'rejected', 'expired'],
+    accepted: ['completed', 'rejected'],
+    completed: [],
+    rejected: [],
+    expired: [],
+  };
+
+  if (!allowed[request.status]?.includes(nextStatus)) {
+    return {
+      ok: false,
+      status: 409,
+      body: { error: 'invalid_status_transition', from: request.status, to: nextStatus },
+    };
+  }
+
+  if (nextStatus === 'accepted') return { ok: true, requests: acceptBookingRequest(requests, requestId) };
+  if (nextStatus === 'rejected') return { ok: true, requests: rejectBookingRequest(requests, requestId) };
+  return {
+    ok: true,
+    requests: requests.map((item) => item.id === requestId ? { ...item, status: nextStatus } : item),
+  };
+}
+
 async function readBody(req) {
   const chunks = [];
   for await (const chunk of req) chunks.push(chunk);
@@ -150,7 +225,8 @@ const server = createServer(async (req, res) => {
       if (!validation.ok) return send(res, 400, { error: 'validation_failed', details: [validation.error] });
       const price = priceRequest(validation.value, await readRequests());
       if (!price) return send(res, 400, { error: 'validation_failed', details: ['slotId or typeId is unsupported'] });
-      return send(res, 201, await createPaymentIntent({ ...validation.value, ...price }));
+      const quote = { ...validation.value, ...price };
+      return send(res, 201, await storePaymentIntent(await createPaymentIntent(quote), quote));
     }
 
     const paymentPaidMatch = url.pathname.match(/^\/payment-intents\/([^/]+)\/simulate-paid$/);
@@ -162,6 +238,11 @@ const server = createServer(async (req, res) => {
       const input = await readBody(req);
       if (typeof input?.paymentIntentId !== 'string' || typeof input?.eventId !== 'string') {
         return send(res, 400, { error: 'validation_failed', details: ['paymentIntentId and eventId are required'] });
+      }
+      const intent = (await readPaymentIntents()).find((item) => item.id === input.paymentIntentId);
+      if (!intent) return send(res, 404, { error: 'payment_intent_not_found' });
+      if (intent.provider !== 'mock') {
+        return send(res, 403, { error: 'verified_provider_webhook_required', provider: intent.provider });
       }
       const requests = await readRequests();
       if (!requests.some((request) => request.paymentIntentId === input.paymentIntentId)) {
@@ -181,12 +262,16 @@ const server = createServer(async (req, res) => {
       if (!validation.ok) return send(res, 400, { error: 'validation_failed', details: validation.errors });
       const price = priceRequest(validation.value, await readRequests());
       if (!price) return send(res, 400, { error: 'validation_failed', details: ['slotId or typeId is unsupported'] });
+      const intent = (await readPaymentIntents()).find((item) => item.id === validation.value.paymentIntentId);
+      if (!isRequestBoundToIntent({ ...validation.value, ...price }, intent)) {
+        return send(res, 409, { error: 'payment_intent_quote_mismatch' });
+      }
       const request = {
         ...validation.value,
         ...price,
         id: `req-${Date.now()}`,
         status: 'pending_payment',
-        paymentProvider: process.env.PAYMENT_PROVIDER ?? 'mock',
+        paymentProvider: intent.provider,
         createdAt: new Date().toISOString(),
       };
       const requests = [request, ...(await readRequests())];
@@ -201,14 +286,10 @@ const server = createServer(async (req, res) => {
       const validation = validateStatus(body);
       if (!validation.ok) return send(res, 400, { error: 'validation_failed', details: validation.errors });
       const requests = await readRequests();
-      if (!requests.some((request) => request.id === statusMatch[1])) return send(res, 404, { error: 'request_not_found' });
-      const updated = validation.value === 'accepted'
-        ? acceptBookingRequest(requests, statusMatch[1])
-        : validation.value === 'rejected'
-          ? rejectBookingRequest(requests, statusMatch[1])
-          : requests;
-      await writeRequests(updated);
-      return send(res, 200, updated);
+      const transition = updateRequestStatusForTransition(requests, statusMatch[1], validation.value);
+      if (!transition.ok) return send(res, transition.status, transition.body);
+      await writeRequests(transition.requests);
+      return send(res, 200, transition.requests);
     }
 
     send(res, 404, { error: 'not_found' });

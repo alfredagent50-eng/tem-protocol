@@ -90,6 +90,8 @@ Required body:
 
 The API ignores client-supplied `amount`/`currency` and recalculates pricing server-side.
 
+The `paymentIntentId` must have been created by `POST /payment-intents` for the exact same `slotId`, `typeId`, server-calculated `amount`, and `currency`; otherwise request creation fails with `payment_intent_quote_mismatch`.
+
 ### `POST /webhooks/payment-success`
 
 Payment success webhook skeleton.
@@ -105,7 +107,7 @@ Moves the matching request from `pending_payment`/`paid` to `host_review`.
 
 Webhook handling is idempotent by `eventId`; duplicate events return `idempotent: true` and do not corrupt state.
 
-Current mock UI calls this endpoint after simulated payment. Before live Stripe, this must be replaced with verified provider webhook signature handling.
+Current mock UI calls this endpoint after simulated payment. This endpoint is mock-only unless a real provider signature verifier is implemented; non-mock provider intents are rejected with `verified_provider_webhook_required`.
 
 ### `POST /payment-intents/:id/simulate-paid`
 
