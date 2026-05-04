@@ -26,6 +26,7 @@ function App() {
   const [requests, setRequests] = useState<BookingRequest[]>([]);
   const [apiState, setApiState] = useState<'loading' | 'online' | 'error'>('loading');
   const [paymentIntent, setPaymentIntent] = useState<PaymentIntent | null>(null);
+  const [lastRequest, setLastRequest] = useState<BookingRequest | null>(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [note, setNote] = useState('');
@@ -91,6 +92,7 @@ function App() {
       eventId: `mock-payment-success-${request.id}`,
     });
     setRequests(confirmed.requests);
+    setLastRequest(confirmed.requests.find((item) => item.id === request.id) ?? request);
     setApiState('online');
     setPaymentIntent(null);
     setStep('confirmed');
@@ -143,6 +145,7 @@ function App() {
           onCreatePaymentIntent={createPaymentIntent}
           onSetStep={setStep}
           requests={requests}
+          lastRequest={lastRequest}
           onCreatePaidRequest={createPaidRequest}
         />
       ) : (
@@ -196,6 +199,7 @@ function BookingPage({
   onCreatePaymentIntent,
   onSetStep,
   requests,
+  lastRequest,
   onCreatePaidRequest,
 }: {
   selectedSlotId: string;
@@ -215,6 +219,7 @@ function BookingPage({
   onCreatePaymentIntent: () => void;
   onSetStep: (step: BookingStep) => void;
   requests: BookingRequest[];
+  lastRequest: BookingRequest | null;
   onCreatePaidRequest: () => void;
 }) {
   const selectedSlot = slots.find((slot) => slot.id === selectedSlotId) ?? slots[0];
@@ -363,6 +368,14 @@ function BookingPage({
           <div className="confirmed-state">
             <div className="checkmark">✓</div>
             <p><strong>{name || 'Guest'}</strong>, your {selectedType.label.toLowerCase()} request is locked in.</p>
+            <div className="receipt-card" aria-label="Booking receipt">
+              <span>Request</span>
+              <strong>{lastRequest?.id.slice(-8) ?? 'created'}</strong>
+              <span>Status</span>
+              <strong>{statusLabel(lastRequest?.status ?? 'host_review')}</strong>
+              <span>Signal</span>
+              <strong>{lastRequest?.amount ?? requiredAmount} {lastRequest?.currency ?? selectedSlot.currency}</strong>
+            </div>
             <p className="fine-print">
               The host gets the request and decides what is worth accepting.
             </p>
@@ -478,6 +491,17 @@ function statusLabel(status: BookingRequest['status']) {
   return status.replace('_', ' ');
 }
 
+function relativeTime(iso: string) {
+  const diffMs = Date.now() - new Date(iso).getTime();
+  if (!Number.isFinite(diffMs) || diffMs < 0) return 'just now';
+  const minutes = Math.floor(diffMs / 60000);
+  if (minutes < 1) return 'just now';
+  if (minutes < 60) return `${minutes}m ago`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h ago`;
+  return `${Math.floor(hours / 24)}d ago`;
+}
+
 function HostRequestList({ requests, onUpdate, empty }: { requests: BookingRequest[]; onUpdate: (id: string, status: BookingRequest['status']) => void; empty: string }) {
   if (requests.length === 0) return <p className="empty-state">{empty}</p>;
 
@@ -491,7 +515,7 @@ function HostRequestList({ requests, onUpdate, empty }: { requests: BookingReque
             <div className="request-main-row">
               <div>
                 <strong>{type.emoji} {request.guestName}</strong>
-                <small>{type.label} · {slot.date} · {slot.time}</small>
+                <small>{type.label} · {slot.date} · {slot.time} · {relativeTime(request.createdAt)}</small>
               </div>
               <span className="money-chip">{request.amount} {request.currency}</span>
             </div>

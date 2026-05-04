@@ -1219,3 +1219,36 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
   .request-board { grid-template-columns: 1fr; }
   .lifecycle-strip { border-radius: 18px; }
 }
+
+.receipt-card {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 8px 14px;
+  width: 100%;
+  margin: 14px 0;
+  padding: 14px;
+  border: 1px solid #dbe5f3;
+  border-radius: 18px;
+  background: #fff;
+  text-align: left;
+}
+.receipt-card span {
+  color: #68758a;
+  font-size: 12px;
+  font-weight: 900;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.receipt-card strong {
+  justify-self: end;
+  color: #0f172a;
+  font-size: 13px;
+  text-transform: capitalize;
+}
+
+@media (max-width: 620px) {
+  .receipt-card {
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
