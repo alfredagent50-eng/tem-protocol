@@ -1,5 +1,5 @@
 import type { BookingRequest, Currency } from '../domain';
-import type { MockPaymentIntent } from './paymentMock';
+import type { PaymentIntent } from './paymentMock';
 
 const API_BASE = import.meta.env.VITE_TEM_API_URL ?? 'http://localhost:8787';
 
@@ -31,14 +31,14 @@ export function createRequest(input: Omit<BookingRequest, 'id' | 'status' | 'cre
 }
 
 export function createPaymentIntent(input: { amount: number; currency: Currency }) {
-  return api<MockPaymentIntent>('/payment-intents', {
+  return api<PaymentIntent>('/payment-intents', {
     method: 'POST',
     body: JSON.stringify(input),
   });
 }
 
 export function markPaymentIntentPaid(id: string) {
-  return api<MockPaymentIntent>(`/payment-intents/${id}/simulate-paid`, {
+  return api<PaymentIntent>(`/payment-intents/${id}/simulate-paid`, {
     method: 'POST',
   });
 }

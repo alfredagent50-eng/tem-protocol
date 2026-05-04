@@ -3,7 +3,7 @@ import { createRoot } from 'react-dom/client';
 import { calendarDays, featuredSlotIds, requestTypes, slots } from './lib/mockData';
 import { getRequiredAmount, getSlotFloor, type BookingRequest, type BookingStep, type Slot } from './lib/domain';
 import { getHighestPendingOfferForSlot, getSlotMarketState } from './lib/services/bookingLifecycle';
-import type { MockPaymentIntent } from './lib/services/paymentMock';
+import type { PaymentIntent } from './lib/services/paymentMock';
 import { createPaymentIntent as createApiPaymentIntent, createRequest, listRequests, markPaymentIntentPaid, updateRequestStatus as updateApiRequestStatus } from './lib/services/apiClient';
 import './styles.css';
 
@@ -25,7 +25,7 @@ function App() {
   const [showCalendar, setShowCalendar] = useState(false);
   const [requests, setRequests] = useState<BookingRequest[]>([]);
   const [apiState, setApiState] = useState<'loading' | 'online' | 'error'>('loading');
-  const [paymentIntent, setPaymentIntent] = useState<MockPaymentIntent | null>(null);
+  const [paymentIntent, setPaymentIntent] = useState<PaymentIntent | null>(null);
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [note, setNote] = useState('');
@@ -208,7 +208,7 @@ function BookingPage({
   onSetName: (name: string) => void;
   onSetEmail: (email: string) => void;
   onSetNote: (note: string) => void;
-  paymentIntent: MockPaymentIntent | null;
+  paymentIntent: PaymentIntent | null;
   onCreatePaymentIntent: () => void;
   onSetStep: (step: BookingStep) => void;
   requests: BookingRequest[];

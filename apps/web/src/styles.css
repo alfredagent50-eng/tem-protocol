@@ -1130,3 +1130,34 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
     display: none;
   }
 }
+
+@media (max-width: 620px) {
+  html,
+  body,
+  #root,
+  .page-shell,
+  .app-frame,
+  .booking-card,
+  .booking-card-clean,
+  .schedule-panel,
+  .checkout-panel {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+  .slots-list,
+  .calendar-grid,
+  .request-types {
+    width: 100%;
+  }
+  .slot-card,
+  .calendar-slot {
+    width: 100%;
+  }
+  .schedule-tabs {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .schedule-tabs button {
+    min-width: 0;
+  }
+}

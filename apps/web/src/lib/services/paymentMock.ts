@@ -1,21 +1,14 @@
 import type { Currency } from '../domain';
 
-export type MockPaymentIntent = {
+export type PaymentProvider = 'mock-stripe' | 'stripe';
+
+export type PaymentIntent = {
   id: string;
+  provider?: PaymentProvider;
   amount: number;
   currency: Currency;
-  status: 'created' | 'paid';
+  status: 'created' | 'paid' | 'requires_payment_method' | 'requires_confirmation' | 'requires_action' | 'processing' | 'requires_capture' | 'canceled' | 'succeeded';
+  clientSecret?: string | null;
 };
 
-export function createMockPaymentIntent(input: { amount: number; currency: Currency }): MockPaymentIntent {
-  return {
-    id: `pay-${Date.now()}`,
-    amount: input.amount,
-    currency: input.currency,
-    status: 'created',
-  };
-}
-
-export function markMockPaymentPaid(intent: MockPaymentIntent): MockPaymentIntent {
-  return { ...intent, status: 'paid' };
-}
+export type MockPaymentIntent = PaymentIntent;

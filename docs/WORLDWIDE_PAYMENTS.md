@@ -88,3 +88,13 @@ Possible providers to evaluate later:
 ## MVP rule
 
 Do not take real money until auth, durable storage, webhook verification, and basic refund/acceptance rules are in place.
+
+## Next Stripe implementation step
+
+The backend can now create real PaymentIntents when `STRIPE_SECRET_KEY` is present. The next UI slice should:
+
+1. add `@stripe/stripe-js` and `@stripe/react-stripe-js` to `apps/web`,
+2. read `VITE_STRIPE_PUBLISHABLE_KEY`,
+3. mount Stripe Payment Element with the returned `clientSecret`,
+4. replace `/simulate-paid` with `stripe.confirmPayment`,
+5. add a Stripe webhook endpoint to move requests from `pending_payment` to `host_review` only after payment succeeds.
