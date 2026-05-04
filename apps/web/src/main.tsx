@@ -227,8 +227,7 @@ function BookingPage({
         <div className="booking-intro">
           <div className="intro-mark">C</div>
           <div>
-            <div className="logo compact-logo">CoffeeSip</div>
-            <h1>Buy a sip of someone’s time.</h1>
+            <h1>Your Time is Worth a Sip.</h1>
             <p>For people you know from the internet — not close friends, not strangers. Pick the ask, choose a time, and make it real.</p>
             <div className="hero-pills" aria-label="CoffeeSip benefits">
               <span>Apple Pay soon</span>
