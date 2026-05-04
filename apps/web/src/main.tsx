@@ -119,8 +119,8 @@ function App() {
         </div>
         {view === 'host' && <div className={`api-pill ${apiState}`}>API {apiState}</div>}
         <div className="app-switcher" aria-label="App view">
-          <button className={view === 'guest' ? 'active' : ''} onClick={() => setView('guest')}>Guest</button>
-          <button className={view === 'host' ? 'active' : ''} onClick={() => setView('host')}>Host</button>
+          <button className={view === 'guest' ? 'active' : ''} onClick={() => setView('guest')} aria-label="Guest page">☕ <span>Guest</span></button>
+          <button className={view === 'host' ? 'active' : ''} onClick={() => setView('host')} aria-label="Host dashboard">🔐 <span>Host</span></button>
         </div>
       </div>
 
