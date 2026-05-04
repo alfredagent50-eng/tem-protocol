@@ -1085,3 +1085,20 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
     top: auto;
   }
 }
+
+@media (max-width: 620px) {
+  .booking-intro {
+    text-align: center;
+  }
+  .booking-intro .compact-logo {
+    display: none;
+  }
+  .booking-intro h1,
+  .booking-intro p {
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .hero-pills {
+    justify-content: center;
+  }
+}
