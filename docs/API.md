@@ -42,7 +42,7 @@ Returns:
 ```json
 {
   "id": "pay-...",
-  "provider": "mock-stripe | stripe",
+  "provider": "mock | stripe | grow | payplus | tranzila | allpay",
   "status": "created | requires_payment_method | ...",
   "amount": 9,
   "currency": "USD",

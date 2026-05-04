@@ -32,9 +32,10 @@ Later, support host-configured/localized currencies:
 
 Current skeleton:
 
-- `STRIPE_SECRET_KEY` unset → `/payment-intents` returns a mock Stripe-like intent.
-- `STRIPE_SECRET_KEY` set → `/payment-intents` creates a real Stripe PaymentIntent with automatic payment methods.
-- Frontend still uses a simulated paid button; next step is mounting Stripe Payment Element.
+- `PAYMENT_PROVIDER=mock` → `/payment-intents` returns a simulated intent.
+- `PAYMENT_PROVIDER=stripe` + `STRIPE_SECRET_KEY` → `/payment-intents` creates a real Stripe PaymentIntent with automatic payment methods.
+- `PAYMENT_PROVIDER=grow | payplus | tranzila | allpay` → placeholder modes for Israel/local PSP evaluation.
+- Frontend still uses a simulated paid button; next step is mounting the chosen provider checkout.
 
 Stripe is the best first integration because it gives us:
 

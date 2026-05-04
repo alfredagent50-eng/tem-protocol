@@ -31,7 +31,8 @@ try {
   });
   assert.equal(paymentIntentResponse.status, 201);
   const paymentIntent = await paymentIntentResponse.json();
-  assert.equal(paymentIntent.provider, 'mock-stripe');
+  assert.equal(paymentIntent.provider, 'mock');
+  assert.equal(paymentIntent.checkoutMode, 'simulated');
 
   const paidIntentResponse = await fetch(`http://localhost:${port}/payment-intents/${paymentIntent.id}/simulate-paid`, {
     method: 'POST',
