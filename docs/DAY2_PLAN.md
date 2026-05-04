@@ -30,19 +30,24 @@ Payment principle: guests pay with the fastest normal payment flow — Apple Pay
 - Stripe is the most likely first provider because Apple Pay/card support is straightforward.
 - Bitcoin conversion should be host-side phase two, not guest-facing MVP.
 
-### 3. Domain shortlist and decision
+### 3. Domain decision
 
-Initial checks via RDAP suggest:
+Purchased on Namecheap:
 
-- `coffeesip.com` — registered
-- `getcoffeesip.com` — likely available
-- `coffeesip.money` — likely available
-- `coffeesip.cash` — likely available
-- `coffeesip.club` — likely available
-- `coffeesip.link` — likely available
-- `buymeasip.com` — likely available
+- **coffeesip.app** — $12.98 first year + $0.20 ICANN fee, total $13.18.
+- Order shown as completed on Namecheap on 2026-05-04.
 
-Recommendation: buy **getcoffeesip.com** if available at registrar checkout. It is clear, normal, and better than novelty TLDs for an MVP.
+Why this is the right pick:
+
+- `.app` fits a lightweight consumer product better than `.io`.
+- It is cleaner than `getcoffeesip.com`.
+- Name and domain now match exactly: CoffeeSip → coffeesip.app.
+
+Next domain work:
+
+- Connect `coffeesip.app` to Vercel.
+- Add DNS records from Vercel into Namecheap.
+- Keep Namecheap domain privacy enabled.
 
 ### 4. If time remains: mobile UX pass
 
