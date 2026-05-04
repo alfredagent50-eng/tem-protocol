@@ -1029,3 +1029,59 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
     box-shadow: 0 16px 30px rgba(0, 105, 255, 0.25);
   }
 }
+
+/* iPhone fix: make the guest flow one continuous page, not two cut panels. */
+@media (max-width: 620px) {
+  .page-shell {
+    background: #fffdf9;
+  }
+  .booking-card,
+  .booking-card-clean {
+    display: block;
+    background: transparent;
+    overflow: visible;
+  }
+  .schedule-panel {
+    background: transparent;
+    padding-bottom: 6px;
+  }
+  .checkout-panel {
+    margin: 0;
+    padding: 18px 16px calc(28px + env(safe-area-inset-bottom));
+    border: 0;
+    border-top: 1px solid rgba(226, 232, 240, 0.9);
+    border-radius: 0;
+    background: #fffdf9;
+    box-shadow: none;
+  }
+  .checkout-panel::before {
+    content: "";
+    display: block;
+    width: 42px;
+    height: 4px;
+    margin: 0 auto 18px;
+    border-radius: 999px;
+    background: #d8dee8;
+  }
+  .summary-box,
+  .slot-card,
+  .request-type,
+  .notice,
+  .form-stack input,
+  .form-stack textarea,
+  .amount-row {
+    background: #fff;
+  }
+  .amount-row {
+    position: static;
+    margin: 0;
+    box-shadow: none;
+  }
+  .pay-button {
+    position: static;
+  }
+  .schedule-tabs {
+    position: static;
+    top: auto;
+  }
+}
