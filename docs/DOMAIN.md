@@ -20,12 +20,18 @@ Current deployed web app:
 
 - Vercel URL: `https://tem-protocol.vercel.app`
 
-Next step:
+Configured on 2026-05-04:
 
-1. Add `coffeesip.app` as a custom domain in Vercel for the web app.
-2. Copy Vercel's DNS instructions.
-3. Update Namecheap DNS records.
-4. Verify HTTPS once Vercel provisions the certificate.
+- Added `coffeesip.app` to the Vercel `tem-protocol` project.
+- Added `www.coffeesip.app` to the Vercel `tem-protocol` project.
+- Updated Namecheap nameservers from BasicDNS to Vercel DNS:
+  - `ns1.vercel-dns.com`
+  - `ns2.vercel-dns.com`
+
+Verification status:
+
+- Namecheap UI shows Custom DNS with Vercel nameservers saved.
+- Public DNS/Vercel may still show old Namecheap nameservers until propagation completes.
 
 ## Notes
 
