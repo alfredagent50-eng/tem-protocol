@@ -118,12 +118,10 @@ function App() {
           <strong>CoffeeSip</strong>
         </div>
         {view === 'host' && <div className={`api-pill ${apiState}`}>API {apiState}</div>}
-        {view === 'host' && (
-          <div className="app-switcher" aria-label="App view">
-            <button onClick={() => setView('guest')}>Guest page</button>
-            <button className="active" onClick={() => setView('host')}>Host dashboard</button>
-          </div>
-        )}
+        <div className="app-switcher" aria-label="App view">
+          <button className={view === 'guest' ? 'active' : ''} onClick={() => setView('guest')}>Guest</button>
+          <button className={view === 'host' ? 'active' : ''} onClick={() => setView('host')}>Host</button>
+        </div>
       </div>
 
       {view === 'guest' ? (

@@ -1371,3 +1371,28 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
   background: #f0f9f5;
   color: #047857;
 }
+
+/* Keep host access available without making the public page feel like a prototype. */
+.top-bar {
+  justify-content: space-between;
+}
+.app-switcher {
+  background: rgba(255, 253, 248, 0.70);
+  border-color: rgba(49, 38, 31, 0.10);
+}
+.app-switcher button {
+  padding: 8px 12px;
+  font-size: 12px;
+}
+.app-switcher button.active {
+  background: #2a1d14;
+}
+
+@media (max-width: 620px) {
+  .top-bar {
+    padding: 0 4px;
+  }
+  .app-switcher button {
+    padding: 8px 10px;
+  }
+}
