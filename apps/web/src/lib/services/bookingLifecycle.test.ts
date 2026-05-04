@@ -10,7 +10,7 @@ const baseRequest: BookingRequest = {
   guestEmail: 'guest@example.com',
   note: '',
   amount: 100,
-  currency: 'sats',
+  currency: 'ILS',
   status: 'host_review',
   createdAt: '2026-05-03T00:00:00Z',
 };

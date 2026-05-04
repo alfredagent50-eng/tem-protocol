@@ -1,4 +1,4 @@
-export type Currency = 'sats' | 'USDT';
+export type Currency = 'ILS' | 'USD' | 'EUR';
 
 export type SlotStatus = 'available' | 'requested';
 

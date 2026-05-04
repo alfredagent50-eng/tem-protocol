@@ -19,8 +19,8 @@ const seedRequests = [
     guestName: 'Tal',
     guestEmail: 'tal@example.com',
     note: 'Need you for something time-sensitive. Worth interrupting the day.',
-    amount: 3250,
-    currency: 'sats',
+    amount: 140,
+    currency: 'ILS',
     status: 'host_review',
     createdAt: '2026-05-03T12:00:00Z'
   }

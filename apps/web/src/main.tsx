@@ -212,11 +212,11 @@ function BookingPage({
     <section className="booking-card booking-card-clean">
       <section className="schedule-panel">
         <div className="booking-intro">
-          <div className="intro-mark">B</div>
+          <div className="intro-mark">C</div>
           <div>
-            <div className="logo compact-logo">tem</div>
-            <h1>Bar’s time has a market.</h1>
-            <p>Pick what you want, choose when, and make an offer.</p>
+            <div className="logo compact-logo">CoffeeSip</div>
+            <h1>Buy a sip of Bar’s time.</h1>
+            <p>Choose the ask, pick a time, and pay by card or Apple Pay soon.</p>
           </div>
         </div>
         <div className="panel-heading">
@@ -350,7 +350,7 @@ function BookingPage({
             <div className="checkmark">✓</div>
             <p><strong>{name || 'Guest'}</strong>, your {selectedType.label.toLowerCase()} request is locked in.</p>
             <p className="fine-print">
-              Bar gets the paid request and decides.
+              Bar gets the paid request and decides. Tiny payments can later auto-convert into Bitcoin.
             </p>
             <button className="ghost-button" onClick={() => onSetStep('details')}>Make another booking</button>
           </div>
