@@ -1293,3 +1293,33 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
     align-items: stretch;
   }
 }
+
+.sip-mark {
+  position: relative;
+  isolation: isolate;
+  font-family: ui-serif, Georgia, "Times New Roman", serif;
+  font-style: italic;
+  letter-spacing: -0.12em;
+  background:
+    radial-gradient(circle at 70% 22%, rgba(245, 158, 11, 0.28), transparent 22%),
+    linear-gradient(145deg, #111827, #2a1d14) !important;
+  box-shadow: inset 0 1px 0 rgba(255,255,255,0.18), 0 10px 24px rgba(17, 24, 39, 0.18);
+}
+.sip-mark::after {
+  content: "";
+  position: absolute;
+  right: 22%;
+  top: 18%;
+  width: 20%;
+  height: 34%;
+  border-right: 2px solid rgba(255,255,255,0.44);
+  border-radius: 999px;
+  transform: rotate(24deg);
+  opacity: 0.8;
+}
+.intro-mark.sip-mark {
+  font-size: 34px;
+}
+.top-brand .sip-mark {
+  font-size: 17px;
+}

@@ -114,7 +114,7 @@ function App() {
     <main className={`page-shell tone-${selectedType.tone}`}>
       <div className="top-bar">
         <div className="top-brand" aria-label="CoffeeSip home">
-          <span>C</span>
+          <span className="sip-mark" aria-hidden="true">S</span>
           <strong>CoffeeSip</strong>
         </div>
         {view === 'host' && <div className={`api-pill ${apiState}`}>API {apiState}</div>}
@@ -238,7 +238,7 @@ function BookingPage({
     <section className="booking-card booking-card-clean">
       <section className="schedule-panel">
         <div className="booking-intro">
-          <div className="intro-mark">C</div>
+          <div className="intro-mark sip-mark" aria-hidden="true">S</div>
           <div>
             <h1>Our time’s worth a sip.</h1>
           </div>
