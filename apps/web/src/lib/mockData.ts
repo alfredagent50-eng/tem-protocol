@@ -3,7 +3,7 @@ import type { BookingRequest, RequestType, Slot } from './domain';
 export const requestTypes: RequestType[] = [
   { id: 'talk', emoji: '💬', label: 'Talk', short: 'Call / advice', description: 'A focused conversation, brainstorm, or consulting-style call.', tone: 'calm', multiplier: 1 },
   { id: 'favor', emoji: '🛟', label: 'Favor', short: 'Help me out', description: 'You need someone to look, review, connect, fix, or think with you.', tone: 'help', multiplier: 1.2 },
-  { id: 'hang', emoji: '🍻', label: 'Hang', short: 'Social time', description: 'Coffee, food, friends, spontaneous plans, or “come chill”.', tone: 'fun', multiplier: 1.1 },
+  { id: 'meet', emoji: '☕', label: 'Meet', short: 'In-person time', description: 'Coffee, a quick intro, a focused sit-down, or showing up with context.', tone: 'fun', multiplier: 1.1 },
   { id: 'appearance', emoji: '🪩', label: 'Show up', short: 'Event / club', description: 'Invite someone somewhere and make the ask worth leaving the house.', tone: 'night', multiplier: 1.8 },
   { id: 'urgent', emoji: '⚡', label: 'Urgent', short: 'Drop everything', description: 'This is time-sensitive. Higher floor, stronger signal.', tone: 'hot', multiplier: 2.5 },
 ];

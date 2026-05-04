@@ -17,7 +17,7 @@ export const slots = [
 export const requestTypes = [
   { id: 'talk', multiplier: 1 },
   { id: 'favor', multiplier: 1.2 },
-  { id: 'hang', multiplier: 1.1 },
+  { id: 'meet', multiplier: 1.1 },
   { id: 'appearance', multiplier: 1.8 },
   { id: 'urgent', multiplier: 2.5 },
 ];
