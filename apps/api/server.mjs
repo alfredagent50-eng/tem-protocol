@@ -52,7 +52,7 @@ function acceptBookingRequest(requests, acceptedId) {
 
   return requests.map((request) => {
     if (request.id === acceptedId) return { ...request, status: 'accepted' };
-    if (request.slotId === accepted.slotId && request.status === 'host_review') {
+    if (request.slotId === accepted.slotId && ['paid', 'host_review'].includes(request.status)) {
       return { ...request, status: 'rejected' };
     }
     return request;

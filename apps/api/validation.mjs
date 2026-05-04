@@ -1,5 +1,5 @@
 const currencies = new Set(['USD', 'EUR', 'GBP', 'ILS']);
-const requestStatuses = new Set(['host_review', 'accepted', 'rejected']);
+const requestStatuses = new Set(['pending_payment', 'paid', 'host_review', 'accepted', 'completed', 'rejected', 'expired']);
 
 export function validateCreateRequest(input) {
   const errors = [];

@@ -7,7 +7,7 @@ export function acceptBookingRequest(requests: BookingRequest[], acceptedId: str
   return requests.map((request) => {
     if (request.id === acceptedId) return { ...request, status: 'accepted' };
 
-    const competesForSameSlot = request.slotId === accepted.slotId && request.status === 'host_review';
+    const competesForSameSlot = request.slotId === accepted.slotId && ['paid', 'host_review'].includes(request.status);
     if (competesForSameSlot) return { ...request, status: 'rejected' };
 
     return request;
@@ -23,7 +23,7 @@ export function getWinningRequestForSlot(requests: BookingRequest[], slotId: str
 }
 
 export function getHighestPendingOfferForSlot(requests: BookingRequest[], slotId: string) {
-  const pending = requests.filter((request) => request.slotId === slotId && request.status === 'host_review');
+  const pending = requests.filter((request) => request.slotId === slotId && ['paid', 'host_review'].includes(request.status));
   return pending.sort((a, b) => b.amount - a.amount)[0] ?? null;
 }
 

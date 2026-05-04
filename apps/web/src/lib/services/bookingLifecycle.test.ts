@@ -44,9 +44,10 @@ describe('booking lifecycle', () => {
     const winner = getHighestPendingOfferForSlot([
       baseRequest,
       { ...baseRequest, id: 'req-2', amount: 250 },
+      { ...baseRequest, id: 'req-paid', amount: 300, status: 'paid' },
       { ...baseRequest, id: 'req-3', amount: 200, status: 'accepted' },
     ], 'slot-a');
 
-    expect(winner?.id).toBe('req-2');
+    expect(winner?.id).toBe('req-paid');
   });
 });

@@ -26,7 +26,7 @@ export type RequestType = {
 
 export type BookingStep = 'details' | 'payment' | 'confirmed';
 
-export type BookingRequestStatus = 'pending_payment' | 'paid' | 'host_review' | 'accepted' | 'rejected';
+export type BookingRequestStatus = 'pending_payment' | 'paid' | 'host_review' | 'accepted' | 'completed' | 'rejected' | 'expired';
 
 export type BookingRequest = {
   id: string;

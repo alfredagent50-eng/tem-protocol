@@ -361,7 +361,7 @@ function BookingPage({
             <div className="checkmark">✓</div>
             <p><strong>{name || 'Guest'}</strong>, your {selectedType.label.toLowerCase()} request is locked in.</p>
             <p className="fine-print">
-              The host gets the paid request and decides. Tiny payments can later auto-convert into Bitcoin.
+              The host gets the request and decides what is worth accepting.
             </p>
             <button className="ghost-button" onClick={() => onSetStep('details')}>Make another booking</button>
           </div>
@@ -404,48 +404,75 @@ function formatCalendarSlot(slot: Slot, requests: BookingRequest[]) {
 }
 
 function HostDashboard({ requests, onUpdate, onLogout }: { requests: BookingRequest[]; onUpdate: (id: string, status: BookingRequest['status']) => void; onLogout: () => void }) {
-  const pending = requests.filter((request) => request.status === 'host_review');
-  const reviewed = requests.filter((request) => request.status === 'accepted' || request.status === 'rejected');
-  const totalPendingValue = pending.reduce((sum, request) => sum + request.amount, 0);
+  const moneyPending = requests.filter((request) => request.status === 'pending_payment' || request.status === 'paid');
+  const needsReview = requests.filter((request) => request.status === 'host_review');
+  const scheduled = requests.filter((request) => request.status === 'accepted');
+  const done = requests.filter((request) => request.status === 'completed' || request.status === 'rejected' || request.status === 'expired');
+  const totalPendingValue = needsReview.reduce((sum, request) => sum + request.amount, 0);
   const acceptedCount = requests.filter((request) => request.status === 'accepted').length;
+  const totalCaptured = requests
+    .filter((request) => ['host_review', 'accepted', 'completed'].includes(request.status))
+    .reduce((sum, request) => sum + request.amount, 0);
 
   return (
     <section className="dashboard-card">
       <div className="dashboard-hero">
         <div>
           <p className="overline">Host dashboard</p>
-          <h1>Incoming asks</h1>
-          <p className="host-copy">Review paid requests, accept what’s worth it, pass on the rest.</p>
+          <h1>Today’s time market</h1>
+          <p className="host-copy">Paid requests move from payment to review, then into the calendar or out of the queue.</p>
           <button className="ghost-button compact-action" onClick={onLogout}>Lock dashboard</button>
         </div>
         <div className="dashboard-stats">
           <div className="dashboard-stat">
-            <strong>{pending.length}</strong>
-            <span>waiting</span>
+            <strong>{needsReview.length}</strong>
+            <span>needs review</span>
           </div>
           <div className="dashboard-stat">
             <strong>{acceptedCount}</strong>
-            <span>accepted</span>
+            <span>scheduled</span>
           </div>
           <div className="dashboard-stat wide">
-            <strong>{totalPendingValue}</strong>
-            <span>pending value</span>
+            <strong>{totalCaptured || totalPendingValue}</strong>
+            <span>captured value</span>
           </div>
         </div>
       </div>
 
+      <div className="lifecycle-strip" aria-label="Request lifecycle">
+        <span>Payment</span>
+        <strong>→</strong>
+        <span>Host review</span>
+        <strong>→</strong>
+        <span>Scheduled</span>
+        <strong>→</strong>
+        <span>Completed</span>
+      </div>
+
       <div className="request-board">
         <div>
-          <h2>Needs review</h2>
-          <HostRequestList requests={pending} onUpdate={onUpdate} empty="No paid requests waiting." />
+          <h2>Payment</h2>
+          <HostRequestList requests={moneyPending} onUpdate={onUpdate} empty="No payment holds right now." />
         </div>
         <div>
-          <h2>Reviewed</h2>
-          <HostRequestList requests={reviewed} onUpdate={onUpdate} empty="Accepted and passed requests show here." />
+          <h2>Review</h2>
+          <HostRequestList requests={needsReview} onUpdate={onUpdate} empty="No paid requests waiting." />
+        </div>
+        <div>
+          <h2>Scheduled</h2>
+          <HostRequestList requests={scheduled} onUpdate={onUpdate} empty="Accepted requests show here." />
+        </div>
+        <div>
+          <h2>Closed</h2>
+          <HostRequestList requests={done} onUpdate={onUpdate} empty="Passed and completed requests show here." />
         </div>
       </div>
     </section>
   );
+}
+
+function statusLabel(status: BookingRequest['status']) {
+  return status.replace('_', ' ');
 }
 
 function HostRequestList({ requests, onUpdate, empty }: { requests: BookingRequest[]; onUpdate: (id: string, status: BookingRequest['status']) => void; empty: string }) {
@@ -466,13 +493,27 @@ function HostRequestList({ requests, onUpdate, empty }: { requests: BookingReque
               <span className="money-chip">{request.amount} {request.currency}</span>
             </div>
             {request.note && <p>{request.note}</p>}
+            <div className="request-timeline" aria-label="Lifecycle state">
+              {['pending_payment', 'host_review', 'accepted', 'completed'].map((status) => (
+                <span key={status} className={request.status === status ? 'active' : ''}>{statusLabel(status as BookingRequest['status'])}</span>
+              ))}
+            </div>
             {request.status === 'host_review' ? (
               <div className="host-actions">
                 <button onClick={() => onUpdate(request.id, 'accepted')}>Accept</button>
                 <button onClick={() => onUpdate(request.id, 'rejected')}>Pass</button>
               </div>
+            ) : request.status === 'accepted' ? (
+              <div className="host-actions">
+                <button onClick={() => onUpdate(request.id, 'completed')}>Mark done</button>
+                <button onClick={() => onUpdate(request.id, 'rejected')}>Cancel</button>
+              </div>
+            ) : request.status === 'paid' ? (
+              <div className="host-actions">
+                <button onClick={() => onUpdate(request.id, 'host_review')}>Move to review</button>
+              </div>
             ) : (
-              <span className={`status-chip ${request.status}`}>{request.status}</span>
+              <span className={`status-chip ${request.status}`}>{statusLabel(request.status)}</span>
             )}
           </article>
         );
