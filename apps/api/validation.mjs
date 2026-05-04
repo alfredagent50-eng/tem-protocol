@@ -1,4 +1,4 @@
-const currencies = new Set(['ILS', 'USD', 'EUR']);
+const currencies = new Set(['USD', 'EUR', 'GBP', 'ILS']);
 const requestStatuses = new Set(['host_review', 'accepted', 'rejected']);
 
 export function validateCreateRequest(input) {

@@ -1,21 +1,26 @@
 # Payments Vision
 
-Bar's preferred long-term payment experience is **not crypto-first for guests**.
+CoffeeSip's payment experience is **not crypto-first for guests**.
+
+The product is global: it is for weak-tie access between people who may know each other from the internet, social media, a community, or a friend-of-a-friend context — not only close friends.
+
+See also: `docs/WORLDWIDE_PAYMENTS.md`.
 
 ## Guest experience
 
 The guest should pay in the most convenient way possible:
 
 - Apple Pay
+- Google Pay
 - Credit/debit card
 - Two-click checkout
-- Local currency when possible: ILS, USD, EUR, etc.
+- Local currency when possible: USD, EUR, GBP, ILS, etc.
 
 The guest should not need to understand Bitcoin, USDT, wallets, sats, or crypto rails.
 
-## Host / Bar experience
+## Host experience
 
-Bar wants incoming fiat payments — even tiny payments — to be automatically converted into Bitcoin.
+Hosts can eventually choose to have incoming fiat payments — even tiny payments — automatically converted into Bitcoin.
 
 The product should feel like a playful paid-availability tool on the surface, but underneath it can become a small automatic Bitcoin savings engine:
 

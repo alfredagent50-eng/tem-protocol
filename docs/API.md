@@ -25,7 +25,9 @@ Returns all booking requests from the JSON store.
 
 ### `POST /requests`
 
-Creates a paid request in `host_review`.
+Creates a mock-paid request in `host_review` for the current MVP.
+
+Target real-payment lifecycle: create as `pending_payment`, attach a Stripe Checkout Session / PaymentIntent, then move to `host_review` only after a verified payment webhook.
 
 Required body:
 
@@ -33,11 +35,11 @@ Required body:
 {
   "slotId": "sun-1630",
   "typeId": "talk",
-  "guestName": "Tal",
-  "guestEmail": "tal@example.com",
+  "guestName": "Alex",
+  "guestEmail": "alex@example.com",
   "note": "Short context",
-  "amount": 500,
-  "currency": "sats"
+  "amount": 9,
+  "currency": "USD"
 }
 ```
 
@@ -50,6 +52,8 @@ Updates host review state.
 ```
 
 Supported statuses for now: `accepted`, `rejected`, `host_review`.
+
+Host status updates are protected by `TEM_HOST_TOKEN` when set; clients send it as `Authorization: Bearer <token>`.
 
 Accepting one request rejects other pending requests for the same slot.
 

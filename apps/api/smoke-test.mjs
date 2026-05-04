@@ -33,8 +33,8 @@ try {
       guestName: 'Smoke Tester',
       guestEmail: 'smoke@example.com',
       note: 'API smoke test',
-      amount: 30,
-      currency: 'ILS',
+      amount: 9,
+      currency: 'USD',
     }),
   });
   assert.equal(createdResponse.status, 201);

@@ -2,26 +2,26 @@ import type { BookingRequest, RequestType, Slot } from './domain';
 
 export const requestTypes: RequestType[] = [
   { id: 'talk', emoji: '💬', label: 'Talk', short: 'Call / advice', description: 'A focused conversation, brainstorm, or consulting-style call.', tone: 'calm', multiplier: 1 },
-  { id: 'favor', emoji: '🛟', label: 'Favor', short: 'Help me out', description: 'You need Bar to look, review, connect, fix, or think with you.', tone: 'help', multiplier: 1.2 },
+  { id: 'favor', emoji: '🛟', label: 'Favor', short: 'Help me out', description: 'You need someone to look, review, connect, fix, or think with you.', tone: 'help', multiplier: 1.2 },
   { id: 'hang', emoji: '🍻', label: 'Hang', short: 'Social time', description: 'Coffee, food, friends, spontaneous plans, or “come chill”.', tone: 'fun', multiplier: 1.1 },
-  { id: 'appearance', emoji: '🪩', label: 'Show up', short: 'Event / club', description: 'Invite Bar somewhere and make the ask worth leaving the house.', tone: 'night', multiplier: 1.8 },
+  { id: 'appearance', emoji: '🪩', label: 'Show up', short: 'Event / club', description: 'Invite someone somewhere and make the ask worth leaving the house.', tone: 'night', multiplier: 1.8 },
   { id: 'urgent', emoji: '⚡', label: 'Urgent', short: 'Drop everything', description: 'This is time-sensitive. Higher floor, stronger signal.', tone: 'hot', multiplier: 2.5 },
 ];
 
 export const slots: Slot[] = [
-  { id: 'sun-1500', day: 'Sun', date: 'May 3', time: '15:00', duration: '30 min', minimum: 25, currency: 'ILS', status: 'requested', currentOffer: 35 },
-  { id: 'sun-1630', day: 'Sun', date: 'May 3', time: '16:30', duration: '30 min', minimum: 25, currency: 'ILS', status: 'available' },
-  { id: 'mon-1100', day: 'Mon', date: 'May 4', time: '11:00', duration: '30 min', minimum: 30, currency: 'ILS', status: 'available' },
-  { id: 'mon-1400', day: 'Mon', date: 'May 4', time: '14:00', duration: '60 min', minimum: 60, currency: 'ILS', status: 'available' },
-  { id: 'tue-1000', day: 'Tue', date: 'May 5', time: '10:00', duration: '30 min', minimum: 30, currency: 'ILS', status: 'available' },
-  { id: 'tue-1500', day: 'Tue', date: 'May 5', time: '15:00', duration: '30 min', minimum: 35, currency: 'ILS', status: 'requested', currentOffer: 55 },
-  { id: 'wed-1200', day: 'Wed', date: 'May 6', time: '12:00', duration: '30 min', minimum: 30, currency: 'ILS', status: 'available' },
-  { id: 'wed-1700', day: 'Wed', date: 'May 6', time: '17:00', duration: '30 min', minimum: 35, currency: 'ILS', status: 'requested', currentOffer: 45 },
-  { id: 'thu-0930', day: 'Thu', date: 'May 7', time: '09:30', duration: '30 min', minimum: 30, currency: 'ILS', status: 'available' },
-  { id: 'sun2-1600', day: 'Sun', date: 'May 10', time: '16:00', duration: '30 min', minimum: 30, currency: 'ILS', status: 'available' },
-  { id: 'mon2-1300', day: 'Mon', date: 'May 11', time: '13:00', duration: '60 min', minimum: 60, currency: 'ILS', status: 'requested', currentOffer: 90 },
-  { id: 'wed2-1100', day: 'Wed', date: 'May 13', time: '11:00', duration: '30 min', minimum: 30, currency: 'ILS', status: 'available' },
-  { id: 'thu2-1500', day: 'Thu', date: 'May 14', time: '15:00', duration: '30 min', minimum: 30, currency: 'ILS', status: 'available' },
+  { id: 'sun-1500', day: 'Sun', date: 'May 3', time: '15:00', duration: '30 min', minimum: 7, currency: 'USD', status: 'requested', currentOffer: 10 },
+  { id: 'sun-1630', day: 'Sun', date: 'May 3', time: '16:30', duration: '30 min', minimum: 7, currency: 'USD', status: 'available' },
+  { id: 'mon-1100', day: 'Mon', date: 'May 4', time: '11:00', duration: '30 min', minimum: 9, currency: 'USD', status: 'available' },
+  { id: 'mon-1400', day: 'Mon', date: 'May 4', time: '14:00', duration: '60 min', minimum: 18, currency: 'USD', status: 'available' },
+  { id: 'tue-1000', day: 'Tue', date: 'May 5', time: '10:00', duration: '30 min', minimum: 9, currency: 'USD', status: 'available' },
+  { id: 'tue-1500', day: 'Tue', date: 'May 5', time: '15:00', duration: '30 min', minimum: 10, currency: 'USD', status: 'requested', currentOffer: 16 },
+  { id: 'wed-1200', day: 'Wed', date: 'May 6', time: '12:00', duration: '30 min', minimum: 9, currency: 'USD', status: 'available' },
+  { id: 'wed-1700', day: 'Wed', date: 'May 6', time: '17:00', duration: '30 min', minimum: 10, currency: 'USD', status: 'requested', currentOffer: 13 },
+  { id: 'thu-0930', day: 'Thu', date: 'May 7', time: '09:30', duration: '30 min', minimum: 9, currency: 'USD', status: 'available' },
+  { id: 'sun2-1600', day: 'Sun', date: 'May 10', time: '16:00', duration: '30 min', minimum: 9, currency: 'USD', status: 'available' },
+  { id: 'mon2-1300', day: 'Mon', date: 'May 11', time: '13:00', duration: '60 min', minimum: 18, currency: 'USD', status: 'requested', currentOffer: 25 },
+  { id: 'wed2-1100', day: 'Wed', date: 'May 13', time: '11:00', duration: '30 min', minimum: 9, currency: 'USD', status: 'available' },
+  { id: 'thu2-1500', day: 'Thu', date: 'May 14', time: '15:00', duration: '30 min', minimum: 9, currency: 'USD', status: 'available' },
 ];
 
 export const seedRequests: BookingRequest[] = [
@@ -32,8 +32,8 @@ export const seedRequests: BookingRequest[] = [
     guestName: 'Tal',
     guestEmail: 'tal@example.com',
     note: 'Need you for something time-sensitive. Worth interrupting the day.',
-    amount: 140,
-    currency: 'ILS',
+    amount: 40,
+    currency: 'USD',
     status: 'host_review',
     createdAt: '2026-05-03T12:00:00Z',
   },

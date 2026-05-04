@@ -215,8 +215,8 @@ function BookingPage({
           <div className="intro-mark">C</div>
           <div>
             <div className="logo compact-logo">CoffeeSip</div>
-            <h1>Buy a sip of Bar’s time.</h1>
-            <p>Choose the ask, pick a time, and pay by card or Apple Pay soon.</p>
+            <h1>Buy a sip of someone’s time.</h1>
+            <p>For people you know from the internet — not close friends, not strangers. Pick the ask, choose a time, and make it real.</p>
           </div>
         </div>
         <div className="panel-heading">
@@ -224,7 +224,7 @@ function BookingPage({
             <p className="overline">Step 1</p>
             <h2>Choose your ask</h2>
           </div>
-          <span className="timezone">Asia/Jerusalem</span>
+          <span className="timezone">Local time</span>
         </div>
 
         <div className="request-types" aria-label="Request type">
@@ -350,7 +350,7 @@ function BookingPage({
             <div className="checkmark">✓</div>
             <p><strong>{name || 'Guest'}</strong>, your {selectedType.label.toLowerCase()} request is locked in.</p>
             <p className="fine-print">
-              Bar gets the paid request and decides. Tiny payments can later auto-convert into Bitcoin.
+              The host gets the paid request and decides. Tiny payments can later auto-convert into Bitcoin.
             </p>
             <button className="ghost-button" onClick={() => onSetStep('details')}>Make another booking</button>
           </div>
