@@ -246,7 +246,7 @@ function BookingPage({
         <div className="panel-heading">
           <div>
             <p className="overline">Step 1</p>
-            <h2>Choose your task</h2>
+            <h2>What do we want?</h2>
           </div>
           <span className="timezone">Local time</span>
         </div>
@@ -340,7 +340,7 @@ function BookingPage({
               <button type="button" onClick={fillDemoRequest}>Fill demo</button>
             </div>
             <label>
-              Your name
+              Name
               <input value={name} onChange={(event) => onSetName(event.target.value)} placeholder="Tal Cohen" />
             </label>
             <label>
@@ -348,7 +348,7 @@ function BookingPage({
               <input value={email} onChange={(event) => onSetEmail(event.target.value)} placeholder="tal@example.com" />
             </label>
             <label>
-              What are you asking for?
+              What should we make happen?
               <textarea value={note} onChange={(event) => onSetNote(event.target.value)} placeholder="Add short context" rows={3} />
             </label>
 
@@ -379,7 +379,7 @@ function BookingPage({
         {step === 'confirmed' && (
           <div className="confirmed-state">
             <div className="checkmark">✓</div>
-            <p><strong>{name || 'Guest'}</strong>, your {selectedType.label.toLowerCase()} request is locked in.</p>
+            <p><strong>{name || 'Guest'}</strong>, our {selectedType.label.toLowerCase()} request is locked in.</p>
             <div className="receipt-card" aria-label="Booking receipt">
               <span>Request</span>
               <strong>{lastRequest?.id.slice(-8) ?? 'created'}</strong>
@@ -389,9 +389,9 @@ function BookingPage({
               <strong>{lastRequest?.amount ?? requiredAmount} {lastRequest?.currency ?? selectedSlot.currency}</strong>
             </div>
             <p className="fine-print">
-              The host sees this in review, can accept it into the calendar, or pass. Public pages only show market state — not your private details.
+              We sent it into host review. Public pages only show market state — private details stay private.
             </p>
-            <button className="ghost-button" onClick={() => onSetStep('details')}>Make another booking</button>
+            <button className="ghost-button" onClick={() => onSetStep('details')}>Create another request</button>
           </div>
         )}
       </aside>
