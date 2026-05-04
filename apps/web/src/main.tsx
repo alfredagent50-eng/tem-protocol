@@ -13,6 +13,7 @@ const featuredSlots = featuredSlotIds
 
 function App() {
   const [view, setView] = useState<'guest' | 'host'>('guest');
+  const [hostToken, setHostToken] = useState(() => window.localStorage.getItem('tem-host-token') ?? '');
   const [selectedSlotId, setSelectedSlotId] = useState(featuredSlots[1].id);
   const [selectedTypeId, setSelectedTypeId] = useState(requestTypes[0].id);
   const [step, setStep] = useState<BookingStep>('details');
@@ -85,9 +86,15 @@ function App() {
     setStep('confirmed');
   }
 
+  function saveHostToken(token: string) {
+    const trimmed = token.trim();
+    setHostToken(trimmed);
+    window.localStorage.setItem('tem-host-token', trimmed);
+  }
+
   async function updateRequestStatus(id: string, status: BookingRequest['status']) {
     setApiState('loading');
-    setRequests(await updateApiRequestStatus(id, status));
+    setRequests(await updateApiRequestStatus(id, status, hostToken));
     setApiState('online');
   }
 
@@ -123,9 +130,35 @@ function App() {
           onCreatePaidRequest={createPaidRequest}
         />
       ) : (
-        <HostDashboard requests={requests} onUpdate={updateRequestStatus} />
+        hostToken ? (
+          <HostDashboard requests={requests} onUpdate={updateRequestStatus} onLogout={() => saveHostToken('')} />
+        ) : (
+          <HostGate onUnlock={saveHostToken} />
+        )
       )}
     </main>
+  );
+}
+
+function HostGate({ onUnlock }: { onUnlock: (token: string) => void }) {
+  const [token, setToken] = useState('');
+  return (
+    <section className="dashboard-card host-gate-card">
+      <div>
+        <p className="overline">Host dashboard</p>
+        <h1>Private host controls</h1>
+        <p className="host-copy">
+          Enter the host token to review paid asks. This is a lightweight MVP gate; production still needs real auth.
+        </p>
+      </div>
+      <form className="host-gate-form" onSubmit={(event) => { event.preventDefault(); onUnlock(token); }}>
+        <label>
+          Host token
+          <input value={token} onChange={(event) => setToken(event.target.value)} placeholder="Paste host token" type="password" autoComplete="current-password" />
+        </label>
+        <button className="pay-button" disabled={token.trim().length < 4}>Unlock dashboard</button>
+      </form>
+    </section>
   );
 }
 
@@ -305,7 +338,7 @@ function BookingPage({
               <span /> <span /> <span /> <span /> <span /> <span /> <span /> <span /> <span />
             </div>
             <p className="payment-copy">
-              Mock invoice for <strong>{paymentIntent?.amount ?? requiredAmount} {paymentIntent?.currency ?? selectedSlot.currency}</strong>. Later: Lightning or stablecoin payment.
+              Mock checkout for <strong>{paymentIntent?.amount ?? requiredAmount} {paymentIntent?.currency ?? selectedSlot.currency}</strong>. Later: Apple Pay or card for guests, with optional Bitcoin conversion for the host.
             </p>
             <button className="pay-button" onClick={onCreatePaidRequest}>Simulate paid</button>
             <button className="ghost-button" onClick={() => onSetStep('details')}>Back</button>
@@ -359,7 +392,7 @@ function formatCalendarSlot(slot: Slot, requests: BookingRequest[]) {
   return `Open · min ${slot.minimum} ${slot.currency}`;
 }
 
-function HostDashboard({ requests, onUpdate }: { requests: BookingRequest[]; onUpdate: (id: string, status: BookingRequest['status']) => void }) {
+function HostDashboard({ requests, onUpdate, onLogout }: { requests: BookingRequest[]; onUpdate: (id: string, status: BookingRequest['status']) => void; onLogout: () => void }) {
   const pending = requests.filter((request) => request.status === 'host_review');
   const reviewed = requests.filter((request) => request.status === 'accepted' || request.status === 'rejected');
   const totalPendingValue = pending.reduce((sum, request) => sum + request.amount, 0);
@@ -372,6 +405,7 @@ function HostDashboard({ requests, onUpdate }: { requests: BookingRequest[]; onU
           <p className="overline">Host dashboard</p>
           <h1>Incoming asks</h1>
           <p className="host-copy">Review paid requests, accept what’s worth it, pass on the rest.</p>
+          <button className="ghost-button compact-action" onClick={onLogout}>Lock dashboard</button>
         </div>
         <div className="dashboard-stats">
           <div className="dashboard-stat">

@@ -29,9 +29,10 @@ export function createRequest(input: Omit<BookingRequest, 'id' | 'status' | 'cre
   });
 }
 
-export function updateRequestStatus(id: string, status: BookingRequest['status']) {
+export function updateRequestStatus(id: string, status: BookingRequest['status'], hostToken?: string) {
   return api<BookingRequest[]>(`/requests/${id}/status`, {
     method: 'PATCH',
+    headers: hostToken ? { authorization: `Bearer ${hostToken}` } : undefined,
     body: JSON.stringify({ status }),
   });
 }

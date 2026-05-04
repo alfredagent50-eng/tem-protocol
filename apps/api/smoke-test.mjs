@@ -3,9 +3,10 @@ import { once } from 'node:events';
 import assert from 'node:assert/strict';
 
 const port = 8877;
+const hostToken = 'smoke-host-token';
 const server = spawn(process.execPath, ['server.mjs'], {
   cwd: new URL('.', import.meta.url),
-  env: { ...process.env, PORT: String(port), TEM_DATA_FILE: 'data/smoke-test-requests.json' },
+  env: { ...process.env, PORT: String(port), TEM_DATA_FILE: 'data/smoke-test-requests.json', TEM_HOST_TOKEN: hostToken },
   stdio: ['ignore', 'pipe', 'pipe'],
 });
 
@@ -40,9 +41,16 @@ try {
   const created = await createdResponse.json();
   assert.equal(created.status, 'host_review');
 
-  const acceptedResponse = await fetch(`http://localhost:${port}/requests/${created.id}/status`, {
+  const unauthorizedResponse = await fetch(`http://localhost:${port}/requests/${created.id}/status`, {
     method: 'PATCH',
     headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ status: 'accepted' }),
+  });
+  assert.equal(unauthorizedResponse.status, 401);
+
+  const acceptedResponse = await fetch(`http://localhost:${port}/requests/${created.id}/status`, {
+    method: 'PATCH',
+    headers: { 'authorization': `Bearer ${hostToken}`, 'content-type': 'application/json' },
     body: JSON.stringify({ status: 'accepted' }),
   });
   assert.equal(acceptedResponse.status, 200);

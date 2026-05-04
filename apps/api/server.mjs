@@ -9,6 +9,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = resolve(__dirname, '../..');
 const dataFile = process.env.TEM_DATA_FILE ? resolve(root, process.env.TEM_DATA_FILE) : resolve(root, 'data/requests.json');
 const port = Number(process.env.PORT ?? 8787);
+const hostToken = process.env.TEM_HOST_TOKEN;
 
 const seedRequests = [
   {
@@ -72,10 +73,16 @@ function send(res, status, body) {
   res.writeHead(status, {
     'access-control-allow-origin': '*',
     'access-control-allow-methods': 'GET,POST,PATCH,OPTIONS',
-    'access-control-allow-headers': 'content-type',
+    'access-control-allow-headers': 'authorization,content-type',
     'content-type': 'application/json',
   });
   res.end(JSON.stringify(body));
+}
+
+function isAuthorizedHostRequest(req) {
+  if (!hostToken) return true;
+  const authorization = req.headers.authorization ?? '';
+  return authorization === `Bearer ${hostToken}`;
 }
 
 const server = createServer(async (req, res) => {
@@ -113,6 +120,7 @@ const server = createServer(async (req, res) => {
 
     const statusMatch = url.pathname.match(/^\/requests\/([^/]+)\/status$/);
     if (req.method === 'PATCH' && statusMatch) {
+      if (!isAuthorizedHostRequest(req)) return send(res, 401, { error: 'host_auth_required' });
       const body = await readBody(req);
       const validation = validateStatus(body);
       if (!validation.ok) return send(res, 400, { error: 'validation_failed', details: validation.errors });
