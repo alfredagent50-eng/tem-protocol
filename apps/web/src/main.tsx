@@ -235,7 +235,7 @@ function BookingPage({
         <div className="booking-intro">
           <div className="intro-mark">C</div>
           <div>
-            <h1>Your Time is Worth a Sip.</h1>
+            <h1>Our Time is Worth a Sip.</h1>
           </div>
         </div>
         <div className="panel-heading">
