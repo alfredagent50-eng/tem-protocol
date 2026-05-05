@@ -20,6 +20,7 @@ type HostProfile = {
   customSlots: Slot[];
   acceptedTypeIds: string[];
   typeMinimums: Record<string, number>;
+  typeCurrencies: Record<string, string>;
 };
 
 const defaultHostProfile: HostProfile = {
@@ -29,8 +30,9 @@ const defaultHostProfile: HostProfile = {
   slotIds: slots.map((slot) => slot.id),
   featuredSlotIds,
   customSlots: [],
-  acceptedTypeIds: requestTypes.map((type) => type.id),
+  acceptedTypeIds: [],
   typeMinimums: Object.fromEntries(requestTypes.map((type) => [type.id, type.id === 'urgent' ? 25 : type.id === 'appearance' ? 18 : type.id === 'favor' ? 12 : type.id === 'meet' ? 11 : 10])),
+  typeCurrencies: Object.fromEntries(requestTypes.map((type) => [type.id, '$'])),
 };
 
 function getAllSlots(profile: HostProfile) {
@@ -76,6 +78,10 @@ function generateAvailabilitySlots(input: { date: string; from: string; to: stri
     });
   }
   return generated;
+}
+
+function formatSipAmount(amount: number, currency: string) {
+  return currency === 'sats' ? `${amount} sats` : `${currency}${amount}`;
 }
 
 function loadHostProfile(): HostProfile {
@@ -187,8 +193,9 @@ function App() {
       ...profile,
       slug: profile.slug.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') || 'coffee-host',
       customSlots: profile.customSlots ?? [],
-      acceptedTypeIds: profile.acceptedTypeIds?.length ? profile.acceptedTypeIds : defaultHostProfile.acceptedTypeIds,
+      acceptedTypeIds: profile.acceptedTypeIds ?? defaultHostProfile.acceptedTypeIds,
       typeMinimums: { ...defaultHostProfile.typeMinimums, ...(profile.typeMinimums ?? {}) },
+      typeCurrencies: { ...defaultHostProfile.typeCurrencies, ...(profile.typeCurrencies ?? {}) },
       slotIds: profile.slotIds.length ? profile.slotIds.filter((id) => allSlotIds.includes(id)) : defaultHostProfile.slotIds,
       featuredSlotIds: profile.featuredSlotIds.filter((id) => profile.slotIds.includes(id)).slice(0, 5),
     };
@@ -674,13 +681,20 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
     const acceptedTypeIds = enabled
       ? hostProfile.acceptedTypeIds.filter((id) => id !== typeId)
       : [...hostProfile.acceptedTypeIds, typeId];
-    onSaveHostProfile({ ...hostProfile, acceptedTypeIds: acceptedTypeIds.length ? acceptedTypeIds : [typeId] });
+    onSaveHostProfile({ ...hostProfile, acceptedTypeIds });
   }
 
   function updateTypeMinimum(typeId: string, value: number) {
     onSaveHostProfile({
       ...hostProfile,
       typeMinimums: { ...hostProfile.typeMinimums, [typeId]: Number.isFinite(value) && value > 0 ? value : 1 },
+    });
+  }
+
+  function updateTypeCurrency(typeId: string, value: string) {
+    onSaveHostProfile({
+      ...hostProfile,
+      typeCurrencies: { ...hostProfile.typeCurrencies, [typeId]: value },
     });
   }
 
@@ -750,10 +764,20 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
                   <strong>{type.label}</strong>
                   <small>{type.short}</small>
                   {enabled && (
-                    <label onClick={(event) => event.stopPropagation()}>
-                      Minimum sip
-                      <input type="number" min="1" value={hostProfile.typeMinimums[type.id] ?? 10} onChange={(event) => updateTypeMinimum(type.id, Number(event.target.value))} />
-                    </label>
+                    <div className="category-price-editor" onClick={(event) => event.stopPropagation()}>
+                      <label>
+                        Minimum sip
+                        <div className="sip-price-row">
+                          <input type="number" min="1" value={hostProfile.typeMinimums[type.id] ?? 10} onChange={(event) => updateTypeMinimum(type.id, Number(event.target.value))} />
+                          <select value={hostProfile.typeCurrencies[type.id] ?? '$'} onChange={(event) => updateTypeCurrency(type.id, event.target.value)}>
+                            <option value="$">$</option>
+                            <option value="€">€</option>
+                            <option value="₪">₪</option>
+                            <option value="sats">₿ sats</option>
+                          </select>
+                        </div>
+                      </label>
+                    </div>
                   )}
                 </button>
               );
@@ -778,7 +802,7 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
             <label>Buffer<select value={buffer} onChange={(event) => setBuffer(Number(event.target.value))}><option value={0}>No buffer</option><option value={15}>15 min</option><option value={30}>30 min</option></select></label>
           </div>
           <div className="price-preview-row">
-            {requestTypes.filter((type) => hostProfile.acceptedTypeIds.includes(type.id)).map((type) => <span key={type.id}>{type.label}: ${hostProfile.typeMinimums[type.id] ?? 10}</span>)}
+            {requestTypes.filter((type) => hostProfile.acceptedTypeIds.includes(type.id)).map((type) => <span key={type.id}>{type.label}: {formatSipAmount(hostProfile.typeMinimums[type.id] ?? 10, hostProfile.typeCurrencies[type.id] ?? '$')}</span>)}
           </div>
           <div className="generated-preview">
             {previewSlots.length ? previewSlots.map((slot) => <span key={slot.id}>{slot.day} {slot.time} · {slot.duration} · ${slot.minimum}</span>) : <strong>No slots in this range.</strong>}
