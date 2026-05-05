@@ -1541,6 +1541,52 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
   grid-template-columns: 1fr 1fr auto;
   gap: 12px;
 }
+.host-setup-sequence {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 14px;
+  align-items: stretch;
+}
+.host-category-step {
+  display: grid;
+  gap: 13px;
+  padding: 16px;
+  border: 1px solid var(--line-warm);
+  border-radius: 22px;
+  background: rgba(255,255,255,0.70);
+}
+.host-category-step h3 {
+  margin: 0;
+  color: var(--espresso);
+  font-size: 22px;
+  letter-spacing: -0.04em;
+}
+.host-category-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+.host-category-grid button {
+  display: grid;
+  gap: 6px;
+  min-height: 92px;
+  padding: 12px;
+  border: 1px solid var(--line-warm);
+  border-radius: 17px;
+  background: rgba(255,253,248,0.76);
+  color: var(--espresso);
+  cursor: pointer;
+  text-align: left;
+}
+.host-category-grid button.active {
+  border-color: rgba(42, 29, 20, 0.60);
+  background: linear-gradient(145deg, #2a1d14, #111827);
+  color: #fff;
+}
+.host-category-grid span { font-size: 22px; }
+.host-category-grid strong { font-size: 14px; }
+.host-category-grid small { color: var(--muted); font-size: 11px; font-weight: 850; }
+.host-category-grid button.active small { color: rgba(255,255,255,0.72); }
 .host-profile-fields label {
   display: grid;
   gap: 7px;
@@ -1739,9 +1785,11 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
     padding: 12px 14px 0;
   }
   .host-signup-grid,
+  .host-setup-sequence,
   .host-profile-fields,
   .calendar-form-grid,
   .host-setup-header { grid-template-columns: 1fr; display: grid; }
+  .host-category-grid { grid-template-columns: 1fr 1fr; }
   .calendar-edit-button { width: 100%; }
   .share-link-box { min-width: 0; border-radius: 18px; }
   .host-slot-row { display: grid; }

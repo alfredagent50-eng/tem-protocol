@@ -18,6 +18,7 @@ type HostProfile = {
   slotIds: string[];
   featuredSlotIds: string[];
   customSlots: Slot[];
+  acceptedTypeIds: string[];
 };
 
 const defaultHostProfile: HostProfile = {
@@ -27,6 +28,7 @@ const defaultHostProfile: HostProfile = {
   slotIds: slots.map((slot) => slot.id),
   featuredSlotIds,
   customSlots: [],
+  acceptedTypeIds: requestTypes.map((type) => type.id),
 };
 
 function getAllSlots(profile: HostProfile) {
@@ -183,6 +185,7 @@ function App() {
       ...profile,
       slug: profile.slug.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') || 'coffee-host',
       customSlots: profile.customSlots ?? [],
+      acceptedTypeIds: profile.acceptedTypeIds?.length ? profile.acceptedTypeIds : defaultHostProfile.acceptedTypeIds,
       slotIds: profile.slotIds.length ? profile.slotIds.filter((id) => allSlotIds.includes(id)) : defaultHostProfile.slotIds,
       featuredSlotIds: profile.featuredSlotIds.filter((id) => profile.slotIds.includes(id)).slice(0, 5),
     };
@@ -346,7 +349,8 @@ function BookingPage({
 }) {
   const allSlots = getAllSlots(hostProfile);
   const selectedSlot = allSlots.find((slot) => slot.id === selectedSlotId) ?? allSlots[0] ?? slots[0];
-  const selectedType = requestTypes.find((type) => type.id === selectedTypeId) ?? requestTypes[0];
+  const acceptedRequestTypes = requestTypes.filter((type) => hostProfile.acceptedTypeIds.includes(type.id));
+  const selectedType = acceptedRequestTypes.find((type) => type.id === selectedTypeId) ?? acceptedRequestTypes[0] ?? requestTypes[0];
   const selectedMarket = getSlotMarketState(requests, selectedSlot.id);
   const marketFloor = selectedMarket.nextBidFloor ?? getSlotFloor(selectedSlot);
   const requiredAmount = Math.ceil(marketFloor * selectedType.multiplier);
@@ -395,7 +399,7 @@ function BookingPage({
         </div>
 
         <div className="request-types" aria-label="Request type">
-          {requestTypes.map((type) => (
+          {(acceptedRequestTypes.length ? acceptedRequestTypes : requestTypes).map((type) => (
             <button
               className={`request-type ${type.id === selectedTypeId ? 'selected' : ''}`}
               key={type.id}
@@ -675,12 +679,12 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
     duration: `${duration} min`,
   }));
 
-  function updateName(value: string) {
-    onSaveHostProfile({ ...hostProfile, name: value });
-  }
-
-  function updateSlug(value: string) {
-    onSaveHostProfile({ ...hostProfile, slug: value });
+  function toggleCategory(typeId: string) {
+    const enabled = hostProfile.acceptedTypeIds.includes(typeId);
+    const acceptedTypeIds = enabled
+      ? hostProfile.acceptedTypeIds.filter((id) => id !== typeId)
+      : [...hostProfile.acceptedTypeIds, typeId];
+    onSaveHostProfile({ ...hostProfile, acceptedTypeIds: acceptedTypeIds.length ? acceptedTypeIds : [typeId] });
   }
 
   function toggleSlot(slotId: string) {
@@ -734,16 +738,28 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
         </div>
       </div>
 
-      <div className="host-profile-fields">
-        <label>
-          Name
-          <input value={hostProfile.name} onChange={(event) => updateName(event.target.value)} />
-        </label>
-        <label>
-          Link slug
-          <input value={hostProfile.slug} onChange={(event) => updateSlug(event.target.value)} />
-        </label>
+      <div className="host-setup-sequence">
+        <section className="host-category-step">
+          <div>
+            <p className="overline">Step 1</p>
+            <h3>What can people ask for?</h3>
+          </div>
+          <div className="host-category-grid">
+            {requestTypes.map((type) => {
+              const enabled = hostProfile.acceptedTypeIds.includes(type.id);
+              return (
+                <button className={enabled ? 'active' : ''} key={type.id} onClick={() => toggleCategory(type.id)}>
+                  <span>{type.emoji}</span>
+                  <strong>{type.label}</strong>
+                  <small>{type.short}</small>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+
         <div className="host-setup-metrics">
+          <strong>{hostProfile.acceptedTypeIds.length}</strong><span>categories</span>
           <strong>{selectedSlots.length}</strong><span>available</span>
           <strong>{bestPicks.length}</strong><span>best picks</span>
         </div>
@@ -765,7 +781,7 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
             <label>Minimum $<input type="number" min="1" value={minimum} onChange={(event) => setMinimum(Number(event.target.value))} /></label>
           </div>
           <div className="price-preview-row">
-            {requestTypes.slice(0, 5).map((type) => <span key={type.id}>{type.label}: ${Math.ceil(minimum * type.multiplier)}</span>)}
+            {requestTypes.filter((type) => hostProfile.acceptedTypeIds.includes(type.id)).map((type) => <span key={type.id}>{type.label}: ${Math.ceil(minimum * type.multiplier)}</span>)}
           </div>
           <div className="generated-preview">
             {previewSlots.length ? previewSlots.map((slot) => <span key={slot.id}>{slot.day} {slot.time} · {slot.duration} · ${slot.minimum}</span>) : <strong>No slots in this range.</strong>}
