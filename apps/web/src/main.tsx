@@ -226,6 +226,13 @@ function BookingPage({
   const marketFloor = selectedMarket.nextBidFloor ?? getSlotFloor(selectedSlot);
   const requiredAmount = Math.ceil(marketFloor * selectedType.multiplier);
   const canContinue = name.trim().length > 1 && email.includes('@');
+  const demoSteps = [
+    { label: 'Choose ask', active: true },
+    { label: 'Pick time', active: true },
+    { label: step === 'details' ? 'Add context' : 'Context ready', active: step !== 'confirmed' },
+    { label: step === 'payment' ? 'Mock pay' : step === 'confirmed' ? 'Paid' : 'Pay', active: step === 'payment' || step === 'confirmed' },
+    { label: 'Host reviews', active: step === 'confirmed' },
+  ];
   function fillDemoRequest() {
     onSetName('Alex Demo');
     onSetEmail('alex@example.com');
@@ -239,7 +246,25 @@ function BookingPage({
           <div className="intro-mark sip-mark" aria-hidden="true">S</div>
           <div>
             <h1>Our time’s worth a sip.</h1>
+            <p>Choose what you need, pick a public slot, put a real signal behind it. CoffeeSip keeps private details hidden until the host reviews the paid request.</p>
+            <div className="hero-pills" aria-label="Product promises">
+              <span>Public availability</span>
+              <span>Private notes</span>
+              <span>Mock payment demo</span>
+            </div>
           </div>
+        </div>
+
+        <div className="demo-tour" aria-label="Demo walkthrough">
+          <div>
+            <p className="overline">30 second demo</p>
+            <strong>Guest makes a paid ask → host accepts or passes.</strong>
+          </div>
+          <ol>
+            {demoSteps.map((item) => (
+              <li className={item.active ? 'active' : ''} key={item.label}>{item.label}</li>
+            ))}
+          </ol>
         </div>
         <div className="panel-heading">
           <div>
@@ -258,8 +283,17 @@ function BookingPage({
             >
               <span>{type.emoji}</span>
               <strong>{type.label}</strong>
+              <small>{type.short}</small>
             </button>
           ))}
+        </div>
+
+        <div className="type-explainer">
+          <span>{selectedType.emoji}</span>
+          <div>
+            <strong>{selectedType.label}</strong>
+            <p>{selectedType.description}</p>
+          </div>
         </div>
 
         <div className="panel-heading compact">
@@ -320,6 +354,12 @@ function BookingPage({
           <small>{selectedSlot.duration}</small>
         </div>
 
+        <div className="checkout-story">
+          <span>1. Guest sends context</span>
+          <span>2. Payment becomes a signal</span>
+          <span>3. Host reviews privately</span>
+        </div>
+
         {(selectedSlot.status === 'requested' || selectedMarket.isTaken) ? (
           <p className="notice">
             Busy slot. Details stay private — only the price to compete is shown.
@@ -356,7 +396,7 @@ function BookingPage({
             </div>
 
             <button className="pay-button" disabled={!canContinue} onClick={onCreatePaymentIntent}>
-              Continue to payment
+              Continue to safe demo payment
             </button>
           </div>
         )}
@@ -378,6 +418,7 @@ function BookingPage({
           <div className="confirmed-state">
             <div className="checkmark">✓</div>
             <p><strong>{name || 'Guest'}</strong>, our {selectedType.label.toLowerCase()} request is locked in.</p>
+            <p className="next-step-copy">Now switch to Host to see the paid ask enter review with private details visible only behind the token.</p>
             <div className="receipt-card" aria-label="Booking receipt">
               <span>Request</span>
               <strong>{lastRequest?.id.slice(-8) ?? 'created'}</strong>
@@ -447,6 +488,9 @@ function HostDashboard({ requests, onUpdate, onLogout }: { requests: BookingRequ
           <p className="overline">Host dashboard</p>
           <h1>Today’s time market</h1>
           <p className="host-copy">Paid requests move from payment to review, then into the calendar or out of the queue.</p>
+          <div className="host-demo-note">
+            <strong>Demo script:</strong> review the guest note, accept one request, and the slot becomes scheduled while competing public details stay redacted.
+          </div>
           <button className="ghost-button compact-action" onClick={onLogout}>Lock dashboard</button>
         </div>
         <div className="dashboard-stats">
@@ -477,19 +521,19 @@ function HostDashboard({ requests, onUpdate, onLogout }: { requests: BookingRequ
 
       <div className="request-board">
         <div>
-          <h2>Payment</h2>
+          <h2>Payment <span>holds before review</span></h2>
           <HostRequestList requests={moneyPending} onUpdate={onUpdate} empty="No payment holds right now." />
         </div>
         <div>
-          <h2>Review</h2>
+          <h2>Review <span>private inbox</span></h2>
           <HostRequestList requests={needsReview} onUpdate={onUpdate} empty="No paid requests waiting." />
         </div>
         <div>
-          <h2>Scheduled</h2>
+          <h2>Scheduled <span>accepted time</span></h2>
           <HostRequestList requests={scheduled} onUpdate={onUpdate} empty="Accepted requests show here." />
         </div>
         <div>
-          <h2>Closed</h2>
+          <h2>Closed <span>history</span></h2>
           <HostRequestList requests={done} onUpdate={onUpdate} empty="Passed and completed requests show here." />
         </div>
       </div>
@@ -513,7 +557,7 @@ function relativeTime(iso: string) {
 }
 
 function HostRequestList({ requests, onUpdate, empty }: { requests: BookingRequest[]; onUpdate: (id: string, status: BookingRequest['status']) => void; empty: string }) {
-  if (requests.length === 0) return <p className="empty-state">{empty}</p>;
+  if (requests.length === 0) return <p className="empty-state"><strong>Clear.</strong><span>{empty}</span></p>;
 
   return (
     <div className="host-request-list">
