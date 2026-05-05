@@ -606,7 +606,6 @@ function HostDashboard({ requests, onUpdate, onLogout, hostProfile, onSaveHostPr
           <p className="overline">Host dashboard</p>
           <h1>Today’s time market</h1>
           <p className="host-copy">Manage availability, best picks, and incoming requests from one place.</p>
-          <button className="ghost-button compact-action" onClick={onLogout}>Exit dashboard</button>
         </div>
         <div className="dashboard-stats">
           <div className="dashboard-stat">
