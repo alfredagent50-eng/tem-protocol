@@ -740,7 +740,7 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
       <div className="host-setup-header">
         <div>
           <h2>Your public calendar</h2>
-          <p>Start shaping your availability and turn time into sips.</p>
+          <p>Start shaping your schedule and turn time into sips.</p>
         </div>
         <button className="calendar-edit-button" onClick={() => setIsEditingCalendar((open) => !open)}>
           {isEditingCalendar ? 'Close calendar editor' : 'Edit your calendar'}
