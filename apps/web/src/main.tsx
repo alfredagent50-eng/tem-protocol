@@ -739,9 +739,8 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
     <section className="host-setup-panel" aria-label="Host setup">
       <div className="host-setup-header">
         <div>
-          <p className="overline">Host setup</p>
-          <h2>Your public page</h2>
-          <p>Choose available slots, promote best picks, then send one link.</p>
+          <h2>Your public calendar</h2>
+          <p>Start shaping your availability and turn open time into sips.</p>
         </div>
         <button className="calendar-edit-button" onClick={() => setIsEditingCalendar((open) => !open)}>
           {isEditingCalendar ? 'Close calendar editor' : 'Edit your calendar'}
