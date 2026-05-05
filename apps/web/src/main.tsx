@@ -341,12 +341,7 @@ function BookingPage({
           <div className="intro-mark sip-mark" aria-hidden="true">S</div>
           <div>
             <h1>Our time’s worth a sip.</h1>
-            <p>Choose what you need, pick a public slot, put a real signal behind it. CoffeeSip keeps private details hidden until the host reviews the paid request.</p>
-            <div className="hero-pills" aria-label="Product promises">
-              <span>Public availability</span>
-              <span>Private notes</span>
-              <span>Mock payment demo</span>
-            </div>
+            <p>Choose what you need, pick a time, and put a real signal behind it.</p>
           </div>
         </div>
 
