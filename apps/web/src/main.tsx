@@ -658,7 +658,7 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
   const shareLink = `${window.location.origin}/?host=${hostProfile.slug}`;
   const allSlots = getAllSlots(hostProfile);
   const selectedSlots = allSlots.filter((slot) => hostProfile.slotIds.includes(slot.id));
-  const bestPicks = allSlots.filter((slot) => hostProfile.featuredSlotIds.includes(slot.id));
+  const visibleSetupSlots = (selectedSlots.length ? selectedSlots : allSlots).slice(0, 1);
   const previewSlots = generateAvailabilitySlots({ date, from, to, duration: duration + buffer, minimum }).map((slot) => ({
     ...slot,
     id: slot.id.replace(`-${duration + buffer}`, `-${duration}-${minimum}`),
@@ -744,11 +744,6 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
           </div>
         </section>
 
-        <div className="host-setup-metrics">
-          <strong>{hostProfile.acceptedTypeIds.length}</strong><span>categories</span>
-          <strong>{selectedSlots.length}</strong><span>available</span>
-          <strong>{bestPicks.length}</strong><span>best picks</span>
-        </div>
       </div>
 
       {isEditingCalendar && (
@@ -777,7 +772,7 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
       )}
 
       <div className="host-slot-editor">
-        {allSlots.map((slot) => {
+        {visibleSetupSlots.map((slot) => {
           const enabled = hostProfile.slotIds.includes(slot.id);
           const featured = hostProfile.featuredSlotIds.includes(slot.id);
           return (
