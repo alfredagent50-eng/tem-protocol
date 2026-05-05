@@ -757,7 +757,6 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
   .booking-card { grid-template-columns: 1fr; }
   .host-panel, .schedule-panel { border-right: 0; border-bottom: 1px solid #e9edf3; }
   .request-types { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-  .request-board { grid-template-columns: 1fr; }
   .dashboard-hero { display: grid; }
   .dashboard-stats { grid-template-columns: 1fr; }
 }
@@ -781,10 +780,8 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
   max-width: 920px;
   min-height: 460px;
 }
-.host-signup-grid {
-  display: grid;
-  grid-template-columns: 1.1fr 0.9fr;
-  gap: 18px;
+.host-signup-form {
+  max-width: 520px;
 }
 .host-gate-form {
   display: grid;
@@ -807,10 +804,6 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
   padding: 14px 16px;
   background: #fbfcff;
   color: #172033;
-}
-.legacy-token {
-  align-content: start;
-  background: #fbfcff;
 }
 .compact-action {
   width: fit-content;

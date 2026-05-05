@@ -243,7 +243,6 @@ function App() {
 }
 
 function HostGate({ onUnlock, hostProfile, onSaveHostProfile }: { onUnlock: (token: string) => void; hostProfile: HostProfile; onSaveHostProfile: (profile: HostProfile) => void }) {
-  const [token, setToken] = useState('');
   const [name, setName] = useState(hostProfile.name);
   const [slug, setSlug] = useState(hostProfile.slug);
 
@@ -257,29 +256,19 @@ function HostGate({ onUnlock, hostProfile, onSaveHostProfile }: { onUnlock: (tok
       <div className="host-signup-intro">
         <p className="overline">Create host page</p>
         <h1>Set your time market, then share one link.</h1>
-        <p className="host-copy">For the MVP this creates a local demo host profile. Real accounts/auth come later.</p>
+        <p className="host-copy">Create a demo host profile, edit your calendar, and publish bookable slots. Real accounts/auth come later.</p>
       </div>
-      <div className="host-signup-grid">
-        <form className="host-gate-form" onSubmit={(event) => { event.preventDefault(); createDemoHost(); }}>
-          <label>
-            Display name
-            <input value={name} onChange={(event) => setName(event.target.value)} placeholder="Bar Kolen" />
-          </label>
-          <label>
-            Public link
-            <input value={slug} onChange={(event) => setSlug(event.target.value)} placeholder="bar" />
-          </label>
-          <button className="pay-button">Create demo host page</button>
-        </form>
-        <form className="host-gate-form legacy-token" onSubmit={(event) => { event.preventDefault(); onUnlock(token); }}>
-          <p className="overline">Existing host</p>
-          <label>
-            Host token
-            <input value={token} onChange={(event) => setToken(event.target.value)} placeholder="Paste host token" type="password" autoComplete="current-password" />
-          </label>
-          <button className="ghost-button" disabled={token.trim().length < 4}>Unlock with token</button>
-        </form>
-      </div>
+      <form className="host-gate-form host-signup-form" onSubmit={(event) => { event.preventDefault(); createDemoHost(); }}>
+        <label>
+          Display name
+          <input value={name} onChange={(event) => setName(event.target.value)} placeholder="Bar Kolen" />
+        </label>
+        <label>
+          Public link
+          <input value={slug} onChange={(event) => setSlug(event.target.value)} placeholder="bar" />
+        </label>
+        <button className="pay-button">Create my host page</button>
+      </form>
     </section>
   );
 }
