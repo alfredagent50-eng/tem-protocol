@@ -19,6 +19,7 @@ type HostProfile = {
   featuredSlotIds: string[];
   customSlots: Slot[];
   acceptedTypeIds: string[];
+  typeMinimums: Record<string, number>;
 };
 
 const defaultHostProfile: HostProfile = {
@@ -29,6 +30,7 @@ const defaultHostProfile: HostProfile = {
   featuredSlotIds,
   customSlots: [],
   acceptedTypeIds: requestTypes.map((type) => type.id),
+  typeMinimums: Object.fromEntries(requestTypes.map((type) => [type.id, type.id === 'urgent' ? 25 : type.id === 'appearance' ? 18 : type.id === 'favor' ? 12 : type.id === 'meet' ? 11 : 10])),
 };
 
 function getAllSlots(profile: HostProfile) {
@@ -186,6 +188,7 @@ function App() {
       slug: profile.slug.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') || 'coffee-host',
       customSlots: profile.customSlots ?? [],
       acceptedTypeIds: profile.acceptedTypeIds?.length ? profile.acceptedTypeIds : defaultHostProfile.acceptedTypeIds,
+      typeMinimums: { ...defaultHostProfile.typeMinimums, ...(profile.typeMinimums ?? {}) },
       slotIds: profile.slotIds.length ? profile.slotIds.filter((id) => allSlotIds.includes(id)) : defaultHostProfile.slotIds,
       featuredSlotIds: profile.featuredSlotIds.filter((id) => profile.slotIds.includes(id)).slice(0, 5),
     };
@@ -654,14 +657,15 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
   const [to, setTo] = useState('12:00');
   const [duration, setDuration] = useState(30);
   const [buffer, setBuffer] = useState(0);
-  const [minimum, setMinimum] = useState(10);
   const shareLink = `${window.location.origin}/?host=${hostProfile.slug}`;
   const allSlots = getAllSlots(hostProfile);
   const selectedSlots = allSlots.filter((slot) => hostProfile.slotIds.includes(slot.id));
   const visibleSetupSlots = (selectedSlots.length ? selectedSlots : allSlots).slice(0, 1);
-  const previewSlots = generateAvailabilitySlots({ date, from, to, duration: duration + buffer, minimum }).map((slot) => ({
+  const selectedMinimums = hostProfile.acceptedTypeIds.map((id) => hostProfile.typeMinimums[id] ?? 10);
+  const slotFloor = selectedMinimums.length ? Math.min(...selectedMinimums) : 10;
+  const previewSlots = generateAvailabilitySlots({ date, from, to, duration: duration + buffer, minimum: slotFloor }).map((slot) => ({
     ...slot,
-    id: slot.id.replace(`-${duration + buffer}`, `-${duration}-${minimum}`),
+    id: slot.id.replace(`-${duration + buffer}`, `-${duration}-${slotFloor}`),
     duration: `${duration} min`,
   }));
 
@@ -671,6 +675,13 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
       ? hostProfile.acceptedTypeIds.filter((id) => id !== typeId)
       : [...hostProfile.acceptedTypeIds, typeId];
     onSaveHostProfile({ ...hostProfile, acceptedTypeIds: acceptedTypeIds.length ? acceptedTypeIds : [typeId] });
+  }
+
+  function updateTypeMinimum(typeId: string, value: number) {
+    onSaveHostProfile({
+      ...hostProfile,
+      typeMinimums: { ...hostProfile.typeMinimums, [typeId]: Number.isFinite(value) && value > 0 ? value : 1 },
+    });
   }
 
   function toggleSlot(slotId: string) {
@@ -738,6 +749,12 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
                   <span>{type.emoji}</span>
                   <strong>{type.label}</strong>
                   <small>{type.short}</small>
+                  {enabled && (
+                    <label onClick={(event) => event.stopPropagation()}>
+                      Minimum sip
+                      <input type="number" min="1" value={hostProfile.typeMinimums[type.id] ?? 10} onChange={(event) => updateTypeMinimum(type.id, Number(event.target.value))} />
+                    </label>
+                  )}
                 </button>
               );
             })}
@@ -751,7 +768,7 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
           <div className="calendar-editor-copy">
             <p className="overline">Availability block</p>
             <h3>Tell CoffeeSip when you’re open.</h3>
-            <p>Pick a day, time range, commitment length, and minimum sip. We’ll split it into bookable slots.</p>
+            <p>Pick a day, time range, commitment length, and buffer. Minimum sips are set per category above.</p>
           </div>
           <div className="calendar-form-grid">
             <label>Date<input type="date" value={date} onChange={(event) => setDate(event.target.value)} /></label>
@@ -759,10 +776,9 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
             <label>To<input type="time" value={to} onChange={(event) => setTo(event.target.value)} /></label>
             <label>Length<select value={duration} onChange={(event) => setDuration(Number(event.target.value))}><option value={15}>15 min</option><option value={30}>30 min</option><option value={45}>45 min</option><option value={60}>60 min</option></select></label>
             <label>Buffer<select value={buffer} onChange={(event) => setBuffer(Number(event.target.value))}><option value={0}>No buffer</option><option value={15}>15 min</option><option value={30}>30 min</option></select></label>
-            <label>Minimum $<input type="number" min="1" value={minimum} onChange={(event) => setMinimum(Number(event.target.value))} /></label>
           </div>
           <div className="price-preview-row">
-            {requestTypes.filter((type) => hostProfile.acceptedTypeIds.includes(type.id)).map((type) => <span key={type.id}>{type.label}: ${Math.ceil(minimum * type.multiplier)}</span>)}
+            {requestTypes.filter((type) => hostProfile.acceptedTypeIds.includes(type.id)).map((type) => <span key={type.id}>{type.label}: ${hostProfile.typeMinimums[type.id] ?? 10}</span>)}
           </div>
           <div className="generated-preview">
             {previewSlots.length ? previewSlots.map((slot) => <span key={slot.id}>{slot.day} {slot.time} · {slot.duration} · ${slot.minimum}</span>) : <strong>No slots in this range.</strong>}
