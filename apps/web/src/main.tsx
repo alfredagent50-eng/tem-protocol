@@ -260,8 +260,8 @@ function HostGate({ onUnlock, hostProfile, onSaveHostProfile }: { onUnlock: (tok
       <div className="host-signup-story">
         <span className="sip-mark signup-mark" aria-hidden="true">S</span>
         <p className="overline">Create host page</p>
-        <h1>Open time without opening your whole calendar.</h1>
-        <p>Create a CoffeeSip page, choose when you’re available, set the minimum signal, and share one link.</p>
+        <h1>Your time is worth it.</h1>
+        <p>Create a CoffeeSip page, choose when you’re available, set the minimum sip, and share one link with others.</p>
         <div className="signup-benefits">
           <span>Build your public page</span>
           <span>Generate bookable slots</span>
@@ -272,7 +272,7 @@ function HostGate({ onUnlock, hostProfile, onSaveHostProfile }: { onUnlock: (tok
       <form className="host-signup-form-card" onSubmit={(event) => { event.preventDefault(); createDemoHost(); }}>
         <div>
           <p className="overline">Host signup</p>
-          <h2>Start with your page.</h2>
+          <h2>Start setting up your calendar.</h2>
           <p className="signup-muted">MVP demo signup. Real accounts and login come after the flow feels right.</p>
         </div>
         <label>
