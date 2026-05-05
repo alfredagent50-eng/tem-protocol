@@ -475,6 +475,24 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
   color: #fff;
 }
 
+@media (max-width: 980px) {
+  .demo-tour ol { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+
+@media (max-width: 620px) {
+  .demo-tour {
+    margin: -6px 0 22px;
+    padding: 14px;
+  }
+  .demo-tour ol {
+    grid-template-columns: 1fr;
+  }
+  .demo-tour li {
+    grid-template-columns: auto 1fr;
+    align-items: center;
+  }
+}
+
 .type-explainer {
   display: flex;
   align-items: flex-start;
@@ -993,7 +1011,7 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
 }
 
 .top-brand {
-  display: none;
+  display: flex;
   align-items: center;
   gap: 9px;
   color: #111827;
@@ -1033,7 +1051,6 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
     display: flex;
     height: auto;
   }
-  .top-brand { display: flex; }
   .api-pill,
   .app-switcher {
     display: none;
