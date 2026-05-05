@@ -605,11 +605,8 @@ function HostDashboard({ requests, onUpdate, onLogout, hostProfile, onSaveHostPr
         <div>
           <p className="overline">Host dashboard</p>
           <h1>Today’s time market</h1>
-          <p className="host-copy">Paid requests move from payment to review, then into the calendar or out of the queue.</p>
-          <div className="host-demo-note">
-            <strong>Demo script:</strong> review the guest note, accept one request, and the slot becomes scheduled while competing public details stay redacted.
-          </div>
-          <button className="ghost-button compact-action" onClick={onLogout}>Lock dashboard</button>
+          <p className="host-copy">Manage availability, best picks, and incoming requests from one place.</p>
+          <button className="ghost-button compact-action" onClick={onLogout}>Exit dashboard</button>
         </div>
         <div className="dashboard-stats">
           <div className="dashboard-stat">
@@ -625,16 +622,6 @@ function HostDashboard({ requests, onUpdate, onLogout, hostProfile, onSaveHostPr
             <span>captured value</span>
           </div>
         </div>
-      </div>
-
-      <div className="lifecycle-strip" aria-label="Request lifecycle">
-        <span>Payment</span>
-        <strong>→</strong>
-        <span>Host review</span>
-        <strong>→</strong>
-        <span>Scheduled</span>
-        <strong>→</strong>
-        <span>Completed</span>
       </div>
 
       <HostSetupPanel hostProfile={hostProfile} onSaveHostProfile={onSaveHostProfile} />
