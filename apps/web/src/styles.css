@@ -1507,12 +1507,12 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
   border: 0;
   border-radius: 999px;
   padding: 12px 15px;
-  background: linear-gradient(145deg, #2a1d14, #111827);
+  background: linear-gradient(145deg, #17365f, #0f1f3a);
   color: #fff;
   cursor: pointer;
   font-weight: 950;
   white-space: nowrap;
-  box-shadow: 0 12px 24px rgba(42, 29, 20, 0.14);
+  box-shadow: 0 14px 30px rgba(23, 54, 95, 0.22);
 }
 .share-link-box span {
   flex: 1;
@@ -1702,6 +1702,10 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
 }
 .host-setup-metrics strong { color: #2a1d14; font-size: 20px; line-height: 1; }
 .host-setup-metrics span { color: #68758a; font-size: 12px; font-weight: 900; }
+.calendar-setup-flow {
+  display: grid;
+  gap: 16px;
+}
 .calendar-editor-card {
   display: grid;
   gap: 16px;

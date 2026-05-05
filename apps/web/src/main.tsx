@@ -752,63 +752,61 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
         </div>
       </div>
 
-      <div className="host-setup-sequence">
-        <section className="host-category-step">
-          <div>
-            <p className="overline">Step 1</p>
-            <h3>What can people ask for?</h3>
-          </div>
-          <div className="host-category-grid">
-            {requestTypes.map((type) => {
-              const enabled = hostProfile.acceptedTypeIds.includes(type.id);
-              return (
-                <button className={enabled ? 'active' : ''} key={type.id} onClick={() => toggleCategory(type.id)}>
-                  <span>{type.emoji}</span>
-                  <strong>{type.label}</strong>
-                  <small>{type.short}</small>
-                  {enabled && <em>✓</em>}
-                </button>
-              );
-            })}
-          </div>
-          {hostProfile.acceptedTypeIds.length > 0 && (
-            <div className="category-pricing-tray">
-              <div className="enabled-category-chips" aria-label="Enabled categories">
-                {hostProfile.acceptedTypeIds.map((typeId) => {
-                  const type = requestTypes.find((item) => item.id === typeId) ?? requestTypes[0];
-                  return <button className={activeTypeId === typeId ? 'active' : ''} key={typeId} onClick={() => setActiveTypeId(typeId)}>{type.emoji} {type.label}</button>;
-                })}
-              </div>
-              {activeType && (
-                <div className="pricing-tray-editor">
-                  <label>
-                    MIN SIP FOR {activeType.label.toUpperCase()}
-                    <div className="sip-price-row">
-                      <input type="number" min="1" value={hostProfile.typeMinimums[activeType.id] ?? 10} onChange={(event) => updateTypeMinimum(activeType.id, Number(event.target.value))} />
-                      <div className="currency-segment" role="group" aria-label="Currency">
-                        {['$', '€', 'sats'].map((currency) => (
-                          <button className={(hostProfile.typeCurrencies[activeType.id] ?? '$') === currency ? 'active' : ''} key={currency} onClick={() => updateTypeCurrency(activeType.id, currency)}>
-                            {currency === 'sats' ? '₿ sats' : currency}
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                  </label>
-                </div>
-              )}
-            </div>
-          )}
-        </section>
-
-      </div>
-
       {isEditingCalendar && (
-        <section className="calendar-editor-card" aria-label="Calendar editor">
-          <div className="calendar-editor-copy">
-            <p className="overline">Availability block</p>
-            <h3>Tell CoffeeSip when you’re open.</h3>
-            <p>Pick a day, time range, commitment length, and buffer. Minimum sips are set per category above.</p>
-          </div>
+        <div className="calendar-setup-flow">
+          <section className="host-category-step">
+            <div>
+              <p className="overline">Step 1</p>
+              <h3>What can people ask for?</h3>
+            </div>
+            <div className="host-category-grid">
+              {requestTypes.map((type) => {
+                const enabled = hostProfile.acceptedTypeIds.includes(type.id);
+                return (
+                  <button className={enabled ? 'active' : ''} key={type.id} onClick={() => toggleCategory(type.id)}>
+                    <span>{type.emoji}</span>
+                    <strong>{type.label}</strong>
+                    <small>{type.short}</small>
+                    {enabled && <em>✓</em>}
+                  </button>
+                );
+              })}
+            </div>
+            {hostProfile.acceptedTypeIds.length > 0 && (
+              <div className="category-pricing-tray">
+                <div className="enabled-category-chips" aria-label="Enabled categories">
+                  {hostProfile.acceptedTypeIds.map((typeId) => {
+                    const type = requestTypes.find((item) => item.id === typeId) ?? requestTypes[0];
+                    return <button className={activeTypeId === typeId ? 'active' : ''} key={typeId} onClick={() => setActiveTypeId(typeId)}>{type.emoji} {type.label}</button>;
+                  })}
+                </div>
+                {activeType && (
+                  <div className="pricing-tray-editor">
+                    <label>
+                      MIN SIP FOR {activeType.label.toUpperCase()}
+                      <div className="sip-price-row">
+                        <input type="number" min="1" value={hostProfile.typeMinimums[activeType.id] ?? 10} onChange={(event) => updateTypeMinimum(activeType.id, Number(event.target.value))} />
+                        <div className="currency-segment" role="group" aria-label="Currency">
+                          {['$', '€', 'sats'].map((currency) => (
+                            <button className={(hostProfile.typeCurrencies[activeType.id] ?? '$') === currency ? 'active' : ''} key={currency} onClick={() => updateTypeCurrency(activeType.id, currency)}>
+                              {currency === 'sats' ? '₿ sats' : currency}
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </label>
+                  </div>
+                )}
+              </div>
+            )}
+          </section>
+
+          <section className="calendar-editor-card" aria-label="Calendar editor">
+            <div className="calendar-editor-copy">
+              <p className="overline">Step 2</p>
+              <h3>Tell CoffeeSip when you’re open.</h3>
+              <p>Pick a day, time range, commitment length, and buffer. Minimum sips are set per category above.</p>
+            </div>
           <div className="calendar-form-grid">
             <label>Date<input type="date" value={date} onChange={(event) => setDate(event.target.value)} /></label>
             <label>From<input type="time" value={from} onChange={(event) => setFrom(event.target.value)} /></label>
@@ -823,7 +821,8 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
             {previewSlots.length ? previewSlots.map((slot) => <span key={slot.id}>{slot.day} {slot.time} · {slot.duration} · ${slot.minimum}</span>) : <strong>No slots in this range.</strong>}
           </div>
           <button className="pay-button" disabled={previewSlots.length === 0} onClick={saveGeneratedSlots}>Generate and save slots</button>
-        </section>
+          </section>
+        </div>
       )}
 
       <div className="host-slot-editor">
