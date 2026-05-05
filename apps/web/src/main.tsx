@@ -665,10 +665,14 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
   const [to, setTo] = useState('12:00');
   const [duration, setDuration] = useState(30);
   const [buffer, setBuffer] = useState(0);
+  const [lastSavedSlotIds, setLastSavedSlotIds] = useState<string[]>([]);
   const shareLink = `${window.location.origin}/?host=${hostProfile.slug}`;
   const allSlots = getAllSlots(hostProfile);
   const selectedSlots = allSlots.filter((slot) => hostProfile.slotIds.includes(slot.id));
-  const visibleSetupSlots = (selectedSlots.length ? selectedSlots : allSlots).slice(0, 1);
+  const recentlySavedSlots = lastSavedSlotIds
+    .map((id) => allSlots.find((slot) => slot.id === id))
+    .filter((slot): slot is Slot => Boolean(slot));
+  const visibleSetupSlots = (recentlySavedSlots.length ? recentlySavedSlots : selectedSlots.length ? selectedSlots : allSlots).slice(0, 8);
   const selectedMinimums = hostProfile.acceptedTypeIds.map((id) => hostProfile.typeMinimums[id] ?? 10);
   const slotFloor = selectedMinimums.length ? Math.min(...selectedMinimums) : 10;
   const activeType = requestTypes.find((type) => type.id === activeTypeId && hostProfile.acceptedTypeIds.includes(type.id)) ?? null;
@@ -724,14 +728,16 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
   }
 
   function saveGeneratedSlots() {
+    const previewSlotIds = previewSlots.map((slot) => slot.id);
     const existingCustomIds = new Set(hostProfile.customSlots.map((slot) => slot.id));
     const newSlots = previewSlots.filter((slot) => !existingCustomIds.has(slot.id));
     onSaveHostProfile({
       ...hostProfile,
       customSlots: [...hostProfile.customSlots, ...newSlots],
-      slotIds: Array.from(new Set([...hostProfile.slotIds, ...previewSlots.map((slot) => slot.id)])),
-      featuredSlotIds: Array.from(new Set([...hostProfile.featuredSlotIds, ...previewSlots.slice(0, 3).map((slot) => slot.id)])).slice(-5),
+      slotIds: Array.from(new Set([...hostProfile.slotIds, ...previewSlotIds])),
+      featuredSlotIds: Array.from(new Set([...hostProfile.featuredSlotIds, ...previewSlotIds.slice(0, 3)])).slice(-5),
     });
+    setLastSavedSlotIds(previewSlotIds);
     setIsEditingCalendar(false);
   }
 
@@ -823,6 +829,14 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
           </section>
         </div>
       )}
+
+      <div className="saved-slots-header">
+        <div>
+          <p className="overline">Saved slots</p>
+          <h3>{recentlySavedSlots.length ? `${recentlySavedSlots.length} slots saved` : 'Your visible slots'}</h3>
+        </div>
+        {recentlySavedSlots.length > 0 && <span>Showing the slots you just generated.</span>}
+      </div>
 
       <div className="host-slot-editor">
         {visibleSetupSlots.map((slot) => {
