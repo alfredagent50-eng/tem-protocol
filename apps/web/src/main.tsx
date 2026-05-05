@@ -766,13 +766,12 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
                   {enabled && (
                     <div className="category-price-editor" onClick={(event) => event.stopPropagation()}>
                       <label>
-                        Minimum sip
+                        MIN SIP
                         <div className="sip-price-row">
                           <input type="number" min="1" value={hostProfile.typeMinimums[type.id] ?? 10} onChange={(event) => updateTypeMinimum(type.id, Number(event.target.value))} />
                           <select value={hostProfile.typeCurrencies[type.id] ?? '$'} onChange={(event) => updateTypeCurrency(type.id, event.target.value)}>
                             <option value="$">$</option>
                             <option value="€">€</option>
-                            <option value="₪">₪</option>
                             <option value="sats">₿ sats</option>
                           </select>
                         </div>

@@ -1562,14 +1562,17 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
   letter-spacing: -0.04em;
 }
 .host-category-grid {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
   gap: 8px;
 }
 .host-category-grid button {
   display: grid;
   gap: 6px;
+  flex: 1 1 132px;
   min-height: 92px;
+  max-width: 180px;
   padding: 12px;
   border: 1px solid var(--line-warm);
   border-radius: 17px;
@@ -1615,6 +1618,15 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
   color: #fff;
   font-weight: 900;
   outline: 0;
+}
+.host-category-grid input[type="number"]::-webkit-outer-spin-button,
+.host-category-grid input[type="number"]::-webkit-inner-spin-button {
+  margin: 0;
+  -webkit-appearance: none;
+}
+.host-category-grid input[type="number"] {
+  appearance: textfield;
+  -moz-appearance: textfield;
 }
 .host-category-grid select {
   width: auto;
@@ -1828,7 +1840,7 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
   .host-profile-fields,
   .calendar-form-grid,
   .host-setup-header { grid-template-columns: 1fr; display: grid; }
-  .host-category-grid { grid-template-columns: 1fr 1fr; }
+  .host-category-grid button { flex-basis: calc(50% - 4px); max-width: none; }
   .calendar-edit-button { width: 100%; }
   .share-link-box { min-width: 0; border-radius: 18px; }
   .host-slot-row { display: grid; }
