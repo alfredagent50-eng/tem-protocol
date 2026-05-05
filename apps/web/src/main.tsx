@@ -11,6 +11,29 @@ const featuredSlots = featuredSlotIds
   .map((id) => slots.find((slot) => slot.id === id))
   .filter((slot): slot is Slot => Boolean(slot));
 
+type HostProfile = {
+  name: string;
+  slug: string;
+  slotIds: string[];
+  featuredSlotIds: string[];
+};
+
+const defaultHostProfile: HostProfile = {
+  name: 'CoffeeSip Host',
+  slug: 'coffee-host',
+  slotIds: slots.map((slot) => slot.id),
+  featuredSlotIds,
+};
+
+function loadHostProfile(): HostProfile {
+  try {
+    const stored = window.localStorage.getItem('coffeesip-host-profile');
+    return stored ? { ...defaultHostProfile, ...JSON.parse(stored) } : defaultHostProfile;
+  } catch {
+    return defaultHostProfile;
+  }
+}
+
 function getInitialView() {
   const params = new URLSearchParams(window.location.search);
   return params.get('host') === '1' || window.location.hash === '#host' ? 'host' : 'guest';
@@ -30,6 +53,7 @@ function App() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [note, setNote] = useState('');
+  const [hostProfile, setHostProfile] = useState<HostProfile>(loadHostProfile);
 
   useEffect(() => {
     void refreshRequests();
@@ -104,6 +128,17 @@ function App() {
     window.localStorage.setItem('tem-host-token', trimmed);
   }
 
+  function saveHostProfile(profile: HostProfile) {
+    const cleanProfile = {
+      ...profile,
+      slug: profile.slug.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') || 'coffee-host',
+      slotIds: profile.slotIds.length ? profile.slotIds : defaultHostProfile.slotIds,
+      featuredSlotIds: profile.featuredSlotIds.filter((id) => profile.slotIds.includes(id)).slice(0, 5),
+    };
+    setHostProfile(cleanProfile);
+    window.localStorage.setItem('coffeesip-host-profile', JSON.stringify(cleanProfile));
+  }
+
   async function updateRequestStatus(id: string, status: BookingRequest['status']) {
     setApiState('loading');
     setRequests(await updateApiRequestStatus(id, status, hostToken));
@@ -145,36 +180,57 @@ function App() {
           requests={requests}
           lastRequest={lastRequest}
           onCreatePaidRequest={createPaidRequest}
+          hostProfile={hostProfile}
         />
       ) : (
         hostToken ? (
-          <HostDashboard requests={requests} onUpdate={updateRequestStatus} onLogout={() => saveHostToken('')} />
+          <HostDashboard requests={requests} onUpdate={updateRequestStatus} onLogout={() => saveHostToken('')} hostProfile={hostProfile} onSaveHostProfile={saveHostProfile} />
         ) : (
-          <HostGate onUnlock={saveHostToken} />
+          <HostGate onUnlock={saveHostToken} hostProfile={hostProfile} onSaveHostProfile={saveHostProfile} />
         )
       )}
     </main>
   );
 }
 
-function HostGate({ onUnlock }: { onUnlock: (token: string) => void }) {
+function HostGate({ onUnlock, hostProfile, onSaveHostProfile }: { onUnlock: (token: string) => void; hostProfile: HostProfile; onSaveHostProfile: (profile: HostProfile) => void }) {
   const [token, setToken] = useState('');
+  const [name, setName] = useState(hostProfile.name);
+  const [slug, setSlug] = useState(hostProfile.slug);
+
+  function createDemoHost() {
+    onSaveHostProfile({ ...hostProfile, name: name.trim() || 'CoffeeSip Host', slug: slug.trim() || 'coffee-host' });
+    onUnlock('demo-host-token');
+  }
+
   return (
-    <section className="dashboard-card host-gate-card">
-      <div>
-        <p className="overline">Host dashboard</p>
-        <h1>Private host controls</h1>
-        <p className="host-copy">
-          Enter the host token to review paid asks. This is a lightweight MVP gate; production still needs real auth.
-        </p>
+    <section className="dashboard-card host-gate-card host-signup-card">
+      <div className="host-signup-intro">
+        <p className="overline">Create host page</p>
+        <h1>Set your time market, then share one link.</h1>
+        <p className="host-copy">For the MVP this creates a local demo host profile. Real accounts/auth come later.</p>
       </div>
-      <form className="host-gate-form" onSubmit={(event) => { event.preventDefault(); onUnlock(token); }}>
-        <label>
-          Host token
-          <input value={token} onChange={(event) => setToken(event.target.value)} placeholder="Paste host token" type="password" autoComplete="current-password" />
-        </label>
-        <button className="pay-button" disabled={token.trim().length < 4}>Unlock dashboard</button>
-      </form>
+      <div className="host-signup-grid">
+        <form className="host-gate-form" onSubmit={(event) => { event.preventDefault(); createDemoHost(); }}>
+          <label>
+            Display name
+            <input value={name} onChange={(event) => setName(event.target.value)} placeholder="Bar Kolen" />
+          </label>
+          <label>
+            Public link
+            <input value={slug} onChange={(event) => setSlug(event.target.value)} placeholder="bar" />
+          </label>
+          <button className="pay-button">Create demo host page</button>
+        </form>
+        <form className="host-gate-form legacy-token" onSubmit={(event) => { event.preventDefault(); onUnlock(token); }}>
+          <p className="overline">Existing host</p>
+          <label>
+            Host token
+            <input value={token} onChange={(event) => setToken(event.target.value)} placeholder="Paste host token" type="password" autoComplete="current-password" />
+          </label>
+          <button className="ghost-button" disabled={token.trim().length < 4}>Unlock with token</button>
+        </form>
+      </div>
     </section>
   );
 }
@@ -199,6 +255,7 @@ function BookingPage({
   requests,
   lastRequest,
   onCreatePaidRequest,
+  hostProfile,
 }: {
   selectedSlotId: string;
   selectedTypeId: string;
@@ -219,6 +276,7 @@ function BookingPage({
   requests: BookingRequest[];
   lastRequest: BookingRequest | null;
   onCreatePaidRequest: () => void;
+  hostProfile: HostProfile;
 }) {
   const selectedSlot = slots.find((slot) => slot.id === selectedSlotId) ?? slots[0];
   const selectedType = requestTypes.find((type) => type.id === selectedTypeId) ?? requestTypes[0];
@@ -226,13 +284,11 @@ function BookingPage({
   const marketFloor = selectedMarket.nextBidFloor ?? getSlotFloor(selectedSlot);
   const requiredAmount = Math.ceil(marketFloor * selectedType.multiplier);
   const canContinue = name.trim().length > 1 && email.includes('@');
-  const demoSteps = [
-    { label: 'Choose ask', active: true },
-    { label: 'Pick time', active: true },
-    { label: step === 'details' ? 'Add context' : 'Context ready', active: step !== 'confirmed' },
-    { label: step === 'payment' ? 'Mock pay' : step === 'confirmed' ? 'Paid' : 'Pay', active: step === 'payment' || step === 'confirmed' },
-    { label: 'Host reviews', active: step === 'confirmed' },
-  ];
+  const visibleSlots = slots.filter((slot) => hostProfile.slotIds.includes(slot.id));
+  const visibleFeaturedSlots = hostProfile.featuredSlotIds
+    .map((id) => visibleSlots.find((slot) => slot.id === id))
+    .filter((slot): slot is Slot => Boolean(slot));
+  const visibleCalendarDays = calendarDays.filter((date) => visibleSlots.some((slot) => slot.date === date));
   function fillDemoRequest() {
     onSetName('Alex Demo');
     onSetEmail('alex@example.com');
@@ -255,17 +311,19 @@ function BookingPage({
           </div>
         </div>
 
-        <div className="demo-tour" aria-label="Demo walkthrough">
+        <details className="demo-tour" aria-label="Demo walkthrough">
+          <summary>First-time demo guide</summary>
           <div>
-            <p className="overline">30 second demo</p>
             <strong>Guest makes a paid ask → host accepts or passes.</strong>
           </div>
           <ol>
-            {demoSteps.map((item) => (
-              <li className={item.active ? 'active' : ''} key={item.label}>{item.label}</li>
-            ))}
+            <li className="active">Choose ask</li>
+            <li className="active">Pick time</li>
+            <li className={step !== 'confirmed' ? 'active' : ''}>Add context</li>
+            <li className={step === 'payment' || step === 'confirmed' ? 'active' : ''}>Mock pay</li>
+            <li className={step === 'confirmed' ? 'active' : ''}>Host reviews</li>
           </ol>
-        </div>
+        </details>
         <div className="panel-heading">
           <div>
             <p className="overline">Step 1</p>
@@ -310,7 +368,7 @@ function BookingPage({
 
         {!showCalendar && (
           <div className="slots-list">
-            {featuredSlots.map((slot) => (
+            {(visibleFeaturedSlots.length ? visibleFeaturedSlots : visibleSlots.slice(0, 4)).map((slot) => (
               <SlotButton key={slot.id} slot={slot} requests={requests} selected={slot.id === selectedSlotId} onClick={() => onChooseSlot(slot.id)} />
             ))}
           </div>
@@ -318,8 +376,8 @@ function BookingPage({
 
         {showCalendar && (
           <div className="calendar-grid">
-            {calendarDays.map((date) => {
-              const daySlots = slots.filter((slot) => slot.date === date);
+            {visibleCalendarDays.map((date) => {
+              const daySlots = visibleSlots.filter((slot) => slot.date === date);
               return (
                 <div className="calendar-day" key={date}>
                   <div className="calendar-day-title">
@@ -470,7 +528,7 @@ function formatCalendarSlot(slot: Slot, requests: BookingRequest[]) {
   return `Open · min ${slot.minimum} ${slot.currency}`;
 }
 
-function HostDashboard({ requests, onUpdate, onLogout }: { requests: BookingRequest[]; onUpdate: (id: string, status: BookingRequest['status']) => void; onLogout: () => void }) {
+function HostDashboard({ requests, onUpdate, onLogout, hostProfile, onSaveHostProfile }: { requests: BookingRequest[]; onUpdate: (id: string, status: BookingRequest['status']) => void; onLogout: () => void; hostProfile: HostProfile; onSaveHostProfile: (profile: HostProfile) => void }) {
   const moneyPending = requests.filter((request) => request.status === 'pending_payment' || request.status === 'paid');
   const needsReview = requests.filter((request) => request.status === 'host_review');
   const scheduled = requests.filter((request) => request.status === 'accepted');
@@ -519,6 +577,8 @@ function HostDashboard({ requests, onUpdate, onLogout }: { requests: BookingRequ
         <span>Completed</span>
       </div>
 
+      <HostSetupPanel hostProfile={hostProfile} onSaveHostProfile={onSaveHostProfile} />
+
       <div className="request-board">
         <div>
           <h2>Payment <span>holds before review</span></h2>
@@ -536,6 +596,92 @@ function HostDashboard({ requests, onUpdate, onLogout }: { requests: BookingRequ
           <h2>Closed <span>history</span></h2>
           <HostRequestList requests={done} onUpdate={onUpdate} empty="Passed and completed requests show here." />
         </div>
+      </div>
+    </section>
+  );
+}
+
+function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostProfile; onSaveHostProfile: (profile: HostProfile) => void }) {
+  const shareLink = `${window.location.origin}/?host=${hostProfile.slug}`;
+  const selectedSlots = slots.filter((slot) => hostProfile.slotIds.includes(slot.id));
+  const bestPicks = slots.filter((slot) => hostProfile.featuredSlotIds.includes(slot.id));
+
+  function updateName(value: string) {
+    onSaveHostProfile({ ...hostProfile, name: value });
+  }
+
+  function updateSlug(value: string) {
+    onSaveHostProfile({ ...hostProfile, slug: value });
+  }
+
+  function toggleSlot(slotId: string) {
+    const enabled = hostProfile.slotIds.includes(slotId);
+    const slotIds = enabled ? hostProfile.slotIds.filter((id) => id !== slotId) : [...hostProfile.slotIds, slotId];
+    onSaveHostProfile({
+      ...hostProfile,
+      slotIds,
+      featuredSlotIds: enabled ? hostProfile.featuredSlotIds.filter((id) => id !== slotId) : hostProfile.featuredSlotIds,
+    });
+  }
+
+  function toggleFeatured(slotId: string) {
+    const featured = hostProfile.featuredSlotIds.includes(slotId);
+    const featuredSlotIds = featured
+      ? hostProfile.featuredSlotIds.filter((id) => id !== slotId)
+      : [...hostProfile.featuredSlotIds, slotId].slice(-5);
+    onSaveHostProfile({ ...hostProfile, featuredSlotIds, slotIds: Array.from(new Set([...hostProfile.slotIds, slotId])) });
+  }
+
+  async function copyLink() {
+    await navigator.clipboard?.writeText(shareLink);
+  }
+
+  return (
+    <section className="host-setup-panel" aria-label="Host setup">
+      <div className="host-setup-header">
+        <div>
+          <p className="overline">Host setup</p>
+          <h2>Your public page</h2>
+          <p>Choose available slots, promote best picks, then send one link.</p>
+        </div>
+        <div className="share-link-box">
+          <span>{shareLink}</span>
+          <button onClick={copyLink}>Copy link</button>
+        </div>
+      </div>
+
+      <div className="host-profile-fields">
+        <label>
+          Name
+          <input value={hostProfile.name} onChange={(event) => updateName(event.target.value)} />
+        </label>
+        <label>
+          Link slug
+          <input value={hostProfile.slug} onChange={(event) => updateSlug(event.target.value)} />
+        </label>
+        <div className="host-setup-metrics">
+          <strong>{selectedSlots.length}</strong><span>available</span>
+          <strong>{bestPicks.length}</strong><span>best picks</span>
+        </div>
+      </div>
+
+      <div className="host-slot-editor">
+        {slots.map((slot) => {
+          const enabled = hostProfile.slotIds.includes(slot.id);
+          const featured = hostProfile.featuredSlotIds.includes(slot.id);
+          return (
+            <article className={`host-slot-row ${enabled ? 'enabled' : ''}`} key={slot.id}>
+              <div>
+                <strong>{slot.day}, {slot.date} · {slot.time}</strong>
+                <span>{slot.duration} · min {slot.minimum} {slot.currency}</span>
+              </div>
+              <div className="host-slot-actions">
+                <button className={enabled ? 'active' : ''} onClick={() => toggleSlot(slot.id)}>{enabled ? 'Available' : 'Hidden'}</button>
+                <button className={featured ? 'active warm' : ''} onClick={() => toggleFeatured(slot.id)}>Best pick</button>
+              </div>
+            </article>
+          );
+        })}
       </div>
     </section>
   );
