@@ -13,6 +13,7 @@ const featuredSlots = featuredSlotIds
 
 type HostProfile = {
   name: string;
+  email: string;
   slug: string;
   slotIds: string[];
   featuredSlotIds: string[];
@@ -21,6 +22,7 @@ type HostProfile = {
 
 const defaultHostProfile: HostProfile = {
   name: 'CoffeeSip Host',
+  email: '',
   slug: 'coffee-host',
   slotIds: slots.map((slot) => slot.id),
   featuredSlotIds,
@@ -243,30 +245,57 @@ function App() {
 
 function HostGate({ onUnlock, hostProfile, onSaveHostProfile }: { onUnlock: (token: string) => void; hostProfile: HostProfile; onSaveHostProfile: (profile: HostProfile) => void }) {
   const [name, setName] = useState(hostProfile.name);
+  const [email, setEmail] = useState(hostProfile.email);
   const [slug, setSlug] = useState(hostProfile.slug);
+  const cleanSlug = slug.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') || 'coffee-host';
+  const previewLink = `${window.location.origin}/?host=${cleanSlug}`;
 
   function createDemoHost() {
-    onSaveHostProfile({ ...hostProfile, name: name.trim() || 'CoffeeSip Host', slug: slug.trim() || 'coffee-host' });
+    onSaveHostProfile({ ...hostProfile, name: name.trim() || 'CoffeeSip Host', email: email.trim(), slug: cleanSlug });
     onUnlock('demo-host-token');
   }
 
   return (
-    <section className="dashboard-card host-gate-card host-signup-card">
-      <div className="host-signup-intro">
+    <section className="host-signup-page">
+      <div className="host-signup-story">
+        <span className="sip-mark signup-mark" aria-hidden="true">S</span>
         <p className="overline">Create host page</p>
-        <h1>Set your time market, then share one link.</h1>
-        <p className="host-copy">Create a demo host profile, edit your calendar, and publish bookable slots. Real accounts/auth come later.</p>
+        <h1>Open time without opening your whole calendar.</h1>
+        <p>Create a CoffeeSip page, choose when you’re available, set the minimum signal, and share one link.</p>
+        <div className="signup-benefits">
+          <span>Build your public page</span>
+          <span>Generate bookable slots</span>
+          <span>Review paid requests privately</span>
+        </div>
       </div>
-      <form className="host-gate-form host-signup-form" onSubmit={(event) => { event.preventDefault(); createDemoHost(); }}>
+
+      <form className="host-signup-form-card" onSubmit={(event) => { event.preventDefault(); createDemoHost(); }}>
+        <div>
+          <p className="overline">Host signup</p>
+          <h2>Start with your page.</h2>
+          <p className="signup-muted">MVP demo signup. Real accounts and login come after the flow feels right.</p>
+        </div>
         <label>
-          Display name
-          <input value={name} onChange={(event) => setName(event.target.value)} placeholder="Bar Kolen" />
+          Your name
+          <input value={name} onChange={(event) => setName(event.target.value)} placeholder="Bar Kolen" autoComplete="name" />
         </label>
         <label>
-          Public link
-          <input value={slug} onChange={(event) => setSlug(event.target.value)} placeholder="bar" />
+          Email
+          <input value={email} onChange={(event) => setEmail(event.target.value)} placeholder="bar@example.com" type="email" autoComplete="email" />
         </label>
-        <button className="pay-button">Create my host page</button>
+        <label>
+          Public CoffeeSip link
+          <div className="slug-input-row">
+            <span>coffeesip.app/</span>
+            <input value={slug} onChange={(event) => setSlug(event.target.value)} placeholder="bar" />
+          </div>
+        </label>
+        <div className="signup-preview">
+          <span>Preview</span>
+          <strong>{name.trim() || 'CoffeeSip Host'}</strong>
+          <small>{previewLink}</small>
+        </div>
+        <button className="pay-button" disabled={name.trim().length < 2}>Continue to calendar setup</button>
       </form>
     </section>
   );
