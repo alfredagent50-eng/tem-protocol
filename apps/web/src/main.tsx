@@ -659,6 +659,7 @@ function HostDashboard({ requests, onUpdate, onLogout, hostProfile, onSaveHostPr
 
 function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostProfile; onSaveHostProfile: (profile: HostProfile) => void }) {
   const [isEditingCalendar, setIsEditingCalendar] = useState(false);
+  const [activeTypeId, setActiveTypeId] = useState<string | null>(hostProfile.acceptedTypeIds[0] ?? null);
   const [date, setDate] = useState('2026-05-06');
   const [from, setFrom] = useState('09:00');
   const [to, setTo] = useState('12:00');
@@ -670,6 +671,7 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
   const visibleSetupSlots = (selectedSlots.length ? selectedSlots : allSlots).slice(0, 1);
   const selectedMinimums = hostProfile.acceptedTypeIds.map((id) => hostProfile.typeMinimums[id] ?? 10);
   const slotFloor = selectedMinimums.length ? Math.min(...selectedMinimums) : 10;
+  const activeType = requestTypes.find((type) => type.id === activeTypeId && hostProfile.acceptedTypeIds.includes(type.id)) ?? null;
   const previewSlots = generateAvailabilitySlots({ date, from, to, duration: duration + buffer, minimum: slotFloor }).map((slot) => ({
     ...slot,
     id: slot.id.replace(`-${duration + buffer}`, `-${duration}-${slotFloor}`),
@@ -682,6 +684,7 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
       ? hostProfile.acceptedTypeIds.filter((id) => id !== typeId)
       : [...hostProfile.acceptedTypeIds, typeId];
     onSaveHostProfile({ ...hostProfile, acceptedTypeIds });
+    setActiveTypeId(enabled ? (acceptedTypeIds[0] ?? null) : typeId);
   }
 
   function updateTypeMinimum(typeId: string, value: number) {
@@ -763,25 +766,38 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
                   <span>{type.emoji}</span>
                   <strong>{type.label}</strong>
                   <small>{type.short}</small>
-                  {enabled && (
-                    <div className="category-price-editor" onClick={(event) => event.stopPropagation()}>
-                      <label>
-                        MIN SIP
-                        <div className="sip-price-row">
-                          <input type="number" min="1" value={hostProfile.typeMinimums[type.id] ?? 10} onChange={(event) => updateTypeMinimum(type.id, Number(event.target.value))} />
-                          <select value={hostProfile.typeCurrencies[type.id] ?? '$'} onChange={(event) => updateTypeCurrency(type.id, event.target.value)}>
-                            <option value="$">$</option>
-                            <option value="€">€</option>
-                            <option value="sats">₿ sats</option>
-                          </select>
-                        </div>
-                      </label>
-                    </div>
-                  )}
+                  {enabled && <em>✓</em>}
                 </button>
               );
             })}
           </div>
+          {hostProfile.acceptedTypeIds.length > 0 && (
+            <div className="category-pricing-tray">
+              <div className="enabled-category-chips" aria-label="Enabled categories">
+                {hostProfile.acceptedTypeIds.map((typeId) => {
+                  const type = requestTypes.find((item) => item.id === typeId) ?? requestTypes[0];
+                  return <button className={activeTypeId === typeId ? 'active' : ''} key={typeId} onClick={() => setActiveTypeId(typeId)}>{type.emoji} {type.label}</button>;
+                })}
+              </div>
+              {activeType && (
+                <div className="pricing-tray-editor">
+                  <label>
+                    MIN SIP FOR {activeType.label.toUpperCase()}
+                    <div className="sip-price-row">
+                      <input type="number" min="1" value={hostProfile.typeMinimums[activeType.id] ?? 10} onChange={(event) => updateTypeMinimum(activeType.id, Number(event.target.value))} />
+                      <div className="currency-segment" role="group" aria-label="Currency">
+                        {['$', '€', 'sats'].map((currency) => (
+                          <button className={(hostProfile.typeCurrencies[activeType.id] ?? '$') === currency ? 'active' : ''} key={currency} onClick={() => updateTypeCurrency(activeType.id, currency)}>
+                            {currency === 'sats' ? '₿ sats' : currency}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </label>
+                </div>
+              )}
+            </div>
+          )}
         </section>
 
       </div>
