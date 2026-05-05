@@ -2183,9 +2183,18 @@ body {
 }
 .request-type.selected,
 .app-switcher button.active,
-.pay-button,
-.calendar-edit-button {
+.pay-button {
   background: linear-gradient(145deg, #2a1d14, #111827);
+}
+.calendar-edit-button {
+  min-width: 190px;
+  padding: 15px 20px;
+  background: linear-gradient(145deg, #0647a8, #082b68);
+  box-shadow: 0 18px 38px rgba(6, 71, 168, 0.32), 0 0 0 1px rgba(255,255,255,0.16) inset;
+}
+.calendar-edit-button:hover {
+  background: linear-gradient(145deg, #0757cc, #0a367f);
+  transform: translateY(-1px);
 }
 .slot-card.selected,
 .calendar-slot:hover,
