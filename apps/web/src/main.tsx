@@ -446,12 +446,6 @@ function BookingPage({
           <small>{selectedSlot.duration}</small>
         </div>
 
-        <div className="checkout-story">
-          <span>1. Guest sends context</span>
-          <span>2. Payment becomes a signal</span>
-          <span>3. Host reviews privately</span>
-        </div>
-
         {(selectedSlot.status === 'requested' || selectedMarket.isTaken) ? (
           <p className="notice">
             Busy slot. Details stay private — only the price to compete is shown.
