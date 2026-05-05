@@ -26,8 +26,19 @@ export function getSlotFloor(slot) {
   return slot.status === 'requested' ? (slot.currentOffer ?? slot.minimum) + 100 : slot.minimum;
 }
 
+function parseCustomSlot(slotId) {
+  const match = /^custom-\d{4}-\d{2}-\d{2}-\d{4}-(\d+)-(\d+)$/.exec(slotId);
+  if (!match) return null;
+  return {
+    id: slotId,
+    minimum: Number(match[2]),
+    currency: 'USD',
+    status: 'available',
+  };
+}
+
 export function priceRequest({ slotId, typeId }, requests = []) {
-  const slot = slots.find((item) => item.id === slotId);
+  const slot = slots.find((item) => item.id === slotId) ?? parseCustomSlot(slotId);
   const requestType = requestTypes.find((item) => item.id === typeId);
   if (!slot || !requestType) return null;
 

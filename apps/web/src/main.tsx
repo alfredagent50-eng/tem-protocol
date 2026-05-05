@@ -16,6 +16,7 @@ type HostProfile = {
   slug: string;
   slotIds: string[];
   featuredSlotIds: string[];
+  customSlots: Slot[];
 };
 
 const defaultHostProfile: HostProfile = {
@@ -23,7 +24,53 @@ const defaultHostProfile: HostProfile = {
   slug: 'coffee-host',
   slotIds: slots.map((slot) => slot.id),
   featuredSlotIds,
+  customSlots: [],
 };
+
+function getAllSlots(profile: HostProfile) {
+  return [...slots, ...(profile.customSlots ?? [])];
+}
+
+function getDayLabel(dateValue: string) {
+  const date = new Date(`${dateValue}T12:00:00`);
+  return date.toLocaleDateString('en-US', { weekday: 'short' });
+}
+
+function getDateLabel(dateValue: string) {
+  const date = new Date(`${dateValue}T12:00:00`);
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function minutesFromTime(time: string) {
+  const [hours, minutes] = time.split(':').map(Number);
+  return (hours * 60) + minutes;
+}
+
+function timeFromMinutes(total: number) {
+  const hours = Math.floor(total / 60).toString().padStart(2, '0');
+  const minutes = (total % 60).toString().padStart(2, '0');
+  return `${hours}:${minutes}`;
+}
+
+function generateAvailabilitySlots(input: { date: string; from: string; to: string; duration: number; minimum: number }): Slot[] {
+  const start = minutesFromTime(input.from);
+  const end = minutesFromTime(input.to);
+  if (!input.date || end <= start || input.duration <= 0) return [];
+  const generated: Slot[] = [];
+  for (let current = start; current + input.duration <= end; current += input.duration) {
+    generated.push({
+      id: `custom-${input.date}-${timeFromMinutes(current).replace(':', '')}-${input.duration}`,
+      day: getDayLabel(input.date),
+      date: getDateLabel(input.date),
+      time: timeFromMinutes(current),
+      duration: `${input.duration} min`,
+      minimum: input.minimum,
+      currency: 'USD',
+      status: 'available',
+    });
+  }
+  return generated;
+}
 
 function loadHostProfile(): HostProfile {
   try {
@@ -74,8 +121,8 @@ function App() {
   }
 
   const selectedSlot = useMemo(
-    () => slots.find((slot) => slot.id === selectedSlotId) ?? slots[0],
-    [selectedSlotId],
+    () => getAllSlots(hostProfile).find((slot) => slot.id === selectedSlotId) ?? slots[0],
+    [selectedSlotId, hostProfile],
   );
   const selectedType = useMemo(
     () => requestTypes.find((type) => type.id === selectedTypeId) ?? requestTypes[0],
@@ -129,10 +176,12 @@ function App() {
   }
 
   function saveHostProfile(profile: HostProfile) {
+    const allSlotIds = getAllSlots(profile).map((slot) => slot.id);
     const cleanProfile = {
       ...profile,
       slug: profile.slug.toLowerCase().replace(/[^a-z0-9-]/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '') || 'coffee-host',
-      slotIds: profile.slotIds.length ? profile.slotIds : defaultHostProfile.slotIds,
+      customSlots: profile.customSlots ?? [],
+      slotIds: profile.slotIds.length ? profile.slotIds.filter((id) => allSlotIds.includes(id)) : defaultHostProfile.slotIds,
       featuredSlotIds: profile.featuredSlotIds.filter((id) => profile.slotIds.includes(id)).slice(0, 5),
     };
     setHostProfile(cleanProfile);
@@ -278,13 +327,14 @@ function BookingPage({
   onCreatePaidRequest: () => void;
   hostProfile: HostProfile;
 }) {
-  const selectedSlot = slots.find((slot) => slot.id === selectedSlotId) ?? slots[0];
+  const allSlots = getAllSlots(hostProfile);
+  const selectedSlot = allSlots.find((slot) => slot.id === selectedSlotId) ?? allSlots[0] ?? slots[0];
   const selectedType = requestTypes.find((type) => type.id === selectedTypeId) ?? requestTypes[0];
   const selectedMarket = getSlotMarketState(requests, selectedSlot.id);
   const marketFloor = selectedMarket.nextBidFloor ?? getSlotFloor(selectedSlot);
   const requiredAmount = Math.ceil(marketFloor * selectedType.multiplier);
   const canContinue = name.trim().length > 1 && email.includes('@');
-  const visibleSlots = slots.filter((slot) => hostProfile.slotIds.includes(slot.id));
+  const visibleSlots = allSlots.filter((slot) => hostProfile.slotIds.includes(slot.id));
   const visibleFeaturedSlots = hostProfile.featuredSlotIds
     .map((id) => visibleSlots.find((slot) => slot.id === id))
     .filter((slot): slot is Slot => Boolean(slot));
@@ -582,19 +632,19 @@ function HostDashboard({ requests, onUpdate, onLogout, hostProfile, onSaveHostPr
       <div className="request-board">
         <div>
           <h2>Payment <span>holds before review</span></h2>
-          <HostRequestList requests={moneyPending} onUpdate={onUpdate} empty="No payment holds right now." />
+          <HostRequestList requests={moneyPending} onUpdate={onUpdate} empty="No payment holds right now." hostProfile={hostProfile} />
         </div>
         <div>
           <h2>Review <span>private inbox</span></h2>
-          <HostRequestList requests={needsReview} onUpdate={onUpdate} empty="No paid requests waiting." />
+          <HostRequestList requests={needsReview} onUpdate={onUpdate} empty="No paid requests waiting." hostProfile={hostProfile} />
         </div>
         <div>
           <h2>Scheduled <span>accepted time</span></h2>
-          <HostRequestList requests={scheduled} onUpdate={onUpdate} empty="Accepted requests show here." />
+          <HostRequestList requests={scheduled} onUpdate={onUpdate} empty="Accepted requests show here." hostProfile={hostProfile} />
         </div>
         <div>
           <h2>Closed <span>history</span></h2>
-          <HostRequestList requests={done} onUpdate={onUpdate} empty="Passed and completed requests show here." />
+          <HostRequestList requests={done} onUpdate={onUpdate} empty="Passed and completed requests show here." hostProfile={hostProfile} />
         </div>
       </div>
     </section>
@@ -602,9 +652,22 @@ function HostDashboard({ requests, onUpdate, onLogout, hostProfile, onSaveHostPr
 }
 
 function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostProfile; onSaveHostProfile: (profile: HostProfile) => void }) {
+  const [isEditingCalendar, setIsEditingCalendar] = useState(false);
+  const [date, setDate] = useState('2026-05-06');
+  const [from, setFrom] = useState('09:00');
+  const [to, setTo] = useState('12:00');
+  const [duration, setDuration] = useState(30);
+  const [buffer, setBuffer] = useState(0);
+  const [minimum, setMinimum] = useState(10);
   const shareLink = `${window.location.origin}/?host=${hostProfile.slug}`;
-  const selectedSlots = slots.filter((slot) => hostProfile.slotIds.includes(slot.id));
-  const bestPicks = slots.filter((slot) => hostProfile.featuredSlotIds.includes(slot.id));
+  const allSlots = getAllSlots(hostProfile);
+  const selectedSlots = allSlots.filter((slot) => hostProfile.slotIds.includes(slot.id));
+  const bestPicks = allSlots.filter((slot) => hostProfile.featuredSlotIds.includes(slot.id));
+  const previewSlots = generateAvailabilitySlots({ date, from, to, duration: duration + buffer, minimum }).map((slot) => ({
+    ...slot,
+    id: slot.id.replace(`-${duration + buffer}`, `-${duration}-${minimum}`),
+    duration: `${duration} min`,
+  }));
 
   function updateName(value: string) {
     onSaveHostProfile({ ...hostProfile, name: value });
@@ -636,6 +699,18 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
     await navigator.clipboard?.writeText(shareLink);
   }
 
+  function saveGeneratedSlots() {
+    const existingCustomIds = new Set(hostProfile.customSlots.map((slot) => slot.id));
+    const newSlots = previewSlots.filter((slot) => !existingCustomIds.has(slot.id));
+    onSaveHostProfile({
+      ...hostProfile,
+      customSlots: [...hostProfile.customSlots, ...newSlots],
+      slotIds: Array.from(new Set([...hostProfile.slotIds, ...previewSlots.map((slot) => slot.id)])),
+      featuredSlotIds: Array.from(new Set([...hostProfile.featuredSlotIds, ...previewSlots.slice(0, 3).map((slot) => slot.id)])).slice(-5),
+    });
+    setIsEditingCalendar(false);
+  }
+
   return (
     <section className="host-setup-panel" aria-label="Host setup">
       <div className="host-setup-header">
@@ -644,6 +719,9 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
           <h2>Your public page</h2>
           <p>Choose available slots, promote best picks, then send one link.</p>
         </div>
+        <button className="calendar-edit-button" onClick={() => setIsEditingCalendar((open) => !open)}>
+          {isEditingCalendar ? 'Close calendar editor' : 'Edit your calendar'}
+        </button>
         <div className="share-link-box">
           <span>{shareLink}</span>
           <button onClick={copyLink}>Copy link</button>
@@ -665,8 +743,33 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
         </div>
       </div>
 
+      {isEditingCalendar && (
+        <section className="calendar-editor-card" aria-label="Calendar editor">
+          <div className="calendar-editor-copy">
+            <p className="overline">Availability block</p>
+            <h3>Tell CoffeeSip when you’re open.</h3>
+            <p>Pick a day, time range, commitment length, and minimum sip. We’ll split it into bookable slots.</p>
+          </div>
+          <div className="calendar-form-grid">
+            <label>Date<input type="date" value={date} onChange={(event) => setDate(event.target.value)} /></label>
+            <label>From<input type="time" value={from} onChange={(event) => setFrom(event.target.value)} /></label>
+            <label>To<input type="time" value={to} onChange={(event) => setTo(event.target.value)} /></label>
+            <label>Length<select value={duration} onChange={(event) => setDuration(Number(event.target.value))}><option value={15}>15 min</option><option value={30}>30 min</option><option value={45}>45 min</option><option value={60}>60 min</option></select></label>
+            <label>Buffer<select value={buffer} onChange={(event) => setBuffer(Number(event.target.value))}><option value={0}>No buffer</option><option value={15}>15 min</option><option value={30}>30 min</option></select></label>
+            <label>Minimum $<input type="number" min="1" value={minimum} onChange={(event) => setMinimum(Number(event.target.value))} /></label>
+          </div>
+          <div className="price-preview-row">
+            {requestTypes.slice(0, 5).map((type) => <span key={type.id}>{type.label}: ${Math.ceil(minimum * type.multiplier)}</span>)}
+          </div>
+          <div className="generated-preview">
+            {previewSlots.length ? previewSlots.map((slot) => <span key={slot.id}>{slot.day} {slot.time} · {slot.duration} · ${slot.minimum}</span>) : <strong>No slots in this range.</strong>}
+          </div>
+          <button className="pay-button" disabled={previewSlots.length === 0} onClick={saveGeneratedSlots}>Generate and save slots</button>
+        </section>
+      )}
+
       <div className="host-slot-editor">
-        {slots.map((slot) => {
+        {allSlots.map((slot) => {
           const enabled = hostProfile.slotIds.includes(slot.id);
           const featured = hostProfile.featuredSlotIds.includes(slot.id);
           return (
@@ -702,14 +805,14 @@ function relativeTime(iso: string) {
   return `${Math.floor(hours / 24)}d ago`;
 }
 
-function HostRequestList({ requests, onUpdate, empty }: { requests: BookingRequest[]; onUpdate: (id: string, status: BookingRequest['status']) => void; empty: string }) {
+function HostRequestList({ requests, onUpdate, empty, hostProfile }: { requests: BookingRequest[]; onUpdate: (id: string, status: BookingRequest['status']) => void; empty: string; hostProfile: HostProfile }) {
   if (requests.length === 0) return <p className="empty-state"><strong>Clear.</strong><span>{empty}</span></p>;
 
   return (
     <div className="host-request-list">
       {requests.map((request) => {
         const type = requestTypes.find((item) => item.id === request.typeId) ?? requestTypes[0];
-        const slot = slots.find((item) => item.id === request.slotId) ?? slots[0];
+        const slot = getAllSlots(hostProfile).find((item) => item.id === request.slotId) ?? slots[0];
         return (
           <article className="dashboard-request" key={request.id}>
             <div className="request-main-row">

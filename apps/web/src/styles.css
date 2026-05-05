@@ -1375,6 +1375,17 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
   border-radius: 999px;
   background: #fff;
 }
+.calendar-edit-button {
+  border: 0;
+  border-radius: 999px;
+  padding: 12px 15px;
+  background: linear-gradient(145deg, #2a1d14, #111827);
+  color: #fff;
+  cursor: pointer;
+  font-weight: 950;
+  white-space: nowrap;
+  box-shadow: 0 12px 24px rgba(42, 29, 20, 0.14);
+}
 .share-link-box span {
   flex: 1;
   overflow: hidden;
@@ -1429,6 +1440,81 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
 }
 .host-setup-metrics strong { color: #2a1d14; font-size: 20px; line-height: 1; }
 .host-setup-metrics span { color: #68758a; font-size: 12px; font-weight: 900; }
+.calendar-editor-card {
+  display: grid;
+  gap: 16px;
+  padding: 18px;
+  border: 1px solid rgba(42, 29, 20, 0.12);
+  border-radius: 22px;
+  background: #fff;
+  box-shadow: 0 18px 44px rgba(50, 39, 30, 0.08);
+}
+.calendar-editor-copy h3 {
+  margin: 0 0 6px;
+  color: #211915;
+  font-size: 24px;
+  letter-spacing: -0.04em;
+}
+.calendar-editor-copy p:last-child {
+  margin: 0;
+  color: #526075;
+  line-height: 1.45;
+  font-weight: 700;
+}
+.calendar-form-grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  gap: 10px;
+}
+.calendar-form-grid label {
+  display: grid;
+  gap: 7px;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 950;
+}
+.calendar-form-grid input,
+.calendar-form-grid select {
+  width: 100%;
+  border: 1px solid #d8dee8;
+  border-radius: 13px;
+  padding: 11px 10px;
+  background: #fbfcff;
+  color: #172033;
+  font-weight: 800;
+}
+.price-preview-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.price-preview-row span {
+  padding: 7px 10px;
+  border-radius: 999px;
+  background: #f7fbff;
+  color: #0756c7;
+  font-size: 12px;
+  font-weight: 900;
+}
+.generated-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  min-height: 44px;
+  padding: 12px;
+  border: 1px dashed #d8dee8;
+  border-radius: 16px;
+  background: #fbfcff;
+}
+.generated-preview span,
+.generated-preview strong {
+  padding: 8px 10px;
+  border-radius: 999px;
+  background: #fff7ed;
+  color: #9a3412;
+  font-size: 12px;
+  font-weight: 900;
+}
 .host-slot-editor {
   max-height: 360px;
   overflow: auto;
@@ -1501,7 +1587,9 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
   .dashboard-stat strong { font-size: 28px; }
   .host-signup-grid,
   .host-profile-fields,
+  .calendar-form-grid,
   .host-setup-header { grid-template-columns: 1fr; display: grid; }
+  .calendar-edit-button { width: 100%; }
   .share-link-box { min-width: 0; border-radius: 18px; }
   .host-slot-row { display: grid; }
   .host-slot-actions { justify-content: stretch; }
