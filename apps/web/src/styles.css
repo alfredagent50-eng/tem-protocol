@@ -2935,3 +2935,13 @@ body {
     height: 48px;
   }
 }
+
+/* The floating bottom bar is the persistent sign-up/sign-in section. */
+.host-landing-panel {
+  padding-bottom: 22px;
+}
+@media (min-width: 821px) {
+  .host-landing-page {
+    padding-bottom: 150px !important;
+  }
+}

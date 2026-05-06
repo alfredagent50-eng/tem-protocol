@@ -327,14 +327,6 @@ function HostLanding({ onStartHost, onUnlock, hostProfile, onSaveHostProfile }: 
 
       <div className="host-landing-panel" id="signup">
         <HostOnboardingForm compact onUnlock={onUnlock} hostProfile={hostProfile} onSaveHostProfile={onSaveHostProfile} />
-        <div className="host-signin-card" aria-label="Host sign in">
-          <div>
-            <p className="overline">Host sign in</p>
-            <h2>Already have a Sip link?</h2>
-            <p>Sign in and continue shaping your availability.</p>
-          </div>
-          <button className="ghost-button" onClick={() => onUnlock('demo-host-token')}>Sign in to demo</button>
-        </div>
       </div>
 
       <div className="landing-actions">
