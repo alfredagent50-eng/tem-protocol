@@ -2945,3 +2945,25 @@ body {
     padding-bottom: 150px !important;
   }
 }
+
+/* Use the approved generated CoffeeSip S/aroma mark asset, not a hand-drawn approximation. */
+.landing-brand-lockup .aroma-symbol {
+  width: 58px;
+  height: 58px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+.aroma-symbol .aroma-main,
+.aroma-symbol .aroma-inner,
+.aroma-symbol .aroma-dot,
+.aroma-symbol::before,
+.aroma-symbol::after {
+  display: none !important;
+  content: none !important;
+}
+@media (max-width: 620px) {
+  .landing-brand-lockup .aroma-symbol {
+    width: 48px;
+    height: 48px;
+  }
+}

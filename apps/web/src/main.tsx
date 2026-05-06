@@ -303,13 +303,7 @@ function HostOnboardingForm({ onUnlock, hostProfile, onSaveHostProfile, compact 
 }
 
 function AromaMark() {
-  return (
-    <svg className="aroma-symbol" viewBox="0 0 64 64" aria-hidden="true" focusable="false">
-      <path className="aroma-main" d="M39.5 7.5C28.8 10 22.8 17.4 24.2 25.1c1 5.6 6.4 8.1 11.7 10.2 5 2 9.6 4.2 9 9.3-.7 5.9-7.3 9.8-17.3 10.6" />
-      <path className="aroma-inner" d="M36.8 16.4c-5.5 3.1-7.6 7.6-5.9 11.8 1.5 3.8 5.9 5.3 9.1 7.5 3.5 2.4 4.1 5.4 1.9 8.6" />
-      <circle className="aroma-dot" cx="47.6" cy="13.2" r="3.7" />
-    </svg>
-  );
+  return <img className="aroma-symbol" src="/brand/coffeesip-aroma-mark.png" alt="" aria-hidden="true" />;
 }
 
 function HostLanding({ onStartHost, onUnlock, hostProfile, onSaveHostProfile }: { onStartHost: () => void; onUnlock: (token: string) => void; hostProfile: HostProfile; onSaveHostProfile: (profile: HostProfile) => void }) {
