@@ -80,10 +80,6 @@ function generateAvailabilitySlots(input: { date: string; from: string; to: stri
   return generated;
 }
 
-function formatSipAmount(amount: number, currency: string) {
-  return currency === 'sats' ? `${amount} sats` : `${currency}${amount}`;
-}
-
 function loadHostProfile(): HostProfile {
   try {
     const stored = window.localStorage.getItem('coffeesip-host-profile');
@@ -615,7 +611,7 @@ function HostDashboard({ requests, onUpdate, onLogout, hostProfile, onSaveHostPr
         <div>
           <p className="overline">Host dashboard</p>
           <h1>Today’s time market</h1>
-          <p className="host-copy">Manage availability, best picks, and incoming requests from one place.</p>
+          <p className="host-copy">Manage availability, minimum sips, best picks, and incoming requests from one place.</p>
         </div>
         <div className="dashboard-stats">
           <div className="dashboard-stat">
@@ -746,7 +742,7 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
       <div className="host-setup-header">
         <div>
           <h2>Your public calendar</h2>
-          <p>Start shaping your schedule and turn time into sips.</p>
+          <p>Start shaping your availability and turn time into sips.</p>
         </div>
         <button className="calendar-edit-button" onClick={() => setIsEditingCalendar((open) => !open)}>
           {isEditingCalendar ? 'Close calendar editor' : 'Edit your calendar'}
@@ -810,7 +806,7 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
             <div className="calendar-editor-copy">
               <p className="overline">Step 2</p>
               <h3>Tell CoffeeSip when you’re open.</h3>
-              <p>Pick a day, time range, commitment length, and buffer. Minimum sips are set per category above.</p>
+              <p>Pick a day, time range, length, and buffer.</p>
             </div>
           <div className="calendar-form-grid">
             <label>Date<input type="date" value={date} onChange={(event) => setDate(event.target.value)} /></label>
@@ -818,9 +814,6 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
             <label>To<input type="time" value={to} onChange={(event) => setTo(event.target.value)} /></label>
             <label>Length<select value={duration} onChange={(event) => setDuration(Number(event.target.value))}><option value={15}>15 min</option><option value={30}>30 min</option><option value={45}>45 min</option><option value={60}>60 min</option></select></label>
             <label>Buffer<select value={buffer} onChange={(event) => setBuffer(Number(event.target.value))}><option value={0}>No buffer</option><option value={15}>15 min</option><option value={30}>30 min</option></select></label>
-          </div>
-          <div className="price-preview-row">
-            {requestTypes.filter((type) => hostProfile.acceptedTypeIds.includes(type.id)).map((type) => <span key={type.id}>{type.label}: {formatSipAmount(hostProfile.typeMinimums[type.id] ?? 10, hostProfile.typeCurrencies[type.id] ?? '$')}</span>)}
           </div>
           <div className="generated-preview">
             {previewSlots.length ? previewSlots.map((slot) => <span key={slot.id}>{slot.day} {slot.time} · {slot.duration} · ${slot.minimum}</span>) : <strong>No slots in this range.</strong>}
