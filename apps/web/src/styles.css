@@ -2576,3 +2576,47 @@ body {
     padding: 20px;
   }
 }
+
+/* Fix landing desktop clarity: do not make desktop look like the phone mockup. */
+@media (min-width: 821px) {
+  .host-landing-page {
+    grid-template-columns: minmax(0, 0.92fr) minmax(420px, 0.72fr);
+    align-items: center;
+    min-height: 720px;
+    background:
+      radial-gradient(circle at 13% 10%, rgba(196, 122, 53, 0.14), transparent 25rem),
+      linear-gradient(90deg, rgba(255,253,248,0.98) 0 58%, rgba(255,248,238,0.94) 58% 100%);
+  }
+
+  .host-landing-hero {
+    min-width: 0;
+    padding-right: 10px;
+  }
+
+  .host-landing-hero h1 {
+    max-width: 650px;
+    font-size: clamp(62px, 6.4vw, 94px);
+  }
+
+  .host-landing-hero p:not(.overline) {
+    max-width: 540px;
+  }
+
+  .landing-device-card {
+    display: none;
+  }
+
+  .host-landing-panel {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 470px;
+    justify-self: end;
+  }
+
+  .host-signup-form-card.compact,
+  .host-signin-card {
+    background: rgba(255, 255, 255, 0.88);
+    box-shadow: 0 24px 80px rgba(50, 39, 30, 0.13);
+  }
+}
