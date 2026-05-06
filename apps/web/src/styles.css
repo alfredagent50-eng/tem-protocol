@@ -1900,8 +1900,21 @@ h2 { margin-bottom: 0; font-size: 25px; letter-spacing: -0.035em; }
   .host-signup-grid,
   .host-setup-sequence,
   .host-profile-fields,
-  .calendar-form-grid,
   .host-setup-header { grid-template-columns: 1fr; display: grid; }
+  .calendar-form-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .calendar-form-grid label:first-child {
+    grid-column: 1 / -1;
+  }
+  .calendar-form-grid input,
+  .calendar-form-grid select {
+    min-height: 42px;
+    padding: 9px 10px;
+    font-size: 14px;
+    text-align: left;
+  }
+  .price-preview-row { display: none; }
   .host-category-grid button { flex-basis: calc(50% - 4px); max-width: none; }
   .calendar-edit-button { width: 100%; }
   .share-link-box { min-width: 0; border-radius: 18px; }

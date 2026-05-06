@@ -806,7 +806,7 @@ function HostSetupPanel({ hostProfile, onSaveHostProfile }: { hostProfile: HostP
             <div className="calendar-editor-copy">
               <p className="overline">Step 2</p>
               <h3>Tell CoffeeSip when you’re open.</h3>
-              <p>Pick a day, time range, length, and buffer.</p>
+              <p>Pick a day, time range, commitment length, and buffer. Minimum sips are set per category above.</p>
             </div>
           <div className="calendar-form-grid">
             <label>Date<input type="date" value={date} onChange={(event) => setDate(event.target.value)} /></label>
