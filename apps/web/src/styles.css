@@ -2887,3 +2887,51 @@ body {
     transform: none !important;
   }
 }
+
+/* Source-of-truth logo: actual S/aroma SVG mark, not a typed letter. */
+.landing-brand-lockup .aroma-symbol {
+  width: 58px;
+  height: 58px;
+  overflow: visible;
+}
+.aroma-symbol .aroma-main,
+.aroma-symbol .aroma-inner {
+  fill: none;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.aroma-symbol .aroma-main {
+  stroke: #171515;
+  stroke-width: 7.6;
+}
+.aroma-symbol .aroma-inner {
+  stroke: #2f5f78;
+  stroke-width: 3.1;
+}
+.aroma-symbol .aroma-dot {
+  fill: #c28a2e;
+}
+.aroma-symbol::before,
+.aroma-symbol::after {
+  content: none !important;
+}
+
+/* Keep signup/sign-in actions floating and visible all the time. */
+.host-landing-page {
+  padding-bottom: 150px !important;
+}
+.host-landing-page .landing-actions {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: max(18px, env(safe-area-inset-bottom)) !important;
+  width: min(540px, calc(100vw - 32px)) !important;
+  transform: translateX(-50%) !important;
+}
+
+@media (max-width: 620px) {
+  .landing-brand-lockup .aroma-symbol {
+    width: 48px;
+    height: 48px;
+  }
+}
