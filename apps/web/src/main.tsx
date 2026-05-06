@@ -274,8 +274,8 @@ function HostOnboardingForm({ onUnlock, hostProfile, onSaveHostProfile, compact 
     <form className={`host-signup-form-card ${compact ? 'compact' : ''}`} onSubmit={(event) => { event.preventDefault(); createDemoHost(); }}>
       <div>
         <p className="overline">Host signup</p>
-        <h2>Start setting up your calendar.</h2>
-        <p className="signup-muted">Create a host page, shape your availability, and share one link with people who want your time.</p>
+        <h2>Create your Sip link.</h2>
+        <p className="signup-muted">Shape your availability, set your minimum sip, and share one calm link.</p>
       </div>
       <label>
         Your name
@@ -306,9 +306,13 @@ function HostLanding({ onStartHost, onUnlock, hostProfile, onSaveHostProfile }: 
   return (
     <section className="host-landing-page">
       <div className="host-landing-hero">
-        <p className="overline">CoffeeSip</p>
+        <div className="landing-brand-lockup" aria-label="CoffeeSip">
+          <span className="aroma-symbol" aria-hidden="true">S</span>
+          <strong>CoffeeSip</strong>
+        </div>
+        <p className="overline">Host calendar for paid availability</p>
         <h1>Our time’s worth a sip.</h1>
-        <p>Create your public calendar, choose when you’re open, set the minimum sip, and share one clean link with people who want your time.</p>
+        <p>Create your public calendar, choose when you’re open, set the minimum sip, and share one calm link with people who want your time.</p>
       </div>
 
       <div className="host-landing-panel" id="signup">
@@ -316,8 +320,8 @@ function HostLanding({ onStartHost, onUnlock, hostProfile, onSaveHostProfile }: 
         <div className="host-signin-card" aria-label="Host sign in">
           <div>
             <p className="overline">Host sign in</p>
-            <h2>Already have a calendar?</h2>
-            <p>Enter the current demo dashboard and continue shaping your availability.</p>
+            <h2>Already have a Sip link?</h2>
+            <p>Sign in and continue shaping your availability.</p>
           </div>
           <button className="ghost-button" onClick={() => onUnlock('demo-host-token')}>Sign in to demo</button>
         </div>
