@@ -2872,3 +2872,18 @@ body {
     letter-spacing: -0.05em;
   }
 }
+
+/* Desktop landing: keep bottom actions at the page bottom without covering signup/sign-in. */
+@media (min-width: 821px) {
+  .host-landing-page {
+    padding-bottom: 130px !important;
+  }
+  .host-landing-page .landing-actions {
+    position: absolute !important;
+    left: 58px !important;
+    right: 58px !important;
+    bottom: 34px !important;
+    width: auto !important;
+    transform: none !important;
+  }
+}
