@@ -305,23 +305,35 @@ function HostLanding({ onStartHost, onUnlock, hostProfile, onSaveHostProfile }: 
   return (
     <section className="host-landing-page">
       <div className="host-landing-hero">
-        <span className="sip-mark signup-mark" aria-hidden="true">S</span>
-        <p className="overline">CoffeeSip for hosts</p>
-        <h1>Turn your availability into a calendar people respect.</h1>
-        <p>Create a public page, choose when you’re open, set the minimum sip, and let real requests reach you privately.</p>
-        <div className="landing-actions">
-          <button className="pay-button" onClick={onStartHost}>Create your calendar</button>
-          <button className="ghost-button" onClick={() => onUnlock('demo-host-token')}>Sign in to demo</button>
+        <div className="landing-wordmark" aria-label="CoffeeSip">
+          <span className="sip-mark landing-mark" aria-hidden="true">S</span>
+          <strong>CoffeeSip</strong>
         </div>
-        <div className="signup-benefits">
-          <span>Host-first calendar</span>
-          <span>Minimum sip per ask</span>
-          <span>Private request review</span>
+        <p className="overline">Host calendar for paid availability</p>
+        <h1>Our time’s worth a sip.</h1>
+        <p>Create your public calendar, choose when you’re open, set the minimum sip, and share one clean link with people who want your time.</p>
+        <div className="landing-actions">
+          <a className="pay-button" href="#signup">Create your calendar</a>
+          <button className="ghost-button" onClick={onStartHost}>Sign in</button>
+        </div>
+        <div className="landing-device-card" aria-label="CoffeeSip mobile brand preview">
+          <div className="device-top" />
+          <div className="device-wordmark"><span className="sip-mark">S</span><strong>CoffeeSip</strong></div>
+          <h2>Our time’s<br />worth a sip.</h2>
+          <span className="device-cta">Get Started</span>
         </div>
       </div>
 
-      <div className="host-landing-panel">
+      <div className="host-landing-panel" id="signup">
         <HostOnboardingForm compact onUnlock={onUnlock} hostProfile={hostProfile} onSaveHostProfile={onSaveHostProfile} />
+        <div className="host-signin-card" aria-label="Host sign in">
+          <div>
+            <p className="overline">Host sign in</p>
+            <h2>Already have a calendar?</h2>
+            <p>Enter the current demo dashboard and continue shaping your availability.</p>
+          </div>
+          <button className="ghost-button" onClick={() => onUnlock('demo-host-token')}>Sign in to demo</button>
+        </div>
       </div>
     </section>
   );

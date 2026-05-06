@@ -2374,3 +2374,205 @@ body {
     margin-top: 12px;
   }
 }
+
+/* Approved S/aroma mockup implementation for the host-first landing page. */
+.host-landing-page {
+  grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.82fr);
+  gap: 36px;
+  overflow: hidden;
+  background:
+    linear-gradient(90deg, rgba(255,253,248,0.98) 0 50%, rgba(255,250,242,0.88) 50% 100%),
+    radial-gradient(circle at 12% 6%, rgba(196, 122, 53, 0.12), transparent 24rem);
+}
+.landing-wordmark {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 28px;
+  color: var(--espresso);
+}
+.landing-wordmark strong {
+  font-size: 28px;
+  font-weight: 650;
+  letter-spacing: -0.045em;
+}
+.landing-mark {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 18px;
+  color: #fff;
+  font-size: 31px;
+  font-weight: 950;
+}
+.host-landing-hero .overline {
+  margin-bottom: 14px;
+  color: #7b6b5d;
+  letter-spacing: 0.11em;
+}
+.host-landing-hero h1 {
+  max-width: 620px;
+  font-size: clamp(58px, 7vw, 96px);
+  line-height: 0.88;
+  letter-spacing: -0.09em;
+}
+.host-landing-hero p:not(.overline) {
+  max-width: 560px;
+  color: #5f534a;
+  font-size: 20px;
+}
+.landing-actions .pay-button,
+.landing-actions .ghost-button,
+.host-signin-card .ghost-button {
+  text-decoration: none;
+}
+.landing-actions .pay-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.landing-actions .ghost-button,
+.host-signin-card .ghost-button {
+  border-color: rgba(49, 38, 31, 0.16);
+  background: rgba(255,253,248,0.74);
+  color: var(--espresso);
+}
+.landing-device-card {
+  position: relative;
+  width: min(390px, 92%);
+  margin-top: 38px;
+  padding: 36px 28px 30px;
+  border: 2px solid rgba(49, 38, 31, 0.72);
+  border-bottom: 0;
+  border-radius: 34px 34px 0 0;
+  background:
+    radial-gradient(circle at 88% 92%, rgba(196,122,53,0.16), transparent 12rem),
+    #fffdf8;
+  box-shadow: 0 26px 70px rgba(50, 39, 30, 0.12);
+}
+.device-top {
+  position: absolute;
+  top: 13px;
+  left: 50%;
+  width: 58px;
+  height: 10px;
+  border-radius: 999px;
+  background: #2a2926;
+  transform: translateX(-50%);
+}
+.device-wordmark {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin-bottom: 28px;
+}
+.device-wordmark .sip-mark {
+  width: 24px;
+  height: 24px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 15px;
+}
+.device-wordmark strong {
+  color: var(--espresso);
+  font-size: 14px;
+  letter-spacing: -0.04em;
+}
+.landing-device-card h2 {
+  max-width: 230px;
+  color: var(--espresso);
+  font-size: 34px;
+  line-height: 0.96;
+  letter-spacing: -0.06em;
+}
+.device-cta {
+  display: inline-flex;
+  margin-top: 18px;
+  padding: 10px 16px;
+  border-radius: 999px;
+  background: var(--blue);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+}
+.host-landing-panel {
+  display: grid;
+  align-content: center;
+  gap: 14px;
+}
+.host-signup-form-card.compact,
+.host-signin-card {
+  border: 1px solid rgba(49, 38, 31, 0.11);
+  background: rgba(255,255,255,0.72);
+  box-shadow: 0 20px 60px rgba(50, 39, 30, 0.08);
+  backdrop-filter: blur(12px);
+}
+.host-signup-form-card.compact h2,
+.host-signin-card h2 {
+  color: var(--espresso);
+}
+.host-signin-card {
+  display: grid;
+  gap: 14px;
+  padding: 20px;
+  border-radius: 24px;
+}
+.host-signin-card p:not(.overline) {
+  margin: 6px 0 0;
+  color: var(--muted);
+  line-height: 1.45;
+  font-weight: 700;
+}
+.host-signin-card .ghost-button {
+  width: 100%;
+}
+
+@media (max-width: 820px) {
+  .host-landing-page {
+    grid-template-columns: 1fr;
+    background: rgba(255, 253, 248, 0.96);
+  }
+  .landing-device-card {
+    width: min(420px, 100%);
+  }
+}
+
+@media (max-width: 620px) {
+  .host-landing-page {
+    padding: 24px 16px calc(30px + env(safe-area-inset-bottom));
+    background:
+      radial-gradient(circle at 14% 0%, rgba(196, 122, 53, 0.14), transparent 18rem),
+      #fffdf8;
+  }
+  .landing-wordmark {
+    margin-bottom: 22px;
+  }
+  .landing-wordmark strong {
+    font-size: 23px;
+  }
+  .landing-mark {
+    width: 46px;
+    height: 46px;
+    border-radius: 16px;
+    font-size: 27px;
+  }
+  .host-landing-hero h1 {
+    max-width: 360px;
+    font-size: clamp(50px, 15vw, 68px);
+  }
+  .host-landing-hero p:not(.overline) {
+    font-size: 16px;
+    line-height: 1.5;
+  }
+  .landing-device-card {
+    width: 100%;
+    margin-top: 28px;
+    padding: 34px 24px 28px;
+  }
+  .host-signup-form-card.compact {
+    padding: 20px;
+  }
+}
