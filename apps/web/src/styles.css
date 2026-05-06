@@ -2967,3 +2967,21 @@ body {
     height: 48px;
   }
 }
+
+/* Treat the approved mark asset as the app-icon style from the brand doc. */
+.landing-brand-lockup .aroma-symbol {
+  width: 62px;
+  height: 62px;
+  padding: 5px;
+  border: 1px solid rgba(49, 38, 31, 0.08);
+  border-radius: 20px;
+  background: #f7f3ec;
+  box-shadow: 0 12px 30px rgba(50, 39, 30, 0.08);
+}
+@media (max-width: 620px) {
+  .landing-brand-lockup .aroma-symbol {
+    width: 52px;
+    height: 52px;
+    border-radius: 18px;
+  }
+}
