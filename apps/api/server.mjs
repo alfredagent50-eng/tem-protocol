@@ -231,6 +231,17 @@ const server = createServer(async (req, res) => {
 
     const paymentPaidMatch = url.pathname.match(/^\/payment-intents\/([^/]+)\/simulate-paid$/);
     if (req.method === 'POST' && paymentPaidMatch) {
+      // Phase 0 safety gate: simulate-paid is a developer-only shortcut that
+      // marks a payment intent as paid without going through a real provider.
+      // Requiring BOTH conditions (non-production AND mock provider) ensures
+      // it can never be invoked against a production deployment or against a
+      // real Stripe-backed intent. Returns 404 to avoid leaking the route.
+      const simulateAllowed =
+        process.env.NODE_ENV !== 'production' &&
+        process.env.PAYMENT_PROVIDER === 'mock';
+      if (!simulateAllowed) {
+        return send(res, 404, { error: 'not_found' });
+      }
       return send(res, 200, await simulatePaymentPaid(paymentPaidMatch[1]));
     }
 
