@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1320" viewBox="0 0 1800 1320">
+  <defs>
+    <style>
+      .bg{fill:#fbf7ef}.title{font:900 38px Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;fill:#211915}.sub{font:750 16px Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;fill:#74665b}.lane{font:900 22px Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;fill:#211915}.boxText{font:850 14px Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;fill:#211915}.code{font:950 12px Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;fill:#74665b}.ok{fill:#f2f7f4;stroke:#79ad90}.partial{fill:#fff3e3;stroke:#d59a55}.missing{fill:#fffdf8;stroke:#cdbfaf;stroke-dasharray:8 6}.card{stroke-width:2;rx:18}.arrow{stroke:#a49386;stroke-width:2;fill:none;marker-end:url(#arrow)}.surface{fill:#fffdf8;stroke:#e0d4c8;stroke-width:1.5;rx:26}.legend{font:800 14px Inter,-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;fill:#57483d}
+    </style>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#a49386"/></marker>
+  </defs>
+  <rect class="bg" width="1800" height="1320"/>
+  <text x="60" y="64" class="title">CoffeeSip Screen Pipeline</text>
+  <text x="60" y="96" class="sub">Title-only map. Web and Mobile are tracked separately. Use screen codes when discussing work.</text>
+  <text x="60" y="130" class="legend">✅ Exists · 🟡 Partial / needs polish · ⬜ Missing</text>
+
+  <g transform="translate(50 165)">
+    <rect class="surface" width="1700" height="235"/>
+    <text x="25" y="42" class="lane">Web — Guest</text>
+    <g transform="translate(25 70)"><rect class="card ok" width="180" height="62"/><text x="14" y="24" class="code">WG-01</text><text x="14" y="45" class="boxText">Guest Link</text></g><path class="arrow" d="M215 101 L245 101"/>
+    <g transform="translate(255 70)"><rect class="card ok" width="180" height="62"/><text x="14" y="24" class="code">WG-02</text><text x="14" y="45" class="boxText">Choose Ask</text></g><path class="arrow" d="M445 101 L475 101"/>
+    <g transform="translate(485 70)"><rect class="card ok" width="180" height="62"/><text x="14" y="24" class="code">WG-03</text><text x="14" y="45" class="boxText">Pick Time</text></g><path class="arrow" d="M675 101 L705 101"/>
+    <g transform="translate(715 70)"><rect class="card ok" width="180" height="62"/><text x="14" y="24" class="code">WG-04</text><text x="14" y="45" class="boxText">Request Details</text></g><path class="arrow" d="M905 101 L935 101"/>
+    <g transform="translate(945 70)"><rect class="card ok" width="180" height="62"/><text x="14" y="24" class="code">WG-05</text><text x="14" y="45" class="boxText">Demo Payment</text></g><path class="arrow" d="M1135 101 L1165 101"/>
+    <g transform="translate(1175 70)"><rect class="card ok" width="180" height="62"/><text x="14" y="24" class="code">WG-06</text><text x="14" y="45" class="boxText">Confirmation</text></g><path class="arrow" d="M1365 101 L1395 101"/>
+    <g transform="translate(1405 70)"><rect class="card missing" width="180" height="62"/><text x="14" y="24" class="code">WG-07</text><text x="14" y="45" class="boxText">Guest Dashboard</text></g>
+    <g transform="translate(25 150)"><rect class="card missing" width="180" height="62"/><text x="14" y="24" class="code">WG-08</text><text x="14" y="45" class="boxText">Request Status</text></g>
+  </g>
+
+  <g transform="translate(50 425)">
+    <rect class="surface" width="1700" height="315"/>
+    <text x="25" y="42" class="lane">Web — Host</text>
+    <g transform="translate(25 70)"><rect class="card ok" width="180" height="62"/><text x="14" y="24" class="code">WH-01</text><text x="14" y="45" class="boxText">Host Landing</text></g><path class="arrow" d="M215 101 L245 101"/>
+    <g transform="translate(255 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">WH-02</text><text x="14" y="45" class="boxText">Dashboard Home</text></g><path class="arrow" d="M445 101 L475 101"/>
+    <g transform="translate(485 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">WH-03</text><text x="14" y="45" class="boxText">Public Calendar</text></g><path class="arrow" d="M675 101 L705 101"/>
+    <g transform="translate(715 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">WH-04</text><text x="14" y="45" class="boxText">Category Setup</text></g><path class="arrow" d="M905 101 L935 101"/>
+    <g transform="translate(945 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">WH-05</text><text x="14" y="45" class="boxText">Minimum Sips</text></g><path class="arrow" d="M1135 101 L1165 101"/>
+    <g transform="translate(1175 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">WH-06</text><text x="14" y="45" class="boxText">Availability</text></g><path class="arrow" d="M1365 101 L1395 101"/>
+    <g transform="translate(1405 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">WH-07</text><text x="14" y="45" class="boxText">Saved Slots</text></g>
+    <g transform="translate(25 150)"><rect class="card ok" width="180" height="62"/><text x="14" y="24" class="code">WH-08</text><text x="14" y="45" class="boxText">Payment Holds</text></g><path class="arrow" d="M215 181 L245 181"/>
+    <g transform="translate(255 150)"><rect class="card ok" width="180" height="62"/><text x="14" y="24" class="code">WH-09</text><text x="14" y="45" class="boxText">Review Inbox</text></g><path class="arrow" d="M445 181 L475 181"/>
+    <g transform="translate(485 150)"><rect class="card ok" width="180" height="62"/><text x="14" y="24" class="code">WH-10</text><text x="14" y="45" class="boxText">Scheduled</text></g><path class="arrow" d="M675 181 L705 181"/>
+    <g transform="translate(715 150)"><rect class="card ok" width="180" height="62"/><text x="14" y="24" class="code">WH-11</text><text x="14" y="45" class="boxText">Closed</text></g>
+    <g transform="translate(25 230)"><rect class="card missing" width="180" height="62"/><text x="14" y="24" class="code">WH-12</text><text x="14" y="45" class="boxText">Host Settings</text></g><path class="arrow" d="M215 261 L245 261"/>
+    <g transform="translate(255 230)"><rect class="card missing" width="180" height="62"/><text x="14" y="24" class="code">WH-13</text><text x="14" y="45" class="boxText">Public Preview</text></g>
+  </g>
+
+  <g transform="translate(50 765)">
+    <rect class="surface" width="1700" height="235"/>
+    <text x="25" y="42" class="lane">Mobile — Guest</text>
+    <g transform="translate(25 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">MG-01</text><text x="14" y="45" class="boxText">Guest Link</text></g><path class="arrow" d="M215 101 L245 101"/>
+    <g transform="translate(255 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">MG-02</text><text x="14" y="45" class="boxText">Choose Ask</text></g><path class="arrow" d="M445 101 L475 101"/>
+    <g transform="translate(485 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">MG-03</text><text x="14" y="45" class="boxText">Pick Time</text></g><path class="arrow" d="M675 101 L705 101"/>
+    <g transform="translate(715 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">MG-04</text><text x="14" y="45" class="boxText">Request Details</text></g><path class="arrow" d="M905 101 L935 101"/>
+    <g transform="translate(945 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">MG-05</text><text x="14" y="45" class="boxText">Demo Payment</text></g><path class="arrow" d="M1135 101 L1165 101"/>
+    <g transform="translate(1175 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">MG-06</text><text x="14" y="45" class="boxText">Confirmation</text></g>
+    <g transform="translate(25 150)"><rect class="card missing" width="180" height="62"/><text x="14" y="24" class="code">MG-07</text><text x="14" y="45" class="boxText">Guest Dashboard</text></g><path class="arrow" d="M215 181 L245 181"/>
+    <g transform="translate(255 150)"><rect class="card missing" width="180" height="62"/><text x="14" y="24" class="code">MG-08</text><text x="14" y="45" class="boxText">Request Status</text></g>
+  </g>
+
+  <g transform="translate(50 1025)">
+    <rect class="surface" width="1700" height="255"/>
+    <text x="25" y="42" class="lane">Mobile — Host</text>
+    <g transform="translate(25 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">MH-01</text><text x="14" y="45" class="boxText">Host Landing</text></g><path class="arrow" d="M215 101 L245 101"/>
+    <g transform="translate(255 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">MH-02</text><text x="14" y="45" class="boxText">Dashboard Home</text></g><path class="arrow" d="M445 101 L475 101"/>
+    <g transform="translate(485 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">MH-03</text><text x="14" y="45" class="boxText">Public Calendar</text></g><path class="arrow" d="M675 101 L705 101"/>
+    <g transform="translate(715 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">MH-04</text><text x="14" y="45" class="boxText">Category Setup</text></g><path class="arrow" d="M905 101 L935 101"/>
+    <g transform="translate(945 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">MH-05</text><text x="14" y="45" class="boxText">Minimum Sips</text></g><path class="arrow" d="M1135 101 L1165 101"/>
+    <g transform="translate(1175 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">MH-06</text><text x="14" y="45" class="boxText">Availability</text></g><path class="arrow" d="M1365 101 L1395 101"/>
+    <g transform="translate(1405 70)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">MH-07</text><text x="14" y="45" class="boxText">Saved Slots</text></g>
+    <g transform="translate(25 150)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">MH-08</text><text x="14" y="45" class="boxText">Payment Holds</text></g><path class="arrow" d="M215 181 L245 181"/>
+    <g transform="translate(255 150)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">MH-09</text><text x="14" y="45" class="boxText">Review Inbox</text></g><path class="arrow" d="M445 181 L475 181"/>
+    <g transform="translate(485 150)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">MH-10</text><text x="14" y="45" class="boxText">Scheduled</text></g><path class="arrow" d="M675 181 L705 181"/>
+    <g transform="translate(715 150)"><rect class="card partial" width="180" height="62"/><text x="14" y="24" class="code">MH-11</text><text x="14" y="45" class="boxText">Closed</text></g><path class="arrow" d="M905 181 L935 181"/>
+    <g transform="translate(945 150)"><rect class="card missing" width="180" height="62"/><text x="14" y="24" class="code">MH-12</text><text x="14" y="45" class="boxText">Host Settings</text></g><path class="arrow" d="M1135 181 L1165 181"/>
+    <g transform="translate(1175 150)"><rect class="card missing" width="180" height="62"/><text x="14" y="24" class="code">MH-13</text><text x="14" y="45" class="boxText">Public Preview</text></g>
+  </g>
+</svg>

@@ -89,13 +89,16 @@ function loadHostProfile(): HostProfile {
   }
 }
 
-function getInitialView() {
+function getInitialView(): 'home' | 'guest' | 'host' {
   const params = new URLSearchParams(window.location.search);
-  return params.get('host') === '1' || window.location.hash === '#host' ? 'host' : 'guest';
+  const hostParam = params.get('host');
+  if (hostParam && hostParam !== '1') return 'guest';
+  if (params.get('guest') === '1') return 'guest';
+  return hostParam === '1' || window.location.hash === '#host' ? 'host' : 'home';
 }
 
 function App() {
-  const [view, setView] = useState<'guest' | 'host'>(getInitialView);
+  const [view, setView] = useState<'home' | 'guest' | 'host'>(getInitialView);
   const [hostToken, setHostToken] = useState(() => window.localStorage.getItem('tem-host-token') ?? '');
   const [selectedSlotId, setSelectedSlotId] = useState(featuredSlots[1].id);
   const [selectedTypeId, setSelectedTypeId] = useState(requestTypes[0].id);
@@ -213,12 +216,14 @@ function App() {
           <strong>CoffeeSip</strong>
         </div>
         <div className="app-switcher" aria-label="App view">
-          <button className={view === 'guest' ? 'active' : ''} onClick={() => setView('guest')} aria-label="Guest page">☕ <span>Guest</span></button>
-          <button className={view === 'host' ? 'active' : ''} onClick={() => setView('host')} aria-label="Host dashboard">🔐 <span>Host</span></button>
+          <button className={view === 'home' ? 'active' : ''} onClick={() => setView('home')} aria-label="Host signup">S <span>Start</span></button>
+          <button className={view === 'host' ? 'active' : ''} onClick={() => setView('host')} aria-label="Host dashboard">🔐 <span>Sign in</span></button>
         </div>
       </div>
 
-      {view === 'guest' ? (
+      {view === 'home' ? (
+        <HostLanding onStartHost={() => setView('host')} onUnlock={saveHostToken} hostProfile={hostProfile} onSaveHostProfile={saveHostProfile} />
+      ) : view === 'guest' ? (
         <BookingPage
           selectedSlotId={selectedSlotId}
           selectedTypeId={selectedTypeId}
@@ -252,7 +257,7 @@ function App() {
   );
 }
 
-function HostGate({ onUnlock, hostProfile, onSaveHostProfile }: { onUnlock: (token: string) => void; hostProfile: HostProfile; onSaveHostProfile: (profile: HostProfile) => void }) {
+function HostOnboardingForm({ onUnlock, hostProfile, onSaveHostProfile, compact = false }: { onUnlock: (token: string) => void; hostProfile: HostProfile; onSaveHostProfile: (profile: HostProfile) => void; compact?: boolean }) {
   const [name, setName] = useState(hostProfile.name);
   const [email, setEmail] = useState(hostProfile.email);
   const [slug, setSlug] = useState(hostProfile.slug);
@@ -265,12 +270,71 @@ function HostGate({ onUnlock, hostProfile, onSaveHostProfile }: { onUnlock: (tok
   }
 
   return (
+    <form className={`host-signup-form-card ${compact ? 'compact' : ''}`} onSubmit={(event) => { event.preventDefault(); createDemoHost(); }}>
+      <div>
+        <p className="overline">Host signup</p>
+        <h2>Start setting up your calendar.</h2>
+        <p className="signup-muted">Create a host page, shape your availability, and share one link with people who want your time.</p>
+      </div>
+      <label>
+        Your name
+        <input value={name} onChange={(event) => setName(event.target.value)} placeholder="Bar Kolen" autoComplete="name" />
+      </label>
+      <label>
+        Email
+        <input value={email} onChange={(event) => setEmail(event.target.value)} placeholder="bar@example.com" type="email" autoComplete="email" />
+      </label>
+      <label>
+        Public CoffeeSip link
+        <div className="slug-input-row">
+          <span>coffeesip.app/</span>
+          <input value={slug} onChange={(event) => setSlug(event.target.value)} placeholder="bar" />
+        </div>
+      </label>
+      <div className="signup-preview">
+        <span>Preview</span>
+        <strong>{name.trim() || 'CoffeeSip Host'}</strong>
+        <small>{previewLink}</small>
+      </div>
+      <button className="pay-button" disabled={name.trim().length < 2}>Continue to calendar setup</button>
+    </form>
+  );
+}
+
+function HostLanding({ onStartHost, onUnlock, hostProfile, onSaveHostProfile }: { onStartHost: () => void; onUnlock: (token: string) => void; hostProfile: HostProfile; onSaveHostProfile: (profile: HostProfile) => void }) {
+  return (
+    <section className="host-landing-page">
+      <div className="host-landing-hero">
+        <span className="sip-mark signup-mark" aria-hidden="true">S</span>
+        <p className="overline">CoffeeSip for hosts</p>
+        <h1>Turn your availability into a calendar people respect.</h1>
+        <p>Create a public page, choose when you’re open, set the minimum sip, and let real requests reach you privately.</p>
+        <div className="landing-actions">
+          <button className="pay-button" onClick={onStartHost}>Create your calendar</button>
+          <button className="ghost-button" onClick={() => onUnlock('demo-host-token')}>Sign in to demo</button>
+        </div>
+        <div className="signup-benefits">
+          <span>Host-first calendar</span>
+          <span>Minimum sip per ask</span>
+          <span>Private request review</span>
+        </div>
+      </div>
+
+      <div className="host-landing-panel">
+        <HostOnboardingForm compact onUnlock={onUnlock} hostProfile={hostProfile} onSaveHostProfile={onSaveHostProfile} />
+      </div>
+    </section>
+  );
+}
+
+function HostGate({ onUnlock, hostProfile, onSaveHostProfile }: { onUnlock: (token: string) => void; hostProfile: HostProfile; onSaveHostProfile: (profile: HostProfile) => void }) {
+  return (
     <section className="host-signup-page">
       <div className="host-signup-story">
         <span className="sip-mark signup-mark" aria-hidden="true">S</span>
-        <p className="overline">Create host page</p>
+        <p className="overline">Host sign in</p>
         <h1>Your time is worth it.</h1>
-        <p>Create a CoffeeSip page, choose when you’re available, set the minimum sip, and share one link with others.</p>
+        <p>Create or enter your CoffeeSip calendar. Guests arrive from the link you share with them.</p>
         <div className="signup-benefits">
           <span>Build your public page</span>
           <span>Generate bookable slots</span>
@@ -278,34 +342,7 @@ function HostGate({ onUnlock, hostProfile, onSaveHostProfile }: { onUnlock: (tok
         </div>
       </div>
 
-      <form className="host-signup-form-card" onSubmit={(event) => { event.preventDefault(); createDemoHost(); }}>
-        <div>
-          <p className="overline">Host signup</p>
-          <h2>Start setting up your calendar.</h2>
-          <p className="signup-muted">MVP demo signup. Real accounts and login come after the flow feels right.</p>
-        </div>
-        <label>
-          Your name
-          <input value={name} onChange={(event) => setName(event.target.value)} placeholder="Bar Kolen" autoComplete="name" />
-        </label>
-        <label>
-          Email
-          <input value={email} onChange={(event) => setEmail(event.target.value)} placeholder="bar@example.com" type="email" autoComplete="email" />
-        </label>
-        <label>
-          Public CoffeeSip link
-          <div className="slug-input-row">
-            <span>coffeesip.app/</span>
-            <input value={slug} onChange={(event) => setSlug(event.target.value)} placeholder="bar" />
-          </div>
-        </label>
-        <div className="signup-preview">
-          <span>Preview</span>
-          <strong>{name.trim() || 'CoffeeSip Host'}</strong>
-          <small>{previewLink}</small>
-        </div>
-        <button className="pay-button" disabled={name.trim().length < 2}>Continue to calendar setup</button>
-      </form>
+      <HostOnboardingForm onUnlock={onUnlock} hostProfile={hostProfile} onSaveHostProfile={onSaveHostProfile} />
     </section>
   );
 }
