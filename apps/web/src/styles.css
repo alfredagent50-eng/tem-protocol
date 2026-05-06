@@ -2620,3 +2620,66 @@ body {
     box-shadow: 0 24px 80px rgba(50, 39, 30, 0.13);
   }
 }
+
+/* Landing strip-down after review: no top header, no extra mockup, actions at bottom. */
+.host-landing-page {
+  position: relative;
+  grid-template-columns: minmax(0, 0.95fr) minmax(390px, 0.72fr);
+  min-height: min(760px, calc(100vh - 68px));
+  padding-bottom: 112px;
+}
+.host-landing-page .landing-wordmark,
+.host-landing-page .landing-device-card {
+  display: none !important;
+}
+.host-landing-hero {
+  padding-top: 18px;
+}
+.host-landing-hero .overline {
+  margin-bottom: 18px;
+}
+.host-landing-hero h1 {
+  max-width: 620px;
+}
+.host-landing-panel {
+  align-self: center;
+}
+.host-landing-page > .landing-actions {
+  position: absolute;
+  left: 58px;
+  right: 58px;
+  bottom: 34px;
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0;
+}
+.host-landing-page > .landing-actions .pay-button,
+.host-landing-page > .landing-actions .ghost-button {
+  min-width: 190px;
+}
+
+@media (max-width: 820px) {
+  .host-landing-page {
+    grid-template-columns: 1fr;
+    padding-bottom: 28px;
+  }
+  .host-landing-page > .landing-actions {
+    position: static;
+    margin-top: 18px;
+  }
+}
+
+@media (max-width: 620px) {
+  .host-landing-page {
+    padding-bottom: calc(26px + env(safe-area-inset-bottom));
+  }
+  .host-landing-page > .landing-actions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .host-landing-page > .landing-actions .pay-button,
+  .host-landing-page > .landing-actions .ghost-button {
+    min-width: 0;
+  }
+}

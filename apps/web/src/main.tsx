@@ -210,16 +210,17 @@ function App() {
 
   return (
     <main className={`page-shell tone-${selectedType.tone}`}>
-      <div className="top-bar">
-        <div className="top-brand" aria-label="CoffeeSip home">
-          <span className="sip-mark" aria-hidden="true">S</span>
-          <strong>CoffeeSip</strong>
+      {view !== 'home' && (
+        <div className="top-bar">
+          <div className="top-brand" aria-label="CoffeeSip home">
+            <span className="sip-mark" aria-hidden="true">S</span>
+            <strong>CoffeeSip</strong>
+          </div>
+          <div className="app-switcher" aria-label="App view">
+            <button className={view === 'host' ? 'active' : ''} onClick={() => setView('host')} aria-label="Host dashboard">🔐 <span>Sign in</span></button>
+          </div>
         </div>
-        <div className="app-switcher" aria-label="App view">
-          <button className={view === 'home' ? 'active' : ''} onClick={() => setView('home')} aria-label="Host signup">S <span>Start</span></button>
-          <button className={view === 'host' ? 'active' : ''} onClick={() => setView('host')} aria-label="Host dashboard">🔐 <span>Sign in</span></button>
-        </div>
-      </div>
+      )}
 
       {view === 'home' ? (
         <HostLanding onStartHost={() => setView('host')} onUnlock={saveHostToken} hostProfile={hostProfile} onSaveHostProfile={saveHostProfile} />
@@ -305,23 +306,9 @@ function HostLanding({ onStartHost, onUnlock, hostProfile, onSaveHostProfile }: 
   return (
     <section className="host-landing-page">
       <div className="host-landing-hero">
-        <div className="landing-wordmark" aria-label="CoffeeSip">
-          <span className="sip-mark landing-mark" aria-hidden="true">S</span>
-          <strong>CoffeeSip</strong>
-        </div>
-        <p className="overline">Host calendar for paid availability</p>
+        <p className="overline">CoffeeSip</p>
         <h1>Our time’s worth a sip.</h1>
         <p>Create your public calendar, choose when you’re open, set the minimum sip, and share one clean link with people who want your time.</p>
-        <div className="landing-actions">
-          <a className="pay-button" href="#signup">Create your calendar</a>
-          <button className="ghost-button" onClick={onStartHost}>Sign in</button>
-        </div>
-        <div className="landing-device-card" aria-label="CoffeeSip mobile brand preview">
-          <div className="device-top" />
-          <div className="device-wordmark"><span className="sip-mark">S</span><strong>CoffeeSip</strong></div>
-          <h2>Our time’s<br />worth a sip.</h2>
-          <span className="device-cta">Get Started</span>
-        </div>
       </div>
 
       <div className="host-landing-panel" id="signup">
@@ -334,6 +321,11 @@ function HostLanding({ onStartHost, onUnlock, hostProfile, onSaveHostProfile }: 
           </div>
           <button className="ghost-button" onClick={() => onUnlock('demo-host-token')}>Sign in to demo</button>
         </div>
+      </div>
+
+      <div className="landing-actions">
+        <a className="pay-button" href="#signup">Create your calendar</a>
+        <button className="ghost-button" onClick={onStartHost}>Sign in</button>
       </div>
     </section>
   );
