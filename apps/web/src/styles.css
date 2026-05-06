@@ -2683,3 +2683,42 @@ body {
     min-width: 0;
   }
 }
+
+/* Hard correction: landing must have no top nav and bottom actions only. */
+.page-shell:has(.host-landing-page) {
+  display: grid;
+  place-items: center;
+  padding-top: 24px;
+}
+.page-shell:has(.host-landing-page) > .top-bar {
+  display: none !important;
+}
+.host-landing-page .landing-actions {
+  position: fixed !important;
+  left: 50% !important;
+  right: auto !important;
+  bottom: max(18px, env(safe-area-inset-bottom)) !important;
+  z-index: 30;
+  width: min(520px, calc(100vw - 32px));
+  display: grid !important;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin: 0 !important;
+  padding: 8px;
+  border: 1px solid rgba(49, 38, 31, 0.10);
+  border-radius: 20px;
+  background: rgba(255, 253, 248, 0.92);
+  box-shadow: 0 18px 50px rgba(50, 39, 30, 0.14);
+  backdrop-filter: blur(14px);
+  transform: translateX(-50%);
+}
+.host-landing-page .landing-actions .pay-button,
+.host-landing-page .landing-actions .ghost-button {
+  width: 100%;
+  min-width: 0 !important;
+  min-height: 48px;
+  border-radius: 14px;
+}
+.host-landing-page {
+  padding-bottom: 120px !important;
+}
