@@ -1,0 +1,873 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>CoffeeSip — Brand Kit</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light">
+<link rel="icon" type="image/svg+xml" href="../apps/web/public/brand/icons/favicon.svg">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --obsidian: #0E1116;
+    --paper:    #F6F4EF;
+    --oxblood:  #6B1F2E;
+    --clay:     #C8533D;
+    --mist:     #E2E0DA;
+    --signal:   #C5F45A;
+    --stone-500: #6E6557;
+    --stone-300: #CFC6B5;
+    --stone-200: #E4DDD0;
+    --espresso: #1A1814;
+
+    --font-display: 'Fraunces', 'Söhne', 'Times New Roman', Georgia, serif;
+    --font-ui:      'Inter', 'Söhne', 'Helvetica Neue', Arial, sans-serif;
+    --font-mono:    'JetBrains Mono', 'SFMono-Regular', Menlo, monospace;
+
+    --ease-firm:   cubic-bezier(0.6, 0, 0.4, 1);
+    --ease-pour:   cubic-bezier(0.2, 0.8, 0.2, 1);
+    --ease-still:  cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+    --max: 1280px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body {
+    margin: 0; padding: 0;
+    background: var(--paper);
+    color: var(--obsidian);
+    font-family: var(--font-ui);
+    font-size: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  body { padding: 0 0 96px; }
+
+  .wrap { max-width: var(--max); margin: 0 auto; padding: 0 32px; }
+
+  /* ---------- Header band ---------- */
+  .topbar {
+    border-bottom: 1px solid var(--stone-200);
+    padding: 20px 0;
+    background: var(--paper);
+    position: sticky; top: 0; z-index: 10;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
+  .topbar .wrap { display: flex; align-items: center; justify-content: space-between; }
+  .topbar .lockup-32 { display: flex; align-items: center; gap: 10px; }
+  .topbar img { height: 32px; width: auto; }
+  .topbar .meta {
+    font-family: var(--font-ui);
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--stone-500);
+  }
+
+  /* ---------- Hero ---------- */
+  .hero { padding: 128px 0 96px; }
+  .hero .eyebrow {
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--oxblood);
+    margin: 0 0 24px;
+  }
+  .hero h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: clamp(48px, 7.5vw, 96px);
+    line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin: 0 0 32px;
+    max-width: 16ch;
+  }
+  .hero .lede {
+    font-family: var(--font-ui);
+    font-size: 20px; line-height: 1.55;
+    color: var(--obsidian);
+    max-width: 56ch;
+    margin: 0 0 48px;
+  }
+  .hero .lede em {
+    font-style: italic;
+    color: var(--oxblood);
+    font-family: var(--font-display);
+    font-weight: 500;
+  }
+  .pill-status {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 8px 14px;
+    background: var(--obsidian); color: var(--paper);
+    border-radius: 999px;
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.08em; text-transform: uppercase;
+  }
+  .pill-status .dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: var(--signal); box-shadow: 0 0 0 3px rgba(197,244,90,0.18);
+    animation: pulse 1.6s var(--ease-still) infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { box-shadow: 0 0 0 3px rgba(197,244,90,0.18); }
+    50%      { box-shadow: 0 0 0 7px rgba(197,244,90,0.05); }
+  }
+
+  /* ---------- Section ---------- */
+  section {
+    padding: 96px 0;
+    border-top: 1px solid var(--stone-200);
+  }
+  .section-head { margin-bottom: 64px; }
+  .section-head .eyebrow {
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--stone-500);
+    margin: 0 0 12px;
+  }
+  .section-head h2 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 48px; line-height: 1.05;
+    letter-spacing: -0.01em;
+    margin: 0 0 16px;
+    max-width: 18ch;
+  }
+  .section-head p {
+    font-size: 18px; line-height: 1.55;
+    color: var(--stone-500);
+    max-width: 64ch;
+    margin: 0;
+  }
+
+  /* ---------- Three concepts grid ---------- */
+  .concepts {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 32px;
+  }
+  .concept {
+    background: var(--paper);
+    border: 1px solid var(--stone-200);
+    border-radius: 18px;
+    padding: 32px;
+    display: flex; flex-direction: column;
+    gap: 24px;
+  }
+  .concept.picked {
+    border: 2px solid var(--oxblood);
+    box-shadow: 0 24px 64px rgba(14,17,22,0.07);
+    position: relative;
+  }
+  .concept.picked::after {
+    content: 'PICKED';
+    position: absolute; top: 16px; right: 16px;
+    background: var(--oxblood); color: var(--paper);
+    padding: 4px 10px; border-radius: 999px;
+    font-size: 11px; font-weight: 700;
+    letter-spacing: 0.12em;
+  }
+  .concept-name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 28px; line-height: 1.1;
+    letter-spacing: -0.005em;
+    margin: 0;
+  }
+  .concept-name { margin-bottom: 6px; }
+  .concept-tag {
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.10em; text-transform: uppercase;
+    color: var(--stone-500);
+    margin: 0;
+  }
+  .concept-hero {
+    aspect-ratio: 1.4 / 1;
+    background: var(--mist);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    padding: 24px;
+  }
+  .concept-hero img { max-height: 200px; max-width: 100%; height: auto; }
+  .concept-sizes {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 16px;
+    padding: 24px 16px;
+    background: var(--paper);
+    border: 1px solid var(--stone-200);
+    border-radius: 12px;
+  }
+  .size-stack { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .size-stack img { display: block; }
+  .size-stack img.s8  { height: 8px;  width: auto; }
+  .size-stack img.s16 { height: 16px; width: auto; }
+  .size-stack img.s32 { height: 32px; width: auto; }
+  .size-stack img.s64 { height: 64px; width: auto; }
+  .size-stack .lbl {
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--stone-500);
+  }
+  .concept-lockup {
+    background: var(--paper);
+    border: 1px solid var(--stone-200);
+    border-radius: 12px;
+    padding: 20px 24px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 88px;
+  }
+  .concept-lockup img { max-width: 100%; max-height: 56px; height: auto; }
+  .concept-variants {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .variant {
+    border-radius: 12px;
+    padding: 24px 16px;
+    display: flex; align-items: center; justify-content: center;
+    min-height: 100px;
+    position: relative;
+  }
+  .variant.mono { background: var(--stone-200); color: var(--obsidian); }
+  .variant.dark { background: var(--espresso); }
+  .variant img { max-height: 64px; width: auto; }
+  .variant .lbl {
+    position: absolute; bottom: 8px; left: 12px;
+    font-size: 10px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+  }
+  .variant.mono .lbl { color: var(--stone-500); }
+  .variant.dark .lbl { color: var(--mist); }
+  .concept-blurb {
+    font-size: 15px; line-height: 1.6;
+    color: var(--obsidian);
+    margin: 0;
+  }
+  .concept-meta {
+    display: flex; flex-wrap: wrap; gap: 8px;
+    padding-top: 16px;
+    border-top: 1px dashed var(--stone-200);
+  }
+  .chip {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.06em;
+    padding: 4px 10px;
+    background: var(--mist); color: var(--obsidian);
+    border-radius: 999px;
+  }
+  .chip.warn { background: rgba(200,83,61,0.14); color: var(--clay); }
+  .chip.pick { background: var(--oxblood); color: var(--paper); }
+
+  /* ---------- Palette ---------- */
+  .palette {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    gap: 16px;
+  }
+  .swatch {
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid var(--stone-200);
+    display: flex; flex-direction: column;
+    background: var(--paper);
+  }
+  .swatch .well {
+    aspect-ratio: 1 / 1;
+    display: block;
+  }
+  .swatch .meta {
+    padding: 14px 16px 16px;
+    border-top: 1px solid var(--stone-200);
+  }
+  .swatch .name {
+    font-family: var(--font-display);
+    font-weight: 500;
+    font-size: 18px; line-height: 1;
+    margin: 0 0 4px;
+  }
+  .swatch .hex {
+    font-family: var(--font-mono);
+    font-size: 13px;
+    color: var(--stone-500);
+    margin: 0 0 8px;
+  }
+  .swatch .role {
+    font-size: 12px; line-height: 1.4;
+    color: var(--stone-500);
+    margin: 0;
+  }
+
+  /* ---------- Type scale ---------- */
+  .type-scale > * + * {
+    margin-top: 32px;
+    padding-top: 32px;
+    border-top: 1px solid var(--stone-200);
+  }
+  .type-row { display: grid; grid-template-columns: 200px 1fr; gap: 32px; align-items: baseline; }
+  .type-row .label {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--stone-500);
+    line-height: 1.6;
+    padding-top: 6px;
+  }
+  .type-row .label .name { color: var(--obsidian); display: block; font-weight: 500; }
+  .type-row .sample { color: var(--obsidian); }
+  .ts-display-2xl { font-family: var(--font-display); font-weight: 400; font-size: 96px; line-height: 0.95; letter-spacing: -0.02em; }
+  .ts-display-xl  { font-family: var(--font-display); font-weight: 400; font-size: 72px; line-height: 1.00; letter-spacing: -0.02em; }
+  .ts-display-l   { font-family: var(--font-display); font-weight: 400; font-size: 56px; line-height: 1.05; letter-spacing: -0.01em; }
+  .ts-h1          { font-family: var(--font-display); font-weight: 500; font-size: 40px; line-height: 1.10; letter-spacing: -0.01em; }
+  .ts-h2          { font-family: var(--font-display); font-weight: 500; font-size: 28px; line-height: 1.20; }
+  .ts-h3          { font-family: var(--font-ui);      font-weight: 600; font-size: 20px; line-height: 1.30; }
+  .ts-body-l      { font-family: var(--font-ui);      font-weight: 400; font-size: 18px; line-height: 1.55; }
+  .ts-body        { font-family: var(--font-ui);      font-weight: 400; font-size: 16px; line-height: 1.55; }
+  .ts-caption     { font-family: var(--font-ui);      font-weight: 500; font-size: 14px; line-height: 1.45; letter-spacing: 0.01em; }
+  .ts-micro       { font-family: var(--font-ui);      font-weight: 600; font-size: 12px; line-height: 1.40; letter-spacing: 0.12em; text-transform: uppercase; }
+
+  /* ---------- Tokens ---------- */
+  .tokens-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 32px; }
+  .token-card {
+    border: 1px solid var(--stone-200);
+    border-radius: 12px; padding: 24px;
+  }
+  .token-card h3 {
+    font-family: var(--font-display);
+    font-weight: 500; font-size: 22px;
+    margin: 0 0 16px;
+  }
+  .spacer-row { display: flex; align-items: flex-end; gap: 8px; flex-wrap: wrap; margin-bottom: 16px; }
+  .spacer-row .b {
+    background: var(--obsidian); height: 24px;
+    display: inline-block;
+  }
+  .spacer-row + .legend {
+    font-family: var(--font-mono);
+    font-size: 11px; color: var(--stone-500);
+    line-height: 1.6;
+  }
+  .radii-row { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+  .radii-row .r {
+    width: 64px; height: 64px;
+    background: var(--obsidian);
+    display: flex; align-items: flex-end; justify-content: center;
+    color: var(--paper);
+    font-family: var(--font-mono); font-size: 10px;
+    padding: 6px;
+  }
+  .radii-row .r.r-sm   { border-radius: 4px; }
+  .radii-row .r.r-md   { border-radius: 10px; }
+  .radii-row .r.r-lg   { border-radius: 18px; }
+  .radii-row .r.r-pill { border-radius: 999px; width: 96px; }
+  .radii-row .r.r-sq   { border-radius: 0; }
+  .shadow-row { display: flex; gap: 24px; align-items: center; padding: 16px; }
+  .shadow-row .s {
+    width: 88px; height: 64px; background: var(--paper);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--stone-500);
+  }
+  .shadow-row .s.e1 { box-shadow: 0 1px 2px rgba(14,17,22,0.06); }
+  .shadow-row .s.e2 { box-shadow: 0 8px 24px rgba(14,17,22,0.10); }
+  .shadow-row .s.e3 { box-shadow: 0 24px 64px rgba(14,17,22,0.14); }
+  .motion-row { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+  .motion-row .m {
+    border: 1px solid var(--stone-200);
+    border-radius: 8px; padding: 12px 14px;
+    font-family: var(--font-mono); font-size: 11px;
+    color: var(--obsidian); line-height: 1.5;
+  }
+  .motion-row .m b { display: block; font-weight: 600; color: var(--oxblood); margin-bottom: 4px; }
+
+  /* ---------- Voice samples ---------- */
+  .voice-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+  .voice-card {
+    background: var(--paper); border: 1px solid var(--stone-200);
+    border-radius: 12px; padding: 20px;
+  }
+  .voice-card .ctx {
+    font-size: 11px; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--stone-500); margin: 0 0 12px;
+  }
+  .voice-card .copy {
+    font-family: var(--font-display);
+    font-weight: 400; font-size: 22px; line-height: 1.3;
+    margin: 0;
+  }
+  .voice-card .copy small {
+    display: block; margin-top: 6px;
+    font-family: var(--font-ui);
+    font-size: 14px; font-weight: 400;
+    color: var(--stone-500);
+  }
+
+  /* ---------- Applied — landing hero ---------- */
+  .applied-frame {
+    border-radius: 24px;
+    overflow: hidden;
+    background: var(--paper);
+    border: 1px solid var(--stone-200);
+    box-shadow: 0 24px 64px rgba(14,17,22,0.10);
+  }
+  .applied-chrome {
+    background: var(--mist);
+    height: 32px;
+    display: flex; align-items: center; gap: 6px;
+    padding: 0 14px;
+  }
+  .applied-chrome .dot {
+    width: 10px; height: 10px; border-radius: 50%; background: var(--stone-300);
+  }
+  .applied-chrome .url {
+    margin-left: 16px;
+    font-family: var(--font-mono);
+    font-size: 11px; color: var(--stone-500);
+  }
+  .applied-page { padding: 24px 64px 80px; }
+  .applied-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 0 80px;
+  }
+  .applied-nav .left { display: flex; align-items: center; gap: 12px; }
+  .applied-nav img.logo { height: 28px; width: auto; }
+  .applied-nav .links {
+    display: flex; gap: 32px;
+    font-size: 14px; font-weight: 500;
+    color: var(--obsidian);
+  }
+  .applied-nav .links a { color: inherit; text-decoration: none; }
+  .applied-nav .right .pill-status { font-size: 11px; padding: 6px 12px; }
+
+  .applied-hero {
+    display: grid;
+    grid-template-columns: 1.4fr 1fr;
+    gap: 64px;
+    align-items: center;
+  }
+  .applied-hero .eyebrow {
+    font-family: var(--font-ui);
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.16em; text-transform: uppercase;
+    color: var(--oxblood);
+    margin: 0 0 24px;
+  }
+  .applied-hero h1 {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 88px; line-height: 0.95;
+    letter-spacing: -0.02em;
+    margin: 0 0 28px;
+  }
+  .applied-hero h1 em {
+    color: var(--oxblood);
+    font-style: italic;
+    font-weight: 500;
+  }
+  .applied-hero .sub {
+    font-family: var(--font-ui);
+    font-size: 19px; line-height: 1.55;
+    color: var(--obsidian);
+    margin: 0 0 40px;
+    max-width: 30ch;
+  }
+  .applied-hero .ctas { display: flex; gap: 16px; align-items: center; }
+  .btn-primary {
+    background: var(--oxblood); color: var(--paper);
+    border: 0;
+    border-radius: 999px;
+    padding: 16px 28px;
+    font-family: var(--font-ui);
+    font-size: 15px; font-weight: 600;
+    cursor: pointer;
+    transition: transform 180ms var(--ease-firm), background 180ms var(--ease-firm);
+  }
+  .btn-primary:hover { transform: translateY(-1px); background: #5b1726; }
+  .btn-secondary {
+    background: transparent; color: var(--obsidian);
+    border: 0; padding: 16px 8px;
+    font-family: var(--font-ui);
+    font-size: 15px; font-weight: 500;
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 6px;
+    cursor: pointer;
+  }
+  .applied-hero .right {
+    background: linear-gradient(180deg, var(--mist), rgba(226,224,218,0.4));
+    border-radius: 18px;
+    padding: 28px;
+    border: 1px solid var(--stone-200);
+  }
+  .host-card {
+    background: var(--paper);
+    border-radius: 12px;
+    padding: 18px;
+    box-shadow: 0 1px 2px rgba(14,17,22,0.06);
+  }
+  .host-card + .host-card { margin-top: 12px; }
+  .host-card .row { display: flex; align-items: center; gap: 14px; }
+  .host-card .av {
+    width: 44px; height: 44px; border-radius: 50%;
+    background: var(--obsidian); color: var(--paper);
+    display: flex; align-items: center; justify-content: center;
+    font-family: var(--font-display); font-weight: 500; font-size: 16px;
+  }
+  .host-card .av.b { background: var(--oxblood); }
+  .host-card .av.c { background: var(--clay); }
+  .host-card .info {
+    flex: 1; min-width: 0;
+  }
+  .host-card .info .nm { font-weight: 600; font-size: 14px; color: var(--obsidian); }
+  .host-card .info .role { font-size: 12px; color: var(--stone-500); }
+  .host-card .price-chip {
+    background: rgba(200,83,61,0.16); color: #8E3927;
+    font-size: 12px; font-weight: 600;
+    padding: 4px 10px; border-radius: 999px;
+    white-space: nowrap;
+  }
+  .host-card .price-chip.live {
+    background: var(--obsidian); color: var(--paper);
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .host-card .price-chip.live .ld {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--signal);
+  }
+
+  /* ---------- Footer ---------- */
+  footer {
+    margin-top: 96px;
+    padding: 48px 0;
+    border-top: 1px solid var(--stone-200);
+    color: var(--stone-500);
+    font-size: 13px;
+  }
+  footer .wrap { display: flex; justify-content: space-between; align-items: center; gap: 24px; flex-wrap: wrap; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 1080px) {
+    .concepts { grid-template-columns: 1fr; }
+    .palette  { grid-template-columns: repeat(3, 1fr); }
+    .applied-hero { grid-template-columns: 1fr; gap: 32px; }
+    .applied-hero h1 { font-size: 56px; }
+    .applied-page { padding: 24px 32px 48px; }
+    .tokens-grid { grid-template-columns: 1fr; }
+    .voice-grid  { grid-template-columns: 1fr; }
+    .type-row { grid-template-columns: 1fr; gap: 8px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============== TOP BAR ============== -->
+<div class="topbar">
+  <div class="wrap">
+    <div class="lockup-32">
+      <img src="../apps/web/public/brand/lockup.svg" alt="CoffeeSip">
+    </div>
+    <div class="meta">Brand Kit · v1</div>
+  </div>
+</div>
+
+<!-- ============== HERO ============== -->
+<header class="hero wrap">
+  <p class="eyebrow">CoffeeSip · Brand Kit</p>
+  <h1>Coffee, but not the cup. Time, but not the clock.</h1>
+  <p class="lede">The CoffeeSip mark — a coffee bean abstracted to a vesica piscis with a tilted line through it. Reads as warmth and motion. Set in <em>Fraunces</em>, paired with Inter for UI.</p>
+  <span class="pill-status"><span class="dot"></span> Live preview</span>
+</header>
+
+<!-- ============== THE MARK ============== -->
+<section class="wrap" id="mark">
+  <div class="section-head">
+    <p class="eyebrow">The mark</p>
+    <h2>Meridian — a bean cut by a single tilted line.</h2>
+    <p>One mark. A vesica-piscis bean with a meridian at ~58°. Two visual elements. Coffee without the cup, time without the clock. Scales from billboard to favicon — with one targeted variant for tab-size where the meridian needs to thicken to survive.</p>
+  </div>
+
+  <div class="concepts">
+
+    <article class="concept picked">
+      <div>
+        <h3 class="concept-name">Meridian</h3>
+        <p class="concept-tag">Modernist abstract mark + Fraunces wordmark</p>
+      </div>
+      <div class="concept-hero">
+        <img src="../apps/web/public/brand/mark.svg" alt="Meridian — mark at 200px" style="height:200px;">
+      </div>
+      <div class="concept-sizes">
+        <div class="size-stack"><img class="s8"  src="../apps/web/public/brand/mark.svg" alt=""><span class="lbl">8 px</span></div>
+        <div class="size-stack"><img class="s16" src="../apps/web/public/brand/mark.svg" alt=""><span class="lbl">16 px</span></div>
+        <div class="size-stack"><img class="s32" src="../apps/web/public/brand/mark.svg" alt=""><span class="lbl">32 px</span></div>
+        <div class="size-stack"><img class="s64" src="../apps/web/public/brand/mark.svg" alt=""><span class="lbl">64 px</span></div>
+      </div>
+      <div class="concept-lockup">
+        <img src="../apps/web/public/brand/lockup.svg" alt="Meridian lockup">
+      </div>
+      <div class="concept-variants">
+        <div class="variant mono"><img src="../apps/web/public/brand/mark-mono.svg" alt="mono"><span class="lbl">mono</span></div>
+        <div class="variant dark"><img src="../apps/web/public/brand/mark-dark.svg" alt="dark"><span class="lbl">dark</span></div>
+      </div>
+      <p class="concept-blurb">
+        A coffee bean reduced to a vesica piscis, with a tilted meridian line through it at ~58°. The bean reads as warmth; the meridian reads as a clock hand passing through. Coffee without the cup, time without the clock.
+      </p>
+      <div class="concept-meta">
+        <span class="chip pick">Canonical</span>
+        <span class="chip">Scales to favicon (with thickened variant ≤32px)</span>
+        <span class="chip">Wordmark-agnostic</span>
+      </div>
+    </article>
+
+  </div>
+</section>
+
+<!-- ============== PALETTE ============== -->
+<section class="wrap">
+  <div class="section-head">
+    <p class="eyebrow">Color system</p>
+    <h2>Six anchors. No cream, no petrol, no amber.</h2>
+    <p>Fresh palette. Oxblood is the brand primary — wine-deep, says "this handles money." Clay is the warm cousin. Signal is the 1%-use chartreuse for live moments.</p>
+  </div>
+  <div class="palette">
+    <div class="swatch">
+      <span class="well" style="background:#0E1116;"></span>
+      <div class="meta">
+        <p class="name">obsidian</p>
+        <p class="hex">#0E1116</p>
+        <p class="role">Primary ink. Body, headlines, mark stroke. AAA on paper.</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <span class="well" style="background:#F6F4EF; box-shadow: inset 0 0 0 1px var(--stone-200);"></span>
+      <div class="meta">
+        <p class="name">paper</p>
+        <p class="hex">#F6F4EF</p>
+        <p class="role">Primary canvas. Warm-neutral off-white — bone, not cream.</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <span class="well" style="background:#6B1F2E;"></span>
+      <div class="meta">
+        <p class="name">oxblood</p>
+        <p class="hex">#6B1F2E</p>
+        <p class="role">Brand primary. CTAs, mark fill, links. AAA reverse on paper.</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <span class="well" style="background:#C8533D;"></span>
+      <div class="meta">
+        <p class="name">clay</p>
+        <p class="hex">#C8533D</p>
+        <p class="role">Warm accent. Callouts, pulled quotes, price chips. AA-large only — never body.</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <span class="well" style="background:#E2E0DA;"></span>
+      <div class="meta">
+        <p class="name">mist</p>
+        <p class="hex">#E2E0DA</p>
+        <p class="role">Surface elevation. Hover fills, dividers, illustration backdrop.</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <span class="well" style="background:#C5F45A;"></span>
+      <div class="meta">
+        <p class="name">signal</p>
+        <p class="hex">#C5F45A</p>
+        <p class="role">Live-state only. Incoming sip, active session. ≤1% surface.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== TYPE SCALE ============== -->
+<section class="wrap">
+  <div class="section-head">
+    <p class="eyebrow">Typography</p>
+    <h2>Fraunces above. Inter below.</h2>
+    <p>Two free Google Fonts. Editorial display for moments that matter; UI sans for everything you have to read fast.</p>
+  </div>
+  <div class="type-scale">
+    <div class="type-row"><div class="label"><span class="name">display-2xl</span>Fraunces 400 · 96 / 0.95 · −0.02</div><div class="sample ts-display-2xl">Pay for a sip.</div></div>
+    <div class="type-row"><div class="label"><span class="name">display-xl</span>Fraunces 400 · 72 / 1.00 · −0.02</div><div class="sample ts-display-xl">Our time's worth a sip.</div></div>
+    <div class="type-row"><div class="label"><span class="name">display-l</span>Fraunces 400 · 56 / 1.05 · −0.01</div><div class="sample ts-display-l">Fifteen minutes, settled.</div></div>
+    <div class="type-row"><div class="label"><span class="name">h1</span>Fraunces 500 · 40 / 1.10 · −0.01</div><div class="sample ts-h1">Hosts whose time you'd buy</div></div>
+    <div class="type-row"><div class="label"><span class="name">h2</span>Fraunces 500 · 28 / 1.20</div><div class="sample ts-h2">One mark, one wordmark, one lockup.</div></div>
+    <div class="type-row"><div class="label"><span class="name">h3</span>Inter 600 · 20 / 1.30</div><div class="sample ts-h3">Reserve a sip — fifteen minutes</div></div>
+    <div class="type-row"><div class="label"><span class="name">body-l</span>Inter 400 · 18 / 1.55</div><div class="sample ts-body-l">A coffee bean reduced to a vesica piscis, with a tilted meridian line through it. The bean reads as warmth; the meridian reads as a clock hand passing through.</div></div>
+    <div class="type-row"><div class="label"><span class="name">body</span>Inter 400 · 16 / 1.55</div><div class="sample ts-body">Decide what your time's worth. You can always change it. Hosts approve every booking before it confirms.</div></div>
+    <div class="type-row"><div class="label"><span class="name">caption</span>Inter 500 · 14 / 1.45 · +1%</div><div class="sample ts-caption">Helper text, metadata, timestamps, and second-class information.</div></div>
+    <div class="type-row"><div class="label"><span class="name">micro</span>Inter 600 · 12 / 1.40 · +12% UPPERCASE</div><div class="sample ts-micro">What's your time worth</div></div>
+  </div>
+</section>
+
+<!-- ============== TOKENS ============== -->
+<section class="wrap">
+  <div class="section-head">
+    <p class="eyebrow">Component tokens</p>
+    <h2>Spacing, radii, shadows, motion.</h2>
+    <p>The system underneath. Restrained — coffee-warm doesn't mean rounded-cute.</p>
+  </div>
+  <div class="tokens-grid">
+    <div class="token-card">
+      <h3>Spacing</h3>
+      <div class="spacer-row">
+        <span class="b" style="width:4px;"></span>
+        <span class="b" style="width:8px;"></span>
+        <span class="b" style="width:12px;"></span>
+        <span class="b" style="width:16px;"></span>
+        <span class="b" style="width:24px;"></span>
+        <span class="b" style="width:32px;"></span>
+        <span class="b" style="width:48px;"></span>
+        <span class="b" style="width:64px;"></span>
+        <span class="b" style="width:96px;"></span>
+        <span class="b" style="width:128px;"></span>
+      </div>
+      <div class="legend">space-1 = 4 · space-2 = 8 · space-3 = 12 · space-4 = 16 · space-5 = 24 · space-6 = 32 · space-7 = 48 · space-8 = 64 · space-9 = 96 · space-10 = 128</div>
+    </div>
+    <div class="token-card">
+      <h3>Radii</h3>
+      <div class="radii-row">
+        <div class="r r-sm">sm·4</div>
+        <div class="r r-md">md·10</div>
+        <div class="r r-lg">lg·18</div>
+        <div class="r r-pill">pill·999</div>
+        <div class="r r-sq">sq·0</div>
+      </div>
+    </div>
+    <div class="token-card">
+      <h3>Shadows</h3>
+      <div class="shadow-row">
+        <div class="s e1">e1</div>
+        <div class="s e2">e2</div>
+        <div class="s e3">e3</div>
+      </div>
+      <div class="legend" style="margin-top:8px;">e1 — subtle hover · e2 — modal / popover · e3 — hero feature panel only</div>
+    </div>
+    <div class="token-card">
+      <h3>Motion easings</h3>
+      <div class="motion-row">
+        <div class="m"><b>ease-firm · 180ms</b>cubic-bezier(0.6, 0, 0.4, 1) — buttons, taps</div>
+        <div class="m"><b>ease-pour · 240ms</b>cubic-bezier(0.2, 0.8, 0.2, 1) — toasts, micro</div>
+        <div class="m"><b>ease-still · 480ms</b>cubic-bezier(0.16, 1, 0.3, 1) — modal reveal</div>
+        <div class="m"><b>ease-spring · 320ms</b>cubic-bezier(0.34, 1.56, 0.64, 1) — the dot</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== VOICE ============== -->
+<section class="wrap">
+  <div class="section-head">
+    <p class="eyebrow">Voice</p>
+    <h2>Plural, present, considered.</h2>
+    <p>Sip is the verb. Pour is the host's action. Slot is the unit. Don't add brew, drip, or pour-over — the lingo stays small on purpose.</p>
+  </div>
+  <div class="voice-grid">
+    <div class="voice-card"><p class="ctx">Empty state — host dashboard</p><p class="copy">No sips yet.<br><small>Share your link and the first one's on its way.</small></p></div>
+    <div class="voice-card"><p class="ctx">Confirm modal — paying for a slot</p><p class="copy">Sip locked.<br><small>We'll notify you when {{host}} pours. You won't be charged until they confirm.</small></p></div>
+    <div class="voice-card"><p class="ctx">Notification toast</p><p class="copy">First sip's on us.<br><small>$5 credit applied.</small></p></div>
+    <div class="voice-card"><p class="ctx">Failed payment</p><p class="copy">Couldn't pour that one.<br><small>Card was declined — try another?</small></p></div>
+    <div class="voice-card"><p class="ctx">Settings — host's price page</p><p class="copy">Decide what a sip with you costs.<br><small>You can always change it.</small></p></div>
+    <div class="voice-card"><p class="ctx">Activity log</p><p class="copy">@nyla sipped you for 15 min on Tuesday.<br><small>Paid $25.</small></p></div>
+    <div class="voice-card"><p class="ctx">Out-bid notification</p><p class="copy">Someone offered more for that slot.<br><small>Bump your bid or step back?</small></p></div>
+    <div class="voice-card"><p class="ctx">Primary CTA — host profile</p><p class="copy">Reserve a sip — $25 / 15 min</p></div>
+  </div>
+</section>
+
+<!-- ============== APPLIED MOCKUP ============== -->
+<section class="wrap">
+  <div class="section-head">
+    <p class="eyebrow">Applied — landing hero</p>
+    <h2>Brand in context, not on a grid.</h2>
+    <p>Hypothetical CoffeeSip landing page using Meridian. Notice what leads: the price. The brand asserts up front that this isn't free — it's monetized time, and that's the value.</p>
+  </div>
+
+  <div class="applied-frame">
+    <div class="applied-chrome">
+      <span class="dot"></span><span class="dot"></span><span class="dot"></span>
+      <span class="url">https://coffeesip.app</span>
+    </div>
+    <div class="applied-page">
+      <nav class="applied-nav">
+        <div class="left">
+          <img class="logo" src="../apps/web/public/brand/lockup.svg" alt="CoffeeSip">
+        </div>
+        <div class="links">
+          <a href="#">Hosts</a>
+          <a href="#">How it works</a>
+          <a href="#">Pricing</a>
+        </div>
+        <div class="right">
+          <span class="pill-status"><span class="dot"></span> 3 hosts live</span>
+        </div>
+      </nav>
+
+      <div class="applied-hero">
+        <div class="left">
+          <p class="eyebrow">What's your time worth</p>
+          <h1>Pay for a <em>sip</em>.</h1>
+          <p class="sub">Get fifteen minutes with someone whose time matters. Hosts approve every booking before it confirms — your card is held, not charged.</p>
+          <div class="ctas">
+            <button class="btn-primary">Reserve a sip</button>
+            <button class="btn-secondary">See open hosts</button>
+          </div>
+        </div>
+        <div class="right">
+          <div class="host-card">
+            <div class="row">
+              <div class="av">N</div>
+              <div class="info">
+                <div class="nm">Nyla Adekunle</div>
+                <div class="role">Founder · Series A advisor</div>
+              </div>
+              <span class="price-chip">from $80</span>
+            </div>
+          </div>
+          <div class="host-card">
+            <div class="row">
+              <div class="av b">M</div>
+              <div class="info">
+                <div class="nm">Mira Jansen</div>
+                <div class="role">Designer · agency lead</div>
+              </div>
+              <span class="price-chip live"><span class="ld"></span> live · $35</span>
+            </div>
+          </div>
+          <div class="host-card">
+            <div class="row">
+              <div class="av c">D</div>
+              <div class="info">
+                <div class="nm">Diego Ruiz</div>
+                <div class="role">Engineer · staff infra</div>
+              </div>
+              <span class="price-chip">from $50</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============== FOOTER ============== -->
+<footer>
+  <div class="wrap">
+    <div>
+      CoffeeSip · Brand Kit
+    </div>
+    <div>
+      Source: <code style="font-family:var(--font-mono); font-size:12px; color:var(--obsidian);">docs/BRAND_KIT.md</code>
+      · Assets: <code style="font-family:var(--font-mono); font-size:12px; color:var(--obsidian);">apps/web/public/brand/</code>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

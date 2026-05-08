@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 140" shape-rendering="geometricPrecision" role="img" aria-label="CoffeeSip lockup">
+  <title>CoffeeSip — primary lockup</title>
+  <desc>Meridian mark + Fraunces wordmark, optically aligned.</desc>
+  <g transform="translate(0, 8)">
+    <path d="M50 8 C 80 28, 80 92, 50 112 C 20 92, 20 28, 50 8 Z" fill="#6B1F2E"/>
+    <line x1="32" y1="92" x2="68" y2="28" stroke="#F6F4EF" stroke-width="4" stroke-linecap="round"/>
+  </g>
+  <text x="138" y="108"
+        font-family="'Fraunces', 'Söhne', 'Times New Roman', Georgia, serif"
+        font-weight="400"
+        font-size="112"
+        letter-spacing="-2"
+        fill="#0E1116">coffeesip</text>
+</svg>
