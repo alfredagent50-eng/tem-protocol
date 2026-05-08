@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 120" shape-rendering="geometricPrecision" role="img" aria-label="CoffeeSip — Punctuation mark">
+  <title>CoffeeSip — Punctuation mark</title>
+  <desc>The brand reduced to its essence: stylized lowercase i. Stem in ink; designed dot in oxblood. Concept 2 — Punctuation.</desc>
+  <!-- Stem: rounded bar -->
+  <rect x="32" y="48" width="16" height="60" rx="3.5" ry="3.5" fill="#0E1116"/>
+  <!-- Designed dot, oversized -->
+  <circle cx="40" cy="24" r="12" fill="#6B1F2E"/>
+</svg>

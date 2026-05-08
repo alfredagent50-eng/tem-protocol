@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" shape-rendering="geometricPrecision" role="img" aria-label="CoffeeSip — Slot mark">
+  <title>CoffeeSip — Slot mark</title>
+  <desc>A horizontal stadium representing a calendar time-slot, with an offset filled dot representing a confirmed booking. Concept 1 — Slot.</desc>
+  <!-- Calendar slot: stadium / pill, stroke-only -->
+  <rect x="6" y="40" width="108" height="40" rx="20" ry="20" fill="none" stroke="#0E1116" stroke-width="6"/>
+  <!-- Booked moment: filled dot, golden-ratio offset toward the left -->
+  <circle cx="29" cy="60" r="9" fill="#6B1F2E"/>
+</svg>

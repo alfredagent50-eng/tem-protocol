@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 160" shape-rendering="geometricPrecision" role="img" aria-label="CoffeeSip wordmark — Punctuation">
+  <title>CoffeeSip — Punctuation wordmark</title>
+  <desc>Lowercase wordmark in Fraunces, weight 500. The dot of the lowercase i in "sip" is replaced by an oversized filled circle in oxblood — the one designed move. Uses dotless i (U+0131) so the designed dot owns the position. Fraunces is required for correct dot alignment.</desc>
+  <text x="0" y="118"
+        font-family="'Fraunces', 'Söhne', 'Times New Roman', Georgia, serif"
+        font-weight="500"
+        font-size="128"
+        letter-spacing="-3"
+        fill="#0E1116">coffees&#x0131;p</text>
+  <!-- Designed dot — calibrated for Fraunces 128 / weight 500 / letter-spacing -3.
+       cx=362 derived from getStartPositionOfChar measurement of the dotless i. -->
+  <circle cx="362" cy="38" r="14" fill="#6B1F2E"/>
+</svg>

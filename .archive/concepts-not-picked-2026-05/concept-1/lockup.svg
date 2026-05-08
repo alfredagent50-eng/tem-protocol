@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 160" shape-rendering="geometricPrecision" role="img" aria-label="CoffeeSip — Slot lockup">
+  <title>CoffeeSip — Slot lockup</title>
+  <desc>Mark + wordmark horizontal lockup. Concept 1 — Slot.</desc>
+  <!-- Mark, scaled to ~120 tall, padded -->
+  <g transform="translate(0, 20)">
+    <rect x="6" y="40" width="108" height="40" rx="20" ry="20" fill="none" stroke="#0E1116" stroke-width="6"/>
+    <circle cx="29" cy="60" r="9" fill="#6B1F2E"/>
+  </g>
+  <!-- Wordmark, optical-aligned baseline -->
+  <text x="156" y="106"
+        font-family="'Inter', 'Söhne', 'Helvetica Neue', Arial, sans-serif"
+        font-weight="600"
+        font-size="96"
+        letter-spacing="-2"
+        fill="#0E1116">coffeesip</text>
+</svg>
