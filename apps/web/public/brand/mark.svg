@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120" shape-rendering="geometricPrecision" role="img" aria-label="CoffeeSip mark">
+  <title>CoffeeSip — primary mark</title>
+  <desc>Picked direction: Meridian. Coffee bean abstracted to vesica piscis with a tilted meridian line through it.</desc>
+  <path d="M50 8 C 80 28, 80 92, 50 112 C 20 92, 20 28, 50 8 Z" fill="#6B1F2E"/>
+  <line x1="32" y1="92" x2="68" y2="28" stroke="#F6F4EF" stroke-width="4" stroke-linecap="round"/>
+</svg>

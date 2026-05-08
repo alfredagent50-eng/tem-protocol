@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120" shape-rendering="geometricPrecision" role="img" aria-label="CoffeeSip mark, mono">
+  <title>CoffeeSip — primary mark, single-color</title>
+  <desc>Single-color reduction (currentColor). Bean is stroke-only so the meridian remains visible.</desc>
+  <path d="M50 8 C 80 28, 80 92, 50 112 C 20 92, 20 28, 50 8 Z"
+        fill="none" stroke="currentColor" stroke-width="5"/>
+  <line x1="32" y1="92" x2="68" y2="28"
+        stroke="currentColor" stroke-width="5" stroke-linecap="round"/>
+</svg>

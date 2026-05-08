@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 120" shape-rendering="geometricPrecision" role="img" aria-label="CoffeeSip — Punctuation mark, mono">
+  <title>CoffeeSip — Punctuation mark, single-color</title>
+  <desc>Single-color (currentColor) reduction.</desc>
+  <rect x="32" y="48" width="16" height="60" rx="3.5" ry="3.5" fill="currentColor"/>
+  <circle cx="40" cy="24" r="12" fill="currentColor"/>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" shape-rendering="geometricPrecision" role="img" aria-label="CoffeeSip">
+  <title>CoffeeSip favicon</title>
+  <desc>Optimized for 16–32px browser-tab rendering. Bean is slightly fatter; meridian is slightly thicker so it survives at favicon size.</desc>
+  <!-- Bean, snapped to a 32px grid, slightly fatter than the master mark -->
+  <path d="M16 3 C 26 9, 26 23, 16 29 C 6 23, 6 9, 16 3 Z" fill="#6B1F2E"/>
+  <!-- Meridian -->
+  <line x1="10.5" y1="22" x2="21.5" y2="10"
+        stroke="#F6F4EF" stroke-width="2" stroke-linecap="round"/>
+</svg>

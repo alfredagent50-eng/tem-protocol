@@ -1,0 +1,824 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CoffeeSip — Brand Kit v1</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    /* Brand */
+    --c-cream: #F1ECE2;
+    --c-foam: #FAF7F0;
+    --c-ink: #161616;
+    --c-ink-700: #2A2723;
+    --c-petrol: #2C5A6E;
+    --c-amber: #B9892C;
+    --c-espresso: #2B1D14;
+    /* Neutrals */
+    --c-stone-200: #E4DDD0;
+    --c-stone-300: #CFC6B5;
+    --c-stone-400: #A89E8C;
+    --c-stone-500: #6E6557;
+    --c-stone-600: #4F4A41;
+    /* Semantic light */
+    --c-success: #52704A;
+    --c-warning: #9A5419;
+    --c-error: #9C3F2E;
+    --c-info: var(--c-petrol);
+    /* Dark variants (used on dark panels) */
+    --d-base: #1C1612;
+    --d-surface-1: #241D17;
+    --d-surface-2: #322920;
+    --d-border: #4A3D31;
+    --d-text: #EFE9DD;
+    --d-text-muted: #B8AE9A;
+    --d-petrol: #7CB1C7;
+    --d-amber: #E0AE54;
+    --d-success: #85B273;
+    --d-error: #D26A56;
+    /* Tokens */
+    --radius-sm: 4px;
+    --radius-md: 8px;
+    --radius-lg: 16px;
+    --radius-xl: 24px;
+    --radius-pill: 999px;
+    --shadow-sm: 0 1px 2px rgba(43, 29, 20, 0.06);
+    --shadow-md: 0 4px 12px rgba(43, 29, 20, 0.08), 0 1px 2px rgba(43, 29, 20, 0.04);
+    --shadow-lg: 0 12px 32px rgba(43, 29, 20, 0.10), 0 2px 6px rgba(43, 29, 20, 0.05);
+    --shadow-hero: 0 24px 64px rgba(43, 29, 20, 0.14);
+    --ease-pour: cubic-bezier(0.32, 0.72, 0, 1);
+    --ease-sip: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-steam: cubic-bezier(0.16, 1, 0.3, 1);
+    --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --font-display: "Fraunces", ui-serif, Georgia, "Times New Roman", serif;
+  }
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--c-cream);
+    color: var(--c-ink);
+    font-family: var(--font-sans);
+    font-size: 16px;
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  .page { max-width: 1240px; margin: 0 auto; padding: 64px 32px 96px; }
+  @media (max-width: 720px) { .page { padding: 40px 20px 64px; } }
+
+  /* ===== Header ===== */
+  header.brand {
+    display: flex; align-items: flex-start; gap: 32px;
+    padding-bottom: 48px;
+    border-bottom: 1px solid var(--c-stone-300);
+    margin-bottom: 64px;
+    flex-wrap: wrap;
+  }
+  .smark { flex: 0 0 auto; }
+  header .meta { flex: 1 1 360px; min-width: 280px; }
+  .eyebrow {
+    font-size: 12px; line-height: 1.33;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--c-stone-600);
+    margin: 0 0 12px;
+  }
+  h1.title {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: clamp(2.5rem, 4vw + 1rem, 4rem);
+    line-height: 1.06;
+    letter-spacing: -0.025em;
+    margin: 0 0 16px;
+  }
+  .lede {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-style: italic;
+    font-size: 22px;
+    line-height: 1.4;
+    color: var(--c-ink-700);
+    max-width: 56ch;
+    margin: 0 0 24px;
+  }
+  .badges { display: flex; flex-wrap: wrap; gap: 8px; }
+  .badge {
+    font-size: 12px;
+    letter-spacing: 0.04em;
+    font-weight: 500;
+    padding: 6px 10px;
+    border-radius: var(--radius-pill);
+    border: 1px solid var(--c-stone-300);
+    background: var(--c-foam);
+    color: var(--c-stone-600);
+  }
+
+  /* ===== Sections ===== */
+  section { margin-bottom: 80px; }
+  .section-title {
+    display: flex; align-items: baseline; gap: 16px;
+    margin-bottom: 24px;
+    border-top: 1px solid var(--c-stone-300);
+    padding-top: 32px;
+  }
+  .section-title .num {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--c-amber);
+    font-size: 24px;
+    line-height: 1;
+  }
+  h2 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 32px;
+    line-height: 1.25;
+    letter-spacing: -0.015em;
+    margin: 0;
+  }
+  h3 {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 18px;
+    letter-spacing: -0.005em;
+    margin: 32px 0 16px;
+  }
+  p { margin: 0 0 16px; max-width: 64ch; }
+  .muted { color: var(--c-stone-600); }
+  .small { font-size: 14px; line-height: 1.43; }
+
+  /* ===== Palette ===== */
+  .palette-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 24px;
+  }
+  @media (max-width: 720px) { .palette-pair { grid-template-columns: 1fr; } }
+  .palette-panel {
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    border: 1px solid var(--c-stone-300);
+  }
+  .palette-panel.light {
+    background: var(--c-cream);
+  }
+  .palette-panel.dark {
+    background: var(--d-base);
+    color: var(--d-text);
+    border-color: var(--d-border);
+  }
+  .palette-panel h3 { margin-top: 0; }
+  .palette-panel.dark h3 { color: var(--d-text); }
+  .swatch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    gap: 12px;
+  }
+  .swatch {
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    border: 1px solid var(--c-stone-300);
+    background: var(--c-foam);
+  }
+  .palette-panel.dark .swatch { border-color: var(--d-border); background: var(--d-surface-1); }
+  .swatch .chip {
+    height: 64px;
+    border-bottom: 1px solid rgba(0,0,0,0.06);
+  }
+  .palette-panel.dark .swatch .chip { border-bottom-color: rgba(255,255,255,0.06); }
+  .swatch .meta {
+    padding: 10px 12px 12px;
+    font-size: 12px;
+    line-height: 1.4;
+  }
+  .swatch .name {
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0;
+    margin-bottom: 2px;
+  }
+  .swatch .hex {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    color: var(--c-stone-600);
+    font-size: 11px;
+  }
+  .palette-panel.dark .swatch .hex { color: var(--d-text-muted); }
+  .swatch .note {
+    color: var(--c-stone-600);
+    font-size: 11px;
+    line-height: 1.4;
+    margin-top: 4px;
+  }
+  .palette-panel.dark .swatch .note { color: var(--d-text-muted); }
+  .ratio {
+    display: inline-block;
+    font-size: 10px;
+    letter-spacing: 0.04em;
+    padding: 2px 6px;
+    margin-top: 4px;
+    border-radius: var(--radius-sm);
+    background: var(--c-stone-200);
+    color: var(--c-stone-600);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .palette-panel.dark .ratio { background: var(--d-surface-2); color: var(--d-text-muted); }
+  .ratio.aaa { background: rgba(82, 112, 74, 0.18); color: #3f5639; }
+  .ratio.aa { background: rgba(44, 90, 110, 0.14); color: #1f4253; }
+  .ratio.fail { background: rgba(156, 63, 46, 0.14); color: #7a2f23; }
+  .palette-panel.dark .ratio.aaa { background: rgba(133, 178, 115, 0.18); color: #b6d7a4; }
+  .palette-panel.dark .ratio.aa { background: rgba(124, 177, 199, 0.14); color: #a9d1de; }
+  .palette-panel.dark .ratio.fail { background: rgba(210, 106, 86, 0.14); color: #e6a193; }
+
+  .palette-row + .palette-row { margin-top: 24px; }
+  .palette-row h4 {
+    font-size: 13px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--c-stone-600);
+    margin: 0 0 12px;
+  }
+  .palette-panel.dark .palette-row h4 { color: var(--d-text-muted); }
+
+  /* ===== Type scale ===== */
+  .type-row {
+    display: grid;
+    grid-template-columns: 120px 1fr;
+    gap: 16px;
+    align-items: baseline;
+    padding: 16px 0;
+    border-bottom: 1px solid var(--c-stone-200);
+  }
+  .type-row:last-child { border-bottom: 0; }
+  .type-row .label {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-stone-500);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    line-height: 1.4;
+  }
+  .type-row .label .meta { display: block; color: var(--c-stone-400); }
+  .type-row .sample { line-height: var(--lh, 1.4); letter-spacing: var(--ls, 0); font-weight: var(--fw, 500); }
+  @media (max-width: 720px) {
+    .type-row { grid-template-columns: 1fr; gap: 4px; }
+  }
+
+  /* Type tokens */
+  .t-display-64 { font-size: clamp(2.5rem, 5vw + 1rem, 4rem); --lh: 1.06; --ls: -0.025em; --fw: 500; }
+  .t-h1-44 { font-size: clamp(2rem, 3vw + 1rem, 2.75rem); --lh: 1.09; --ls: -0.02em; --fw: 500; }
+  .t-h2-32 { font-size: 2rem; --lh: 1.25; --ls: -0.015em; --fw: 500; }
+  .t-h3-24 { font-size: 1.5rem; --lh: 1.33; --ls: -0.01em; --fw: 500; }
+  .t-h4-20 { font-size: 1.25rem; --lh: 1.4; --ls: -0.005em; --fw: 500; }
+  .t-body-lg-18 { font-size: 1.125rem; --lh: 1.56; --ls: -0.005em; --fw: 400; }
+  .t-body-16 { font-size: 1rem; --lh: 1.5; --ls: 0; --fw: 400; }
+  .t-small-14 { font-size: 0.875rem; --lh: 1.43; --ls: 0.005em; --fw: 400; }
+  .t-caption-12 { font-size: 0.75rem; --lh: 1.33; --ls: 0.04em; --fw: 500; text-transform: uppercase; }
+
+  .editorial {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* ===== Tokens ===== */
+  .token-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 16px;
+  }
+  .token-card {
+    background: var(--c-foam);
+    border: 1px solid var(--c-stone-300);
+    border-radius: var(--radius-md);
+    padding: 16px;
+  }
+  .token-card .name {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-stone-500);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    margin-bottom: 8px;
+  }
+  .token-card .value {
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    font-size: 12px;
+    color: var(--c-stone-600);
+  }
+  .token-card .demo {
+    margin: 12px 0;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .spacer-demo {
+    background: var(--c-petrol);
+    height: 24px;
+    border-radius: var(--radius-sm);
+  }
+  .radius-demo {
+    width: 80px; height: 56px;
+    background: var(--c-petrol);
+  }
+  .shadow-demo {
+    width: 80px; height: 40px;
+    background: var(--c-foam);
+    border: 1px solid var(--c-stone-200);
+    border-radius: var(--radius-md);
+  }
+
+  /* ===== Buttons / chips ===== */
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 20px;
+    border: 0;
+    border-radius: var(--radius-pill);
+    background: var(--c-petrol);
+    color: var(--c-cream);
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.005em;
+    cursor: pointer;
+    transition: transform var(--duration-quick) var(--ease-sip), background var(--duration-quick) var(--ease-sip);
+  }
+  .btn:hover { transform: translateY(-1px); }
+  .btn .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--c-amber);
+  }
+  .btn-secondary {
+    background: transparent;
+    color: var(--c-ink);
+    border: 1px solid var(--c-ink);
+  }
+  .btn-ghost {
+    background: transparent;
+    color: var(--c-ink);
+    padding-left: 0;
+    padding-right: 0;
+  }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 8px; }
+  .chip {
+    padding: 6px 12px;
+    border-radius: var(--radius-pill);
+    font-size: 13px;
+    font-weight: 500;
+    border: 1px solid var(--c-stone-300);
+    background: var(--c-foam);
+    color: var(--c-ink);
+  }
+  .chip.success { background: rgba(82,112,74,0.12); border-color: rgba(82,112,74,0.4); color: var(--c-success); }
+  .chip.warning { background: rgba(154,84,25,0.12); border-color: rgba(154,84,25,0.4); color: var(--c-warning); }
+  .chip.error { background: rgba(156,63,46,0.12); border-color: rgba(156,63,46,0.4); color: var(--c-error); }
+  .chip.info { background: rgba(44,90,110,0.12); border-color: rgba(44,90,110,0.4); color: var(--c-info); }
+
+  /* ===== S-mark concept ===== */
+  .smark-block {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  @media (max-width: 720px) { .smark-block { grid-template-columns: 1fr; } }
+  .smark-cell {
+    border: 1px solid var(--c-stone-300);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    background: var(--c-cream);
+  }
+  .smark-cell.dark { background: var(--d-base); border-color: var(--d-border); color: var(--d-text); }
+  .smark-cell.app-icon {
+    background: var(--c-foam);
+  }
+  .smark-cell .label {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-stone-500);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+  }
+  .smark-cell.dark .label { color: var(--d-text-muted); }
+  .icon-frame {
+    width: 144px; height: 144px;
+    border-radius: 32px;
+    background: var(--c-foam);
+    box-shadow: var(--shadow-md);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .icon-frame.dark { background: var(--d-surface-1); box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+
+  /* ===== Voice & tone ===== */
+  .voice-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+  }
+  .voice-card {
+    background: var(--c-foam);
+    border: 1px solid var(--c-stone-300);
+    border-radius: var(--radius-md);
+    padding: 20px;
+  }
+  .voice-card .label {
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--c-stone-500);
+    font-family: ui-monospace, "SF Mono", Menlo, monospace;
+    margin-bottom: 8px;
+  }
+  .voice-card .line {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    line-height: 1.4;
+    font-weight: 500;
+    color: var(--c-ink);
+  }
+  .voice-card.editorial .line {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 400;
+  }
+
+  /* ===== Hero card / mockup ===== */
+  .hero-card {
+    background: var(--c-cream);
+    border: 1px solid var(--c-stone-300);
+    border-radius: var(--radius-lg);
+    padding: 48px;
+    box-shadow: var(--shadow-md);
+    margin-bottom: 32px;
+  }
+  .hero-card .heading {
+    font-family: var(--font-sans);
+    font-weight: 500;
+    font-size: clamp(2rem, 3vw + 1rem, 3rem);
+    line-height: 1.06;
+    letter-spacing: -0.02em;
+    color: var(--c-ink);
+    margin: 0 0 8px;
+    max-width: 14ch;
+  }
+  .hero-card .underline {
+    width: 56px; height: 2px;
+    background: var(--c-petrol);
+    margin: 16px 0 24px;
+    position: relative;
+  }
+  .hero-card .underline::after {
+    content: ""; position: absolute; right: -10px; top: -2px;
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--c-amber);
+  }
+  .hero-card .row {
+    display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  }
+
+  /* ===== Footer ===== */
+  footer.foot {
+    margin-top: 96px;
+    padding-top: 32px;
+    border-top: 1px solid var(--c-stone-300);
+    color: var(--c-stone-600);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  footer.foot strong { color: var(--c-ink); font-weight: 500; }
+
+  /* Mode toggle (visual only — preview shows both side-by-side everywhere meaningful) */
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Header -->
+  <header class="brand">
+    <div class="smark" aria-label="CoffeeSip S-mark">
+      <!-- Production CoffeeSip S-mark — calligraphic ink S, petrol steam stroke, amber sip dot -->
+      <img src="../apps/web/public/brand/s-mark.svg" alt="CoffeeSip" width="120" height="168">
+    </div>
+    <div class="meta">
+      <p class="eyebrow">CoffeeSip · Brand Kit · v1</p>
+      <h1 class="title">Our time's worth a sip.</h1>
+      <p class="lede">A working palette, type scale, and component-token starter — extending the locked seed into a system a product team can ship from. Quiet, editorial, slow-specialty.</p>
+      <div class="badges">
+        <span class="badge">Light + dark</span>
+        <span class="badge">Inter · Fraunces</span>
+        <span class="badge">4-pt spacing</span>
+        <span class="badge">Pill CTAs</span>
+        <span class="badge">WCAG verified</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- §1 PALETTE -->
+  <section id="palette">
+    <div class="section-title">
+      <span class="num">1</span>
+      <h2>Palette</h2>
+    </div>
+    <p class="muted">Locked seed in row one. Secondary tones, neutrals, and semantics extend it. Light and dark live side-by-side so you can see what flips. Contrast ratios computed against the resolved background.</p>
+
+    <div class="palette-pair">
+
+      <!-- LIGHT -->
+      <div class="palette-panel light">
+        <h3>Light mode</h3>
+
+        <div class="palette-row">
+          <h4>Seed (locked)</h4>
+          <div class="swatch-grid">
+            <div class="swatch"><div class="chip" style="background:#F1ECE2"></div><div class="meta"><div class="name">cream</div><div class="hex">#F1ECE2</div><div class="note">Canvas</div></div></div>
+            <div class="swatch"><div class="chip" style="background:#161616"></div><div class="meta"><div class="name">ink</div><div class="hex">#161616</div><div class="note">Text</div><span class="ratio aaa">15.4:1 AAA</span></div></div>
+            <div class="swatch"><div class="chip" style="background:#2C5A6E"></div><div class="meta"><div class="name">petrol</div><div class="hex">#2C5A6E</div><div class="note">Brand accent · steam</div><span class="ratio aa">6.4:1 AA</span></div></div>
+            <div class="swatch"><div class="chip" style="background:#B9892C"></div><div class="meta"><div class="name">amber</div><div class="hex">#B9892C</div><div class="note">Decorative · large only</div><span class="ratio fail">2.7:1</span></div></div>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <h4>Secondary</h4>
+          <div class="swatch-grid">
+            <div class="swatch"><div class="chip" style="background:#2B1D14"></div><div class="meta"><div class="name">espresso</div><div class="hex">#2B1D14</div><div class="note">Reverse blocks</div><span class="ratio aaa">13.8:1 AAA</span></div></div>
+            <div class="swatch"><div class="chip" style="background:#FAF7F0; border-bottom:1px solid #E4DDD0"></div><div class="meta"><div class="name">foam</div><div class="hex">#FAF7F0</div><div class="note">Lifted surface</div></div></div>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <h4>Neutrals</h4>
+          <div class="swatch-grid">
+            <div class="swatch"><div class="chip" style="background:#E4DDD0"></div><div class="meta"><div class="name">stone-200</div><div class="hex">#E4DDD0</div><div class="note">Dividers, hover</div></div></div>
+            <div class="swatch"><div class="chip" style="background:#CFC6B5"></div><div class="meta"><div class="name">stone-300</div><div class="hex">#CFC6B5</div><div class="note">Borders, inputs</div></div></div>
+            <div class="swatch"><div class="chip" style="background:#A89E8C"></div><div class="meta"><div class="name">stone-400</div><div class="hex">#A89E8C</div><div class="note">Decorative rules</div><span class="ratio fail">2.3:1</span></div></div>
+            <div class="swatch"><div class="chip" style="background:#6E6557"></div><div class="meta"><div class="name">stone-500</div><div class="hex">#6E6557</div><div class="note">Muted body</div><span class="ratio aa">4.9:1 AA</span></div></div>
+            <div class="swatch"><div class="chip" style="background:#4F4A41"></div><div class="meta"><div class="name">stone-600</div><div class="hex">#4F4A41</div><div class="note">Secondary body</div><span class="ratio aaa">7.5:1 AAA</span></div></div>
+            <div class="swatch"><div class="chip" style="background:#2A2723"></div><div class="meta"><div class="name">ink-700</div><div class="hex">#2A2723</div><div class="note">Body alt</div><span class="ratio aaa">13.4:1 AAA</span></div></div>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <h4>Semantic</h4>
+          <div class="swatch-grid">
+            <div class="swatch"><div class="chip" style="background:#52704A"></div><div class="meta"><div class="name">success-moss</div><div class="hex">#52704A</div><div class="note">Sip sent, paid</div><span class="ratio aa">4.7:1 AA</span></div></div>
+            <div class="swatch"><div class="chip" style="background:#9A5419"></div><div class="meta"><div class="name">warning-ochre</div><div class="hex">#9A5419</div><div class="note">Pending, draft</div><span class="ratio aa">4.9:1 AA</span></div></div>
+            <div class="swatch"><div class="chip" style="background:#9C3F2E"></div><div class="meta"><div class="name">error-clay</div><div class="hex">#9C3F2E</div><div class="note">Failure, blocking</div><span class="ratio aa">5.6:1 AA</span></div></div>
+            <div class="swatch"><div class="chip" style="background:#2C5A6E"></div><div class="meta"><div class="name">info-petrol</div><div class="hex">#2C5A6E</div><div class="note">= seed petrol</div><span class="ratio aa">6.4:1 AA</span></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DARK -->
+      <div class="palette-panel dark">
+        <h3>Dark mode</h3>
+
+        <div class="palette-row">
+          <h4>Surfaces</h4>
+          <div class="swatch-grid">
+            <div class="swatch"><div class="chip" style="background:#1C1612"></div><div class="meta"><div class="name">dark-base</div><div class="hex">#1C1612</div><div class="note">Page bg · espresso-tinted</div></div></div>
+            <div class="swatch"><div class="chip" style="background:#241D17"></div><div class="meta"><div class="name">dark-surface-1</div><div class="hex">#241D17</div><div class="note">Card</div></div></div>
+            <div class="swatch"><div class="chip" style="background:#322920"></div><div class="meta"><div class="name">dark-surface-2</div><div class="hex">#322920</div><div class="note">Hover, modal</div></div></div>
+            <div class="swatch"><div class="chip" style="background:#4A3D31"></div><div class="meta"><div class="name">dark-border</div><div class="hex">#4A3D31</div><div class="note">Divider</div></div></div>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <h4>Text & body</h4>
+          <div class="swatch-grid">
+            <div class="swatch"><div class="chip" style="background:#EFE9DD"></div><div class="meta"><div class="name">cream-text</div><div class="hex">#EFE9DD</div><div class="note">Primary text</div><span class="ratio aaa">14.8:1 AAA</span></div></div>
+            <div class="swatch"><div class="chip" style="background:#D6CDB9"></div><div class="meta"><div class="name">fog-200</div><div class="hex">#D6CDB9</div><div class="note">Secondary body</div><span class="ratio aaa">10.2:1 AAA</span></div></div>
+            <div class="swatch"><div class="chip" style="background:#B8AE9A"></div><div class="meta"><div class="name">fog-400</div><div class="hex">#B8AE9A</div><div class="note">Muted</div><span class="ratio aaa">8.2:1 AAA</span></div></div>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <h4>Brand re-tuned</h4>
+          <div class="swatch-grid">
+            <div class="swatch"><div class="chip" style="background:#7CB1C7"></div><div class="meta"><div class="name">petrol-200</div><div class="hex">#7CB1C7</div><div class="note">Steam · was #2C5A6E</div><span class="ratio aaa">7.7:1 AAA</span></div></div>
+            <div class="swatch"><div class="chip" style="background:#E0AE54"></div><div class="meta"><div class="name">amber-200</div><div class="hex">#E0AE54</div><div class="note">Warm · was #B9892C</div><span class="ratio aaa">8.8:1 AAA</span></div></div>
+          </div>
+        </div>
+
+        <div class="palette-row">
+          <h4>Semantic</h4>
+          <div class="swatch-grid">
+            <div class="swatch"><div class="chip" style="background:#85B273"></div><div class="meta"><div class="name">success-moss-200</div><div class="hex">#85B273</div><div class="note">Sip sent</div><span class="ratio aaa">7.3:1 AAA</span></div></div>
+            <div class="swatch"><div class="chip" style="background:#E0AE54"></div><div class="meta"><div class="name">warning-ochre-200</div><div class="hex">#E0AE54</div><div class="note">= amber-200</div><span class="ratio aaa">8.8:1 AAA</span></div></div>
+            <div class="swatch"><div class="chip" style="background:#D26A56"></div><div class="meta"><div class="name">error-clay-200</div><div class="hex">#D26A56</div><div class="note">Failure</div><span class="ratio aa">5.1:1 AA</span></div></div>
+            <div class="swatch"><div class="chip" style="background:#88BCD0"></div><div class="meta"><div class="name">info-petrol-200</div><div class="hex">#88BCD0</div><div class="note">Notice</div><span class="ratio aaa">8.7:1 AAA</span></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- §2 TYPOGRAPHY -->
+  <section id="type">
+    <div class="section-title">
+      <span class="num">2</span>
+      <h2>Typography</h2>
+    </div>
+    <p class="muted">Inter for everything that has a job. Fraunces for the moments where copy <em>is</em> the product. Display weight is 500, never bolder — that's the editorial signature.</p>
+
+    <div class="type-row"><div class="label">display-64<span class="meta">64/68 · -0.025em · 500</span></div><div class="sample t-display-64">Our time's worth a sip.</div></div>
+    <div class="type-row"><div class="label">h1-44<span class="meta">44/48 · -0.02em · 500</span></div><div class="sample t-h1-44">Save them a sip.</div></div>
+    <div class="type-row"><div class="label">h2-32<span class="meta">32/40 · -0.015em · 500</span></div><div class="sample t-h2-32">Small payments, slow conversations.</div></div>
+    <div class="type-row"><div class="label">h3-24<span class="meta">24/32 · -0.01em · 500</span></div><div class="sample t-h3-24">Because not every "got a minute?" is free.</div></div>
+    <div class="type-row"><div class="label">h4-20<span class="meta">20/28 · -0.005em · 500</span></div><div class="sample t-h4-20">Card heading or section title goes here</div></div>
+    <div class="type-row"><div class="label">body-lg-18<span class="meta">18/28 · -0.005em · 400</span></div><div class="sample t-body-lg-18">Lead paragraphs and long-form articles use the larger body size — slightly tighter tracking helps it sit calmly on cream.</div></div>
+    <div class="type-row"><div class="label">body-16<span class="meta">16/24 · 0 · 400</span></div><div class="sample t-body-16">The default body size. CoffeeSip body copy reads like an editorial column more than a SaaS dashboard, so we keep generous line-height and let lines breathe.</div></div>
+    <div class="type-row"><div class="label">small-14<span class="meta">14/20 · +0.005em · 400</span></div><div class="sample t-small-14">Helper text, table cells, secondary metadata sit at this size with a touch of tracking for legibility.</div></div>
+    <div class="type-row"><div class="label">caption-12<span class="meta">12/16 · +0.04em · 500 · uppercase</span></div><div class="sample t-caption-12">Eyebrow · legal · badge label</div></div>
+
+    <h3 style="margin-top:48px">Editorial moment — Fraunces</h3>
+    <div class="type-row">
+      <div class="label">display · italic<span class="meta">Fraunces</span></div>
+      <div class="sample t-display-64 editorial">Our time's worth a sip.</div>
+    </div>
+    <div class="type-row">
+      <div class="label">body-lg · italic<span class="meta">Fraunces</span></div>
+      <div class="sample t-body-lg-18 editorial">Quiet so far. The first sip starts here. — used in empty states, onboarding chapter titles, and pull-quotes inside long-form content.</div>
+    </div>
+  </section>
+
+  <!-- §3 SPACING -->
+  <section id="spacing">
+    <div class="section-title">
+      <span class="num">3</span>
+      <h2>Spacing — 4-pt scale</h2>
+    </div>
+    <p class="muted">4-pt base. The scale below shows each token's bar at actual width.</p>
+    <div class="token-grid">
+      <div class="token-card"><div class="name">s-1</div><div class="value">4px</div><div class="demo"><div class="spacer-demo" style="width:4px"></div></div></div>
+      <div class="token-card"><div class="name">s-2</div><div class="value">8px</div><div class="demo"><div class="spacer-demo" style="width:8px"></div></div></div>
+      <div class="token-card"><div class="name">s-3</div><div class="value">12px</div><div class="demo"><div class="spacer-demo" style="width:12px"></div></div></div>
+      <div class="token-card"><div class="name">s-4</div><div class="value">16px · default</div><div class="demo"><div class="spacer-demo" style="width:16px"></div></div></div>
+      <div class="token-card"><div class="name">s-5</div><div class="value">24px</div><div class="demo"><div class="spacer-demo" style="width:24px"></div></div></div>
+      <div class="token-card"><div class="name">s-6</div><div class="value">32px</div><div class="demo"><div class="spacer-demo" style="width:32px"></div></div></div>
+      <div class="token-card"><div class="name">s-7</div><div class="value">48px</div><div class="demo"><div class="spacer-demo" style="width:48px"></div></div></div>
+      <div class="token-card"><div class="name">s-8</div><div class="value">64px</div><div class="demo"><div class="spacer-demo" style="width:64px"></div></div></div>
+      <div class="token-card"><div class="name">s-9</div><div class="value">96px</div><div class="demo"><div class="spacer-demo" style="width:96px"></div></div></div>
+    </div>
+  </section>
+
+  <!-- §4 RADII -->
+  <section id="radii">
+    <div class="section-title">
+      <span class="num">4</span>
+      <h2>Border radius</h2>
+    </div>
+    <p class="muted">Pill is the default button shape — matches the seed mockup's "Get Started" CTA. Rounded but never childish.</p>
+    <div class="token-grid">
+      <div class="token-card"><div class="name">radius-sm</div><div class="value">4px · inputs, tags</div><div class="demo"><div class="radius-demo" style="border-radius:4px"></div></div></div>
+      <div class="token-card"><div class="name">radius-md</div><div class="value">8px · cards, default</div><div class="demo"><div class="radius-demo" style="border-radius:8px"></div></div></div>
+      <div class="token-card"><div class="name">radius-lg</div><div class="value">16px · modals</div><div class="demo"><div class="radius-demo" style="border-radius:16px"></div></div></div>
+      <div class="token-card"><div class="name">radius-xl</div><div class="value">24px · drawers</div><div class="demo"><div class="radius-demo" style="border-radius:24px"></div></div></div>
+      <div class="token-card"><div class="name">radius-pill</div><div class="value">999px · buttons</div><div class="demo"><div class="radius-demo" style="border-radius:999px"></div></div></div>
+    </div>
+  </section>
+
+  <!-- §5 SHADOWS -->
+  <section id="shadows">
+    <div class="section-title">
+      <span class="num">5</span>
+      <h2>Elevation</h2>
+    </div>
+    <p class="muted">Warm-grey shadows base on espresso, never pure black. Soft, low-spread, cream-friendly.</p>
+    <div class="token-grid">
+      <div class="token-card"><div class="name">shadow-sm</div><div class="value">Faint lift</div><div class="demo" style="background:#E4DDD0"><div class="shadow-demo" style="box-shadow:var(--shadow-sm)"></div></div></div>
+      <div class="token-card"><div class="name">shadow-md</div><div class="value">Cards, dropdowns</div><div class="demo" style="background:#E4DDD0"><div class="shadow-demo" style="box-shadow:var(--shadow-md)"></div></div></div>
+      <div class="token-card"><div class="name">shadow-lg</div><div class="value">Modals, popovers</div><div class="demo" style="background:#E4DDD0"><div class="shadow-demo" style="box-shadow:var(--shadow-lg)"></div></div></div>
+      <div class="token-card"><div class="name">shadow-hero</div><div class="value">Hero, app-icon</div><div class="demo" style="background:#E4DDD0"><div class="shadow-demo" style="box-shadow:var(--shadow-hero)"></div></div></div>
+    </div>
+  </section>
+
+  <!-- §6 MOTION -->
+  <section id="motion">
+    <div class="section-title">
+      <span class="num">6</span>
+      <h2>Motion</h2>
+    </div>
+    <p class="muted">Three named curves, three durations. The mood is "considered, not snappy." Hover the swatches below to feel each curve.</p>
+    <div class="token-grid">
+      <div class="token-card">
+        <div class="name">ease-pour · 240ms</div>
+        <div class="value">Default entrance</div>
+        <div class="demo"><div class="radius-demo motion-demo" data-ease="var(--ease-pour)" data-dur="240ms" style="border-radius:8px;transition:transform 240ms cubic-bezier(0.32, 0.72, 0, 1)"></div></div>
+      </div>
+      <div class="token-card">
+        <div class="name">ease-sip · 240ms</div>
+        <div class="value">State change</div>
+        <div class="demo"><div class="radius-demo motion-demo" style="border-radius:8px;transition:transform 240ms cubic-bezier(0.4,0,0.2,1)"></div></div>
+      </div>
+      <div class="token-card">
+        <div class="name">ease-steam · 480ms</div>
+        <div class="value">Micro-delight</div>
+        <div class="demo"><div class="radius-demo motion-demo" style="border-radius:8px;transition:transform 480ms cubic-bezier(0.16,1,0.3,1)"></div></div>
+      </div>
+      <div class="token-card">
+        <div class="name">duration-quick</div>
+        <div class="value">120ms · hover/focus</div>
+        <div class="demo"><div class="radius-demo" style="border-radius:8px;width:24px;height:24px"></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- §7 S-MARK -->
+  <section id="smark">
+    <div class="section-title">
+      <span class="num">7</span>
+      <h2>S-mark concept</h2>
+    </div>
+    <p class="muted">Locked CoffeeSip mark — calligraphic ink S, petrol steam stroke, amber sip dot. Production assets live in <code>apps/web/public/brand/</code>; the dark-mode tint swaps ink → foam, with petrol and amber lifted for legibility on espresso.</p>
+
+    <div class="smark-block">
+      <div class="smark-cell">
+        <div class="icon-frame">
+          <img src="../apps/web/public/brand/s-mark.svg" alt="CoffeeSip S-mark" width="80" height="112">
+        </div>
+        <div class="label">App icon · light</div>
+      </div>
+
+      <div class="smark-cell dark">
+        <div class="icon-frame dark">
+          <img src="../apps/web/public/brand/s-mark-dark.svg" alt="CoffeeSip S-mark (dark)" width="80" height="112">
+        </div>
+        <div class="label">App icon · dark</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- §8 IN-CONTEXT -->
+  <section id="context">
+    <div class="section-title">
+      <span class="num">8</span>
+      <h2>In context</h2>
+    </div>
+    <p class="muted">Hero card and the seed mockup's CTA recreated using only the kit tokens. This is what "shipping from the kit" looks like.</p>
+
+    <div class="hero-card">
+      <p class="eyebrow">CoffeeSip</p>
+      <p class="heading">Our time's worth a sip.</p>
+      <div class="underline"></div>
+      <p class="muted" style="max-width:48ch">Small payments to start meaningful conversations. Pay to get someone's time — and turn tiny payments into Bitcoin savings.</p>
+      <div class="row" style="margin-top:24px">
+        <button class="btn">Get Started <span class="dot"></span></button>
+        <button class="btn btn-secondary">See how it works</button>
+        <button class="btn btn-ghost">Pour yourself in →</button>
+      </div>
+    </div>
+
+    <h3>Status chips</h3>
+    <div class="chip-row">
+      <span class="chip">Default</span>
+      <span class="chip success">Sip sent</span>
+      <span class="chip warning">Brewing</span>
+      <span class="chip error">Didn't pour</span>
+      <span class="chip info">Notice</span>
+    </div>
+  </section>
+
+  <!-- §9 VOICE -->
+  <section id="voice">
+    <div class="section-title">
+      <span class="num">9</span>
+      <h2>Voice & tone — starter</h2>
+    </div>
+    <p class="muted">Working sample set. Sip lingo without the saccharine. No exclamation marks. Plural before singular.</p>
+    <div class="voice-grid">
+      <div class="voice-card"><div class="label">Primary CTA</div><div class="line">Save them a sip</div></div>
+      <div class="voice-card"><div class="label">Login</div><div class="line">Pour yourself in</div></div>
+      <div class="voice-card"><div class="label">Confirm</div><div class="line">Send the sip</div></div>
+      <div class="voice-card"><div class="label">Cancel</div><div class="line">Hold the cup</div></div>
+      <div class="voice-card editorial"><div class="label">Empty state</div><div class="line">Quiet so far. The first sip starts here.</div></div>
+      <div class="voice-card"><div class="label">Success</div><div class="line">Sip sent. Their cup is on the way.</div></div>
+      <div class="voice-card"><div class="label">Pending</div><div class="line">Brewing — give it a moment.</div></div>
+      <div class="voice-card"><div class="label">Error</div><div class="line">That brew didn't pour. Let's try again.</div></div>
+      <div class="voice-card editorial"><div class="label">Headline</div><div class="line">Because not every "got a minute?" is free.</div></div>
+    </div>
+  </section>
+
+  <footer class="foot">
+    <p><strong>CoffeeSip Brand Kit · v1</strong> — drafted for review. Companion spec: <code>docs/BRAND_KIT.md</code>. Anchored on the seed in <code>docs/COFFEESIP_BRAND_DIRECTION.md</code>. Open questions noted in §7 of the spec.</p>
+    <p>Built on the locked seed: cream <code>#F1ECE2</code> · ink <code>#161616</code> · petrol <code>#2C5A6E</code> · amber <code>#B9892C</code>.</p>
+  </footer>
+</div>
+
+<script>
+  // Tiny motion demo: hover a .motion-demo element and it slides right with its own curve.
+  document.querySelectorAll('.motion-demo').forEach(el => {
+    el.addEventListener('mouseenter', () => el.style.transform = 'translateX(40px)');
+    el.addEventListener('mouseleave', () => el.style.transform = 'translateX(0)');
+  });
+</script>
+</body>
+</html>

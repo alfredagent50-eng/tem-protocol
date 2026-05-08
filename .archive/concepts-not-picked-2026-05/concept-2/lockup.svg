@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 660 200" shape-rendering="geometricPrecision" role="img" aria-label="CoffeeSip — Punctuation lockup with tagline">
+  <title>CoffeeSip — Punctuation lockup</title>
+  <desc>Wordmark plus tagline. The wordmark IS the brand; the tagline anchors voice.</desc>
+  <text x="0" y="118"
+        font-family="'Fraunces', 'Söhne', 'Times New Roman', Georgia, serif"
+        font-weight="500"
+        font-size="128"
+        letter-spacing="-3"
+        fill="#0E1116">coffees&#x0131;p</text>
+  <circle cx="362" cy="38" r="14" fill="#6B1F2E"/>
+  <text x="2" y="170"
+        font-family="'Inter', 'Söhne', 'Helvetica Neue', Arial, sans-serif"
+        font-weight="500"
+        font-size="20"
+        letter-spacing="2.4"
+        fill="#6E6557"
+        text-transform="uppercase">OUR&#160;TIME&#8217;S&#160;WORTH&#160;A&#160;SIP</text>
+</svg>

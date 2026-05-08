@@ -1,0 +1,171 @@
+/**
+ * Meridian — base.css
+ *
+ * Global reset + body defaults + utility type classes that compose the
+ * Meridian type scale from tokens. Imported once in main.tsx after
+ * tokens.css.
+ */
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body, #root { height: 100%; }
+
+html {
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-bg);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: var(--weight-regular);
+  font-feature-settings: 'cv02', 'cv03', 'cv04', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
+img, svg, video { display: block; max-width: 100%; }
+
+button, input, textarea, select {
+  font: inherit;
+  color: inherit;
+}
+button {
+  background: none;
+  border: 0;
+  cursor: pointer;
+  padding: 0;
+}
+
+a { color: var(--color-accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+::selection {
+  background: var(--palette-oxblood);
+  color: var(--palette-paper);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+  border-radius: var(--radius-sm);
+}
+
+/* ── Type utility classes — compose tokens into the Meridian scale ─── */
+
+.t-display-2xl {
+  font-family: var(--font-display);
+  font-size: clamp(3.5rem, 8vw + 1rem, var(--fs-display-2xl));
+  line-height: var(--lh-display-2xl);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-display-tight);
+}
+
+.t-display-xl {
+  font-family: var(--font-display);
+  font-size: clamp(2.75rem, 6vw + 1rem, var(--fs-display-xl));
+  line-height: var(--lh-display-xl);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-display-tight);
+}
+
+.t-display-l {
+  font-family: var(--font-display);
+  font-size: clamp(2.25rem, 4vw + 1rem, var(--fs-display-l));
+  line-height: var(--lh-display-l);
+  font-weight: var(--weight-regular);
+  letter-spacing: var(--tracking-display);
+}
+
+.t-h1 {
+  font-family: var(--font-display);
+  font-size: clamp(1.875rem, 2.5vw + 1rem, var(--fs-h1));
+  line-height: var(--lh-h1);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-display);
+}
+
+.t-h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 1.5vw + 0.875rem, var(--fs-h2));
+  line-height: var(--lh-h2);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-h2);
+}
+
+.t-h3 {
+  font-family: var(--font-sans);
+  font-size: var(--fs-h3);
+  line-height: var(--lh-h3);
+  font-weight: var(--weight-semibold);
+}
+
+.t-body-l {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body-l);
+  line-height: var(--lh-body);
+  font-weight: var(--weight-regular);
+}
+
+.t-body {
+  font-family: var(--font-sans);
+  font-size: var(--fs-body);
+  line-height: var(--lh-body);
+  font-weight: var(--weight-regular);
+}
+
+.t-caption {
+  font-family: var(--font-sans);
+  font-size: var(--fs-caption);
+  line-height: var(--lh-caption);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-caption);
+}
+
+.t-micro {
+  font-family: var(--font-sans);
+  font-size: var(--fs-micro);
+  line-height: var(--lh-micro);
+  font-weight: var(--weight-semibold);
+  letter-spacing: var(--tracking-micro);
+  text-transform: uppercase;
+}
+
+.tabular-nums {
+  font-feature-settings: 'tnum' 1, 'cv02', 'cv03', 'cv04', 'cv11';
+  font-variant-numeric: tabular-nums;
+}
+
+/* ── Layout helpers ────────────────────────────────────────────────── */
+
+.container {
+  width: 100%;
+  max-width: var(--container-max);
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+}
+.container-narrow {
+  width: 100%;
+  max-width: var(--container-narrow);
+  margin: 0 auto;
+  padding: 0 var(--space-5);
+}
+
+@media (min-width: 768px) {
+  .container, .container-narrow { padding: 0 var(--space-6); }
+}
+
+/* Reduced motion — respect the OS setting. */
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

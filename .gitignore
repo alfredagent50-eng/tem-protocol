@@ -16,3 +16,7 @@ coverage
 # Keep the demo seed file committed for now; revisit once DB lands.
 
 data/smoke-test-requests.json
+
+# Brand kit working artifacts (intermediate masks, comparison renders)
+apps/web/public/brand/source/_debug/
+apps/web/public/brand/source/s-mark-isolated.png
