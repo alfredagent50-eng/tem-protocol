@@ -60,6 +60,10 @@
   gap: var(--space-4);
 }
 
+@media (min-width: 768px) {
+  .top-bar { padding: var(--space-5) var(--space-6); }
+}
+
 .top-brand {
   display: inline-flex;
   align-items: center;
@@ -177,6 +181,14 @@
   gap: var(--space-5);
 }
 
+@media (min-width: 960px) {
+  .booking-card {
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: var(--space-7);
+    padding: 0 var(--space-6);
+  }
+}
+
 .schedule-panel,
 .checkout-panel {
   background: var(--color-surface);
@@ -184,6 +196,11 @@
   border-radius: var(--radius-lg);
   padding: var(--space-6);
   box-shadow: var(--shadow-e1);
+}
+
+@media (min-width: 768px) {
+  .schedule-panel,
+  .checkout-panel { padding: var(--space-7); }
 }
 
 .booking-intro {
@@ -718,6 +735,15 @@
   gap: var(--space-7);
 }
 
+@media (min-width: 960px) {
+  .host-landing-page {
+    grid-template-columns: 1.05fr 0.95fr;
+    column-gap: var(--space-8);
+    padding: var(--space-9) var(--space-6) var(--space-10);
+    align-items: center;
+  }
+}
+
 .host-landing-hero {
   display: flex;
   flex-direction: column;
@@ -774,6 +800,10 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-3);
+}
+
+@media (min-width: 960px) {
+  .landing-actions { grid-column: 1; }
 }
 
 .aroma-symbol {
@@ -863,6 +893,15 @@
   gap: var(--space-7);
 }
 
+@media (min-width: 960px) {
+  .host-signup-page {
+    grid-template-columns: 1fr 1fr;
+    gap: var(--space-8);
+    padding: var(--space-9) var(--space-6) var(--space-10);
+    align-items: center;
+  }
+}
+
 .host-signup-story h1 {
   font-family: var(--font-display);
   font-size: clamp(2.5rem, 5vw + 1rem, 4rem);
@@ -937,6 +976,8 @@
   gap: var(--space-6);
 }
 
+@media (min-width: 768px) { .dashboard-card { padding: 0 var(--space-6); } }
+
 .dashboard-hero {
   display: grid;
   grid-template-columns: 1fr;
@@ -946,6 +987,13 @@
   border: 1px solid var(--color-divider);
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-e1);
+}
+
+@media (min-width: 768px) {
+  .dashboard-hero {
+    grid-template-columns: 1.4fr 1fr;
+    align-items: center;
+  }
 }
 
 .dashboard-hero h1 {
@@ -1002,11 +1050,18 @@
   gap: var(--space-5);
 }
 
+@media (min-width: 768px) { .host-setup-panel { padding: var(--space-7); } }
+
 .host-setup-header {
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-4);
   align-items: center;
+}
+@media (min-width: 768px) {
+  .host-setup-header {
+    grid-template-columns: 1.3fr auto auto;
+  }
 }
 
 .host-setup-header h2 {
@@ -1290,6 +1345,12 @@
   grid-template-columns: 1fr;
   gap: var(--space-5);
 }
+@media (min-width: 768px) {
+  .request-board { grid-template-columns: repeat(2, 1fr); gap: var(--space-6); }
+}
+@media (min-width: 1200px) {
+  .request-board { grid-template-columns: repeat(4, 1fr); }
+}
 
 .request-board > div {
   background: var(--color-surface);
@@ -1457,6 +1518,9 @@
   gap: var(--space-5);
   align-items: start;
 }
+@media (min-width: 768px) {
+  .site-footer .container { grid-template-columns: auto 1fr auto; }
+}
 
 .site-footer .footer-brand img,
 .site-footer .footer-brand svg { height: 36px; width: auto; }
@@ -1502,6 +1566,8 @@
   display: grid;
   gap: var(--space-7);
 }
+@media (min-width: 768px) { .how-it-works { padding: var(--space-9) var(--space-6); } }
+
 .how-it-works h2 {
   font-family: var(--font-display);
   font-size: clamp(2rem, 3vw + 1rem, var(--fs-display-l));
@@ -1516,6 +1582,9 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-5);
+}
+@media (min-width: 768px) {
+  .how-steps { grid-template-columns: repeat(3, 1fr); gap: var(--space-6); }
 }
 
 .how-step {
@@ -1556,6 +1625,9 @@
   display: grid;
   grid-template-columns: 1fr;
   gap: var(--space-6);
+}
+@media (min-width: 768px) {
+  .faq-section { padding: 0 var(--space-6) var(--space-10); grid-template-columns: 0.5fr 1fr; gap: var(--space-8); }
 }
 
 .faq-section h2 {
@@ -1639,9 +1711,17 @@
 .site-header .logo .lockup-img { height: 32px; display: none; }
 .site-header .logo .mark-img { height: 32px; }
 
+@media (min-width: 640px) {
+  .site-header .logo .lockup-img { display: block; }
+  .site-header .logo .mark-img { display: none; }
+}
+
 .site-header nav {
   display: none;
   gap: var(--space-5);
+}
+@media (min-width: 768px) {
+  .site-header nav { display: inline-flex; }
 }
 .site-header nav a {
   color: var(--color-ink-muted);
