@@ -768,12 +768,11 @@
 
 .host-landing-hero h1 {
   font-family: var(--font-display);
-  font-size: clamp(2.75rem, 6vw + 1rem, 4.5rem);
-  line-height: 1.0;
+  font-size: clamp(2.25rem, 5vw + 0.75rem, 4.5rem);
+  line-height: 1.05;
   font-weight: var(--weight-regular);
   letter-spacing: var(--tracking-display-tight);
   margin: 0;
-  max-width: 14ch;
   color: var(--color-ink);
 }
 

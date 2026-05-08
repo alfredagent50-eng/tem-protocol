@@ -102,7 +102,10 @@ export function GuestBookingFlow({
             height={67}
           />
           <div>
-            <h1>Pay for a sip.</h1>
+            <h1>
+              <span style={{ display: 'block' }}>It's not a meet.</span>
+              <span style={{ display: 'block' }}>It's a sip.</span>
+            </h1>
             <p>Choose what you need, pick a time, put a real signal behind it.</p>
           </div>
         </div>

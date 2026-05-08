@@ -22,7 +22,12 @@ export function Hero({ onPrimary, onSecondary }: HeroProps) {
           What's your time worth
         </span>
         <h1>
-          Pay for a <em>sip.</em>
+          <span style={{ display: 'block' }}>
+            It's not a <em>meet</em>.
+          </span>
+          <span style={{ display: 'block' }}>
+            It's a <em>sip</em>.
+          </span>
         </h1>
         <p>
           Get fifteen minutes with someone whose time matters. Set the price.

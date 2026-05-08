@@ -26,7 +26,7 @@ export function Footer() {
           </span>
         </div>
         <p className="footer-tagline">
-          Pay for a sip. Get fifteen minutes with someone whose time matters.
+          Not a meet. A sip. Get fifteen minutes with someone whose time matters.
         </p>
         <span className="footer-meta">© {year} CoffeeSip</span>
       </div>
